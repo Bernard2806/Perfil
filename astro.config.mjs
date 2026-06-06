@@ -4,5 +4,8 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: 'https://bernard2806.is-a.dev',
   base: '/',
-  output: 'static'
+  output: 'static',
+  build: {
+    inlineStylesheets: 'always'
+  }
 });
