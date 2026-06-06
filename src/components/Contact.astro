@@ -7,7 +7,7 @@ const { email, phone, location } = portfolioData.personalInfo;
 <div class="panel-contact">
   <div class="contact-cv-info">
     <p class="contact-cv-desc">
-      Si tienes una propuesta de trabajo, una consulta sobre mis productos o deseas colaborar en un proyecto, puedes enviarme un mensaje directamente desde este formulario.
+      Si tienes una propuesta de trabajo, una consulta sobre mis productos o deseas colaborar en un proyecto, puedes contactarme directamente a través de cualquiera de los siguientes medios:
     </p>
     
     <div class="contact-cv-details">
@@ -26,43 +26,16 @@ const { email, phone, location } = portfolioData.personalInfo;
     </div>
   </div>
 
-  <form id="portfolio-contact-form" class="contact-cv-form">
-    <div class="input-group">
-      <input type="text" id="form-name" required placeholder=" " />
-      <label for="form-name">Nombre</label>
-    </div>
-    
-    <div class="input-group">
-      <input type="email" id="form-email" required placeholder=" " />
-      <label for="form-email">Email</label>
-    </div>
-
-    <div class="input-group">
-      <input type="text" id="form-subject" required placeholder=" " />
-      <label for="form-subject">Asunto</label>
-    </div>
-
-    <div class="input-group">
-      <textarea id="form-message" required rows="4" placeholder=" "></textarea>
-      <label for="form-message">Mensaje</label>
-    </div>
-
-    <button type="submit" class="btn btn-primary btn-submit-cv">
-      Enviar Mensaje <i class="fas fa-paper-plane"></i>
-    </button>
-  </form>
-</div>
-
-<!-- Custom Toast Notification (Floating bottom-right) -->
-<div id="contact-toast" class="contact-toast">
-  <div class="toast-content">
-    <i class="fas fa-circle-check toast-icon"></i>
-    <div class="toast-message">
-      <h4 class="toast-title">¡Mensaje Enviado!</h4>
-      <p class="toast-desc">Te responderé a la brevedad.</p>
-    </div>
+  <div class="contact-wsp-action">
+    <a 
+      href="https://wa.me/542346614492?text=Hola%20Bernardo!%20Vengo%20desde%20tu%20portafolio." 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      class="btn btn-primary btn-submit-cv"
+    >
+      Contactar por WhatsApp <i class="fab fa-whatsapp"></i>
+    </a>
   </div>
-  <div class="toast-progress"></div>
 </div>
 
 <style>
@@ -100,178 +73,28 @@ const { email, phone, location } = portfolioData.personalInfo;
     text-align: center;
   }
 
+  .detail-link {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color var(--transition-speed) ease;
+  }
+
   .detail-link:hover {
     color: var(--accent-blue);
-    text-decoration: underline;
+    text-decoration: none;
   }
 
-  /* Form */
-  .contact-cv-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
+  .contact-wsp-action {
     border-top: 1px solid var(--border-color);
     padding-top: 1.5rem;
-  }
-
-  .input-group {
-    position: relative;
-    width: 100%;
-  }
-
-  .input-group input,
-  .input-group textarea {
-    width: 100%;
-    padding: 0.75rem 0.9rem;
-    background: var(--bg-body);
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    color: var(--text-primary);
-    font-family: var(--font-sans);
-    font-size: 0.9rem;
-    transition: all var(--transition-speed) ease;
-  }
-
-  .input-group textarea {
-    resize: none;
-  }
-
-  .input-group label {
-    position: absolute;
-    left: 0.9rem;
-    top: 0.75rem;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    pointer-events: none;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .input-group input:focus,
-  .input-group textarea:focus {
-    border-color: var(--accent-blue);
-    outline: none;
-    box-shadow: 0 0 10px rgba(59, 130, 246, 0.15);
-  }
-
-  .input-group input:focus ~ label,
-  .input-group input:not(:placeholder-shown) ~ label,
-  .input-group textarea:focus ~ label,
-  .input-group textarea:not(:placeholder-shown) ~ label {
-    top: -0.6rem;
-    left: 0.65rem;
-    font-size: 0.7rem;
-    padding: 0 0.35rem;
-    background: var(--bg-card);
-    color: var(--accent-blue);
-    font-weight: 600;
+    display: flex;
+    justify-content: center;
   }
 
   .btn-submit-cv {
     width: 100%;
     gap: 0.5rem;
-    font-size: 0.9rem;
-    padding: 0.7rem 1.25rem;
-  }
-
-  /* Toast Notification */
-  .contact-toast {
-    position: fixed;
-    bottom: 2rem;
-    right: -400px;
-    width: 320px;
-    background: var(--bg-card);
-    border: 1px solid rgba(34, 197, 94, 0.3);
-    border-radius: 8px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-    overflow: hidden;
-    transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-
-  .contact-toast.show {
-    right: 2rem;
-  }
-
-  .toast-content {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-  }
-
-  .toast-icon {
-    font-size: 1.75rem;
-    color: #22c55e;
-  }
-
-  .toast-message {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .toast-title {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--text-primary);
-  }
-
-  .toast-desc {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-  }
-
-  .toast-progress {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 3px;
-    width: 100%;
-    background-color: #22c55e;
-  }
-
-  .contact-toast.show .toast-progress {
-    animation: toast-timer 4s linear forwards;
-  }
-
-  @keyframes toast-timer {
-    from { width: 100%; }
-    to { width: 0%; }
-  }
-
-  @media (max-width: 576px) {
-    .contact-toast {
-      width: calc(100% - 2rem);
-      left: 1rem;
-      right: 1rem;
-      transform: translateY(150px);
-    }
-    
-    .contact-toast.show {
-      transform: translateY(0);
-      left: 1rem;
-      right: 1rem;
-    }
+    font-size: 0.95rem;
+    padding: 0.8rem 1.25rem;
   }
 </style>
-
-<script>
-  const setupContactForm = () => {
-    const form = document.getElementById('portfolio-contact-form');
-    const toast = document.getElementById('contact-toast');
-
-    form?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      (form as HTMLFormElement).reset();
-
-      if (toast) {
-        toast.classList.add('show');
-        setTimeout(() => {
-          toast.classList.remove('show');
-        }, 4000);
-      }
-    });
-  };
-
-  setupContactForm();
-  document.addEventListener('astro:after-swap', setupContactForm);
-</script>

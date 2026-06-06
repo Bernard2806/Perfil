@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import BackgroundAnimation from "../components/BackgroundAnimation.astro";
 
 interface Props {
   title: string;
@@ -13,7 +14,7 @@ const {
 ---
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -47,24 +48,9 @@ const {
       crossorigin="anonymous"
     />
 
-    <!-- Theme Initialization Script (Prevents theme flash) -->
-    <script is:inline>
-      const getTheme = () => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
-        }
-        return 'dark'; // Dark theme by default
-      };
-      
-      const theme = getTheme();
-      if (theme === 'light') {
-        document.documentElement.setAttribute('data-theme', 'light');
-      } else {
-        document.documentElement.setAttribute('data-theme', 'dark');
-      }
-    </script>
   </head>
   <body>
+    <BackgroundAnimation />
     <slot />
   </body>
 </html>

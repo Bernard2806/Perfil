@@ -126,19 +126,21 @@ const getTagColorClass = (tech: string) => {
   .project-cv-item {
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 1.25rem;
     cursor: pointer;
-    transition: all var(--transition-speed) ease;
+    transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
   .project-cv-item:hover {
-    border-color: var(--text-muted);
+    border-color: var(--border-color-hover);
     background-color: var(--bg-hover);
-    transform: translateY(-1px);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2), 0 8px 8px -5px rgba(0, 0, 0, 0.1);
   }
 
   .project-cv-header {

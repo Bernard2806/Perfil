@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
 import About from "../components/About.astro";
+import Socials from "../components/Socials.astro";
 import Skills from "../components/Skills.astro";
 import Projects from "../components/Projects.astro";
 import Products from "../components/Products.astro";
@@ -25,6 +26,11 @@ const currentYear = new Date().getFullYear();
         <!-- Panel: Sobre Mí -->
         <div class="tab-panel active slide-fade-in" id="panel-about">
           <About />
+        </div>
+
+        <!-- Panel: Redes Sociales -->
+        <div class="tab-panel" id="panel-socials">
+          <Socials />
         </div>
 
         <!-- Panel: Habilidades -->
