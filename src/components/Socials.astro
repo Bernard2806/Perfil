@@ -4,10 +4,10 @@ import portfolioData from "../data/portfolio.json";
 const { github, linkedin, instagram, facebook } = portfolioData.personalInfo;
 
 const socialLinks = [
-  { name: "GitHub", url: github, icon: "fab fa-github", color: "#f1f7f4" },
-  { name: "LinkedIn", url: linkedin, icon: "fab fa-linkedin-in", color: "#0077b5" },
-  { name: "Instagram", url: instagram, icon: "fab fa-instagram", color: "#e1306c" },
-  { name: "Facebook", url: facebook, icon: "fab fa-facebook-f", color: "#1877f2" }
+  { name: "GitHub", url: github, icon: "fab fa-github" },
+  { name: "LinkedIn", url: linkedin, icon: "fab fa-linkedin-in" },
+  { name: "Instagram", url: instagram, icon: "fab fa-instagram" },
+  { name: "Facebook", url: facebook, icon: "fab fa-facebook-f" }
 ];
 ---
 
@@ -16,7 +16,7 @@ const socialLinks = [
     {socialLinks.map((social) => (
       <a href={social.url} target="_blank" rel="noopener noreferrer" class="social-card">
         <div class="social-card-icon">
-          <i class={social.icon} style={`color: ${social.color};`}></i>
+          <i class={social.icon}></i>
         </div>
         <span class="social-card-name">{social.name}</span>
       </a>
@@ -53,29 +53,18 @@ const socialLinks = [
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   }
 
-  .social-card:hover {
-    border-color: var(--border-color-hover);
-    background-color: var(--bg-hover);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
-  }
-
   .social-card-icon {
-    font-size: 2.2rem;
+    font-size: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 60px;
-    width: 60px;
+    height: 56px;
+    width: 56px;
     border-radius: 50%;
     background-color: var(--bg-body);
     border: 1px solid var(--border-color);
     transition: all var(--transition-speed) ease;
-  }
-
-  .social-card:hover .social-card-icon {
-    border-color: var(--accent-blue);
-    transform: scale(1.05);
+    color: var(--text-secondary);
   }
 
   .social-card-name {
@@ -83,5 +72,60 @@ const socialLinks = [
     font-weight: 700;
     font-size: 0.95rem;
     color: var(--text-primary);
+  }
+
+  /* Custom Hover Effects matching page palette */
+  .social-card:hover {
+    background-color: var(--bg-hover);
+    transform: translateY(-3px);
+  }
+
+  .social-card:hover .social-card-icon {
+    background-color: var(--bg-card);
+    transform: scale(1.05);
+  }
+
+  /* GitHub Hover */
+  .social-card:nth-child(1):hover {
+    border-color: rgba(241, 247, 244, 0.3);
+    box-shadow: 0 10px 15px -3px rgba(241, 247, 244, 0.05);
+  }
+  .social-card:nth-child(1):hover .social-card-icon {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+    box-shadow: 0 0 12px rgba(241, 247, 244, 0.15);
+  }
+
+  /* LinkedIn Hover */
+  .social-card:nth-child(2):hover {
+    border-color: rgba(34, 197, 94, 0.3);
+    box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.08);
+  }
+  .social-card:nth-child(2):hover .social-card-icon {
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.2);
+  }
+
+  /* Instagram Hover */
+  .social-card:nth-child(3):hover {
+    border-color: rgba(52, 211, 153, 0.3);
+    box-shadow: 0 10px 15px -3px rgba(52, 211, 153, 0.08);
+  }
+  .social-card:nth-child(3):hover .social-card-icon {
+    border-color: var(--accent-teal);
+    color: var(--accent-teal);
+    box-shadow: 0 0 12px rgba(52, 211, 153, 0.2);
+  }
+
+  /* Facebook Hover */
+  .social-card:nth-child(4):hover {
+    border-color: rgba(16, 185, 129, 0.3);
+    box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.08);
+  }
+  .social-card:nth-child(4):hover .social-card-icon {
+    border-color: var(--accent-purple);
+    color: var(--accent-purple);
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
   }
 </style>
