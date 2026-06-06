@@ -1,0 +1,235 @@
+---
+import portfolioData from "../data/portfolio.json";
+
+const { webDevelopment, otherTechnologies } = portfolioData.skills;
+---
+
+<section id="skills" class="section skills-section">
+  <div class="skills-glow"></div>
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Habilidades</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="skills-grid">
+      <!-- Web Development Column -->
+      <div class="skills-column">
+        <h3 class="column-title"><i class="fas fa-laptop-code"></i> Desarrollo Web</h3>
+        <div class="skills-list">
+          {webDevelopment.map((skill) => (
+            <div class="skill-card glass-card" data-level={`${skill.level}%`}>
+              <div class="skill-info-header">
+                <div class="skill-identity">
+                  <span class="skill-icon"><i class={skill.icon}></i></span>
+                  <span class="skill-name">{skill.name}</span>
+                </div>
+                <span class="skill-percentage">{skill.level}%</span>
+              </div>
+              <div class="skill-progress-track">
+                <div class="skill-progress-bar" style={`--skill-level: ${skill.level}%`}></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Other Technologies Column -->
+      <div class="skills-column">
+        <h3 class="column-title"><i class="fas fa-gears"></i> Otras Tecnologías</h3>
+        <div class="skills-list">
+          {otherTechnologies.map((skill) => (
+            <div class="skill-card glass-card" data-level={`${skill.level}%`}>
+              <div class="skill-info-header">
+                <div class="skill-identity">
+                  <span class="skill-icon"><i class={skill.icon}></i></span>
+                  <span class="skill-name">{skill.name}</span>
+                </div>
+                <span class="skill-percentage">{skill.level}%</span>
+              </div>
+              <div class="skill-progress-track">
+                <div class="skill-progress-bar" style={`--skill-level: ${skill.level}%`}></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills-section {
+    background-color: var(--bg-tertiary);
+    overflow: hidden;
+  }
+
+  .skills-glow {
+    position: absolute;
+    bottom: -10%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(20, 184, 166, 0.05) 0%, rgba(59, 130, 246, 0.02) 50%, transparent 100%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-title {
+    font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-line {
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+    margin: 0 auto;
+    border-radius: 2px;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .column-title {
+    font-size: 1.35rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-primary);
+  }
+
+  .column-title i {
+    color: var(--accent-teal);
+  }
+
+  .skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .skill-card {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .skill-card:hover {
+    transform: translateX(4px) translateY(-2px);
+  }
+
+  .skill-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .skill-identity {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .skill-icon {
+    font-size: 1.5rem;
+    width: 32px;
+    display: flex;
+    justify-content: center;
+    color: var(--accent-blue);
+    transition: transform 0.5s ease;
+  }
+
+  .skill-card:hover .skill-icon {
+    transform: rotate(360deg);
+  }
+
+  /* Specific icon colors on hover */
+  .skill-card:hover .fa-html5 { color: #e34c26; }
+  .skill-card:hover .fa-js { color: #f7df1e; }
+  .skill-card:hover .fa-php { color: #777bb4; }
+  .skill-card:hover .fa-database { color: #336791; }
+  .skill-card:hover .fa-linux { color: #ffffff; }
+
+  .skill-name {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .skill-percentage {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .skill-card:hover .skill-percentage {
+    color: var(--accent-teal);
+  }
+
+  .skill-progress-track {
+    width: 100%;
+    height: 6px;
+    background: var(--bg-primary);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .skill-progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-teal));
+    border-radius: 10px;
+    transition: width 1.5s cubic-bezier(0.1, 1, 0.1, 1);
+  }
+
+  .skill-progress-bar.animated {
+    width: var(--skill-level);
+  }
+
+  @media (max-width: 992px) {
+    .skills-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+</style>
+
+<script>
+  const animateSkills = () => {
+    const bars = document.querySelectorAll('.skill-progress-bar');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animated');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    bars.forEach(bar => {
+      observer.observe(bar);
+    });
+  };
+
+  // Run initial loading
+  animateSkills();
+  document.addEventListener('astro:after-swap', animateSkills);
+</script>

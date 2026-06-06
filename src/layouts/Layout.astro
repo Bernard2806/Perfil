@@ -1,0 +1,70 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { 
+  title, 
+  description = "Portafolio profesional de Bernardo González - Desarrollador Web especializado en .NET, PHP, C# y bases de datos SQL." 
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content={description} />
+    <meta name="author" content="Bernardo González" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://github.com/Bernard2806.png" />
+    <meta property="og:url" content="https://bernard2806.is-a.dev" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content="https://github.com/Bernard2806.png" />
+
+    <!-- Icon -->
+    <link rel="icon" href="https://github.com/Bernard2806.png" type="image/png" />
+    
+    <!-- FontAwesome Icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+
+    <!-- Theme Initialization Script (Prevents theme flash) -->
+    <script is:inline>
+      const getTheme = () => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        return 'dark'; // Dark theme by default
+      };
+      
+      const theme = getTheme();
+      if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

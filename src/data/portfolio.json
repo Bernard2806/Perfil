@@ -1,0 +1,90 @@
+{
+  "personalInfo": {
+    "name": "Bernardo",
+    "lastName": "González Erramuspe",
+    "title": "Desarrollador Web",
+    "location": "Chivilcoy, Buenos Aires, Argentina",
+    "email": "bgonzalezerramuspe2006@hotmail.com",
+    "phone": "+54 2346 614492",
+    "github": "https://github.com/Bernard2806",
+    "linkedin": "https://www.linkedin.com/in/bernardo-gonzalez-erramuspe/",
+    "avatar": "https://github.com/Bernard2806.png",
+    "phrases": [
+      "Especializado en desarrollo web",
+      "Desarrollador .NET y PHP",
+      "Técnico en Informática",
+      "Apasionado por la tecnología"
+    ]
+  },
+  "about": {
+    "paragraphs": [
+      "Soy un desarrollador web apasionado, egresado de la Escuela Secundaria Técnica N°1 \"Mariano Moreno\". Mi formación se centra en el desarrollo web, gestión de bases de datos y redes.",
+      "He participado en varios proyectos académicos y servicios prácticos, aplicando tecnologías como .NET, Blazor, PHP y SQL. Mi experiencia incluye el desarrollo de aplicaciones web, mantenimiento de sistemas y optimización de procesos.",
+      "Mi objetivo es seguir creciendo profesionalmente, enfrentando desafíos y aportando soluciones innovadoras en el ámbito tecnológico. Me caracterizo por mi capacidad de aprendizaje continuo y mi compromiso con la calidad del trabajo."
+    ]
+  },
+  "skills": {
+    "webDevelopment": [
+      { "name": "HTML & CSS", "level": 85, "icon": "fa-brands fa-html5" },
+      { "name": "JavaScript", "level": 75, "icon": "fa-brands fa-js" },
+      { "name": "PHP", "level": 80, "icon": "fa-brands fa-php" },
+      { "name": "C# / .NET", "level": 70, "icon": "fa-solid fa-code" }
+    ],
+    "otherTechnologies": [
+      { "name": "SQL & Bases de Datos", "level": 80, "icon": "fa-solid fa-database" },
+      { "name": "Blazor", "level": 65, "icon": "fa-solid fa-cubes" },
+      { "name": "Redes & Infraestructura", "level": 70, "icon": "fa-solid fa-network-wired" },
+      { "name": "Linux & VPS", "level": 60, "icon": "fa-brands fa-linux" }
+    ]
+  },
+  "projects": [
+    {
+      "id": "sistema-bomberos",
+      "title": "Sistema de Bomberos de Chivilcoy",
+      "description": "Desarrollo y mantenimiento de un sistema de gestión para los bomberos locales. Incluye nuevas funcionalidades, optimización de procesos y mejoras en la interfaz de usuario.",
+      "period": "Jun - Sep 2024",
+      "technologies": ["C#", ".NET", "Blazor", "SQL"],
+      "image": "/images/projects/bomberos.png",
+      "links": {
+        "demo": "#",
+        "github": "https://github.com/Bernard2806"
+      }
+    },
+    {
+      "id": "reserva-salones",
+      "title": "Sistema de Reserva de Salones",
+      "description": "Diseño y desarrollo de una aplicación web en PHP para la reserva de salones en la Escuela Secundaria Técnica N°1. Incluye interfaz de usuario, desarrollo de funcionalidades y pruebas.",
+      "period": "Jun 2023 - Ago 2024",
+      "technologies": ["PHP", "MySQL", "JavaScript"],
+      "image": "/images/projects/reserva.png",
+      "links": {
+        "demo": "#",
+        "github": "https://github.com/Bernard2806"
+      }
+    },
+    {
+      "id": "mantenimiento-pc",
+      "title": "Servicio de Mantenimiento de PC",
+      "description": "Servicio voluntario de mantenimiento y reparación de computadoras, creación de imágenes para clonación e instalación de software en la Escuela Secundaria Técnica N°1.",
+      "period": "2023",
+      "technologies": ["Mantenimiento", "Redes", "Software"],
+      "image": "/images/projects/mantenimiento.png",
+      "links": {
+        "demo": "#",
+        "github": "https://github.com/Bernard2806"
+      }
+    },
+    {
+      "id": "app-blazor",
+      "title": "Aplicación Web con Blazor",
+      "description": "Desarrollo de una aplicación web con Blazor y .NET para gestión de tareas. Incluye autenticación de usuarios, almacenamiento de datos y diseño responsivo.",
+      "period": "Proyecto Personal",
+      "technologies": ["C#", ".NET", "Blazor"],
+      "image": "/images/projects/blazor.png",
+      "links": {
+        "demo": "#",
+        "github": "https://github.com/Bernard2806"
+      }
+    }
+  ]
+}

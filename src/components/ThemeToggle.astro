@@ -1,0 +1,83 @@
+<!-- ThemeToggle.astro -->
+<button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema">
+  <span class="icon sun-icon"><i class="fas fa-sun"></i></span>
+  <span class="icon moon-icon"><i class="fas fa-moon"></i></span>
+</button>
+
+<style>
+  .theme-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-speed) ease;
+  }
+
+  .theme-toggle-btn:hover {
+    background: var(--border-color);
+    border-color: var(--text-muted);
+    transform: scale(1.05);
+  }
+
+  .icon {
+    position: absolute;
+    transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1), opacity var(--transition-speed) ease;
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Show moon, hide sun in light mode */
+  :root[data-theme="light"] .sun-icon {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  :root[data-theme="light"] .moon-icon {
+    transform: translateY(0);
+    opacity: 1;
+    color: var(--accent-purple);
+  }
+
+  /* Show sun, hide moon in dark mode (default) */
+  .sun-icon {
+    transform: translateY(0);
+    opacity: 1;
+    color: #eab308; /* yellow-500 */
+  }
+  .moon-icon {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+</style>
+
+<script>
+  const handleToggleClick = () => {
+    const element = document.documentElement;
+    const currentTheme = element.getAttribute('data-theme') || 'dark';
+    const isDark = currentTheme === 'dark';
+    const nextTheme = isDark ? 'light' : 'dark';
+    
+    element.setAttribute('data-theme', nextTheme);
+    localStorage.setItem('theme', nextTheme);
+  };
+
+  const setupThemeToggle = () => {
+    const button = document.getElementById('theme-toggle');
+    if (button) {
+      button.addEventListener('click', handleToggleClick);
+    }
+  };
+
+  // Run on page loads
+  setupThemeToggle();
+  document.addEventListener('astro:after-swap', setupThemeToggle);
+</script>

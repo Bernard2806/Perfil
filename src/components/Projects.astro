@@ -1,0 +1,344 @@
+---
+import portfolioData from "../data/portfolio.json";
+
+const { projects } = portfolioData;
+
+const getCategory = (period: string) => {
+  if (period.toLowerCase().includes('personal')) return 'personal';
+  return 'institutional';
+};
+
+const getTagColorClass = (tech: string) => {
+  const t = tech.toLowerCase();
+  if (t.includes('c#') || t.includes('.net')) return 'tag-net';
+  if (t.includes('blazor')) return 'tag-blazor';
+  if (t.includes('php') || t.includes('mysql')) return 'tag-php';
+  if (t.includes('js') || t.includes('javascript')) return 'tag-js';
+  if (t.includes('sql')) return 'tag-sql';
+  if (t.includes('redes') || t.includes('mantenimiento') || t.includes('software')) return 'tag-infra';
+  return 'tag-default';
+};
+---
+
+<section id="projects" class="section projects-section">
+  <div class="projects-glow-1"></div>
+  <div class="projects-glow-2"></div>
+  
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Mis Proyectos</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <!-- Category Filter Controls -->
+    <div class="filter-controls">
+      <button class="filter-btn active" data-filter="all">Todos</button>
+      <button class="filter-btn" data-filter="institutional">Institucionales / Servicios</button>
+      <button class="filter-btn" data-filter="personal">Personales</button>
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="projects-grid">
+      {projects.map((project) => {
+        const category = getCategory(project.period);
+        return (
+          <div class="project-card-wrapper" data-category={category}>
+            <article class="project-card glass-card">
+              <!-- Project Image with Zoom -->
+              <div class="project-image-container">
+                <img src={project.image} alt={project.title} class="project-image" />
+                <div class="project-overlay">
+                  <span class="project-period"><i class="far fa-calendar-alt"></i> {project.period}</span>
+                </div>
+              </div>
+
+              <!-- Project Description -->
+              <div class="project-details">
+                <h3 class="project-title">{project.title}</h3>
+                <p class="project-description">{project.description}</p>
+                
+                <!-- Technologies list -->
+                <div class="project-tags">
+                  {project.technologies.map((tech) => (
+                    <span class={`tech-tag ${getTagColorClass(tech)}`}>{tech}</span>
+                  ))}
+                </div>
+
+                <!-- Action buttons -->
+                <div class="project-links">
+                  {project.links.github && project.links.github !== "#" && (
+                    <a href={project.links.github} target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" aria-label="Ver Código">
+                      <i class="fab fa-github"></i> Código
+                    </a>
+                  )}
+                  {project.links.demo && project.links.demo !== "#" && (
+                    <a href={project.links.demo} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" aria-label="Ver Demo">
+                      <i class="fas fa-external-link-alt"></i> Demo
+                    </a>
+                  )}
+                </div>
+              </div>
+            </article>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects-section {
+    background-color: var(--bg-primary);
+    overflow: hidden;
+  }
+
+  .projects-glow-1 {
+    position: absolute;
+    top: 10%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.04) 0%, transparent 80%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .projects-glow-2 {
+    position: absolute;
+    bottom: 10%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.04) 0%, transparent 80%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-line {
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+    margin: 0 auto;
+    border-radius: 2px;
+  }
+
+  /* Filters */
+  .filter-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3.5rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  .filter-btn {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.6rem 1.25rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all var(--transition-speed) ease;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--text-muted);
+    color: var(--text-primary);
+  }
+
+  .filter-btn.active {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.25);
+  }
+
+  /* Grid layout */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .project-card-wrapper {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .project-card {
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project-card:hover {
+    border-color: var(--accent-purple);
+  }
+
+  .project-image-container {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    background-color: var(--terminal-bg);
+  }
+
+  .project-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .project-card:hover .project-image {
+    transform: scale(1.04);
+  }
+
+  .project-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(7, 9, 14, 0.8) 0%, rgba(7, 9, 14, 0) 100%);
+    display: flex;
+    align-items: flex-end;
+    padding: 1.25rem;
+  }
+
+  .project-period {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: rgba(15, 23, 42, 0.7);
+    padding: 0.35rem 0.75rem;
+    border-radius: 30px;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .project-details {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 1.25rem;
+  }
+
+  .project-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .project-description {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    flex-grow: 1;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tech-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Distinct color themes for tags */
+  .tag-net { background: rgba(139, 92, 246, 0.15); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.2); }
+  .tag-blazor { background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.2); }
+  .tag-php { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.2); }
+  .tag-js { background: rgba(234, 179, 8, 0.15); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.2); }
+  .tag-sql { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); }
+  .tag-infra { background: rgba(20, 184, 166, 0.15); color: #2dd4bf; border: 1px solid rgba(20, 184, 166, 0.2); }
+  .tag-default { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.2); }
+
+  .project-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    flex: 1;
+  }
+
+  @media (max-width: 768px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .project-image-container {
+      height: 180px;
+    }
+  }
+</style>
+
+<script>
+  const setupFilters = () => {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card-wrapper');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Toggle active class on buttons
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        const filterValue = button.getAttribute('data-filter');
+
+        projectCards.forEach(card => {
+          const cardCategory = card.getAttribute('data-category');
+
+          if (filterValue === 'all' || cardCategory === filterValue) {
+            // Show card
+            (card as HTMLElement).style.display = 'block';
+            setTimeout(() => {
+              (card as HTMLElement).style.opacity = '1';
+              (card as HTMLElement).style.transform = 'scale(1)';
+            }, 10);
+          } else {
+            // Hide card
+            (card as HTMLElement).style.opacity = '0';
+            (card as HTMLElement).style.transform = 'scale(0.95)';
+            setTimeout(() => {
+              (card as HTMLElement).style.display = 'none';
+            }, 300);
+          }
+        });
+      });
+    });
+  };
+
+  setupFilters();
+  document.addEventListener('astro:after-swap', setupFilters);
+</script>

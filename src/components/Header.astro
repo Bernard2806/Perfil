@@ -1,0 +1,262 @@
+---
+import ThemeToggle from "./ThemeToggle.astro";
+import portfolioData from "../data/portfolio.json";
+
+const { name } = portfolioData.personalInfo;
+---
+
+<header class="header-nav" id="main-header">
+  <div class="container nav-container">
+    <!-- Logo -->
+    <a href="#" class="logo">
+      <span class="logo-accent">{name.charAt(0)}</span>
+      <span class="logo-text">{name.substring(1)}</span>
+    </a>
+
+    <!-- Desktop Menu -->
+    <nav class="nav-menu-desktop">
+      <a href="#about" class="nav-link">Sobre Mí</a>
+      <a href="#skills" class="nav-link">Habilidades</a>
+      <a href="#projects" class="nav-link">Proyectos</a>
+      <a href="#contact" class="nav-link">Contacto</a>
+      <ThemeToggle />
+    </nav>
+
+    <!-- Mobile Actions (ThemeToggle + Menu Trigger) -->
+    <div class="mobile-actions">
+      <ThemeToggle />
+      <button class="menu-btn" id="mobile-menu-btn" aria-label="Abrir menú">
+        <span class="bar bar-1"></span>
+        <span class="bar bar-2"></span>
+        <span class="bar bar-3"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Dropdown Menu -->
+  <div class="mobile-dropdown" id="mobile-dropdown">
+    <nav class="mobile-nav-links">
+      <a href="#about" class="mobile-nav-link">Sobre Mí</a>
+      <a href="#skills" class="mobile-nav-link">Habilidades</a>
+      <a href="#projects" class="mobile-nav-link">Proyectos</a>
+      <a href="#contact" class="mobile-nav-link">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: background-color var(--transition-speed) ease, 
+                border-color var(--transition-speed) ease,
+                backdrop-filter var(--transition-speed) ease;
+  }
+
+  /* Scrolled header state */
+  .header-nav.scrolled {
+    background: var(--bg-tertiary);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .nav-container {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-accent {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .logo-text {
+    color: var(--text-primary);
+  }
+
+  .nav-menu-desktop {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .nav-link {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    position: relative;
+    padding: 0.25rem 0;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+    transition: width var(--transition-speed) ease;
+  }
+
+  .nav-link:hover {
+    color: var(--text-primary);
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  .mobile-actions {
+    display: none;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .menu-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 32px;
+    height: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2px;
+  }
+
+  .bar {
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-primary);
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* Hamburger Active Animation */
+  .menu-btn.active .bar-1 {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .menu-btn.active .bar-2 {
+    opacity: 0;
+  }
+  .menu-btn.active .bar-3 {
+    transform: translateY(-9px) rotate(-45deg);
+  }
+
+  /* Mobile Dropdown */
+  .mobile-dropdown {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: var(--bg-tertiary);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    overflow: hidden;
+    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-bottom: 0px solid transparent;
+  }
+
+  .mobile-dropdown.open {
+    height: calc(100vh - 70px);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 0;
+    gap: 2rem;
+  }
+
+  .mobile-nav-link {
+    font-size: 1.25rem;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    color: var(--text-secondary);
+  }
+
+  .mobile-nav-link:hover {
+    color: var(--accent-purple);
+  }
+
+  @media (max-width: 768px) {
+    .nav-menu-desktop {
+      display: none;
+    }
+    
+    .mobile-actions {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  const setupHeader = () => {
+    const header = document.getElementById('main-header');
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const dropdown = document.getElementById('mobile-dropdown');
+    const links = document.querySelectorAll('.mobile-nav-link');
+
+    // Sticky Nav logic
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        header?.classList.add('scrolled');
+      } else {
+        header?.classList.remove('scrolled');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+
+    // Toggle menu
+    const toggleMenu = () => {
+      menuBtn?.classList.toggle('active');
+      dropdown?.classList.toggle('open');
+      
+      // Prevent scrolling when menu is open
+      if (dropdown?.classList.contains('open')) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    };
+
+    menuBtn?.addEventListener('click', toggleMenu);
+
+    // Close menu when clicking links
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        menuBtn?.classList.remove('active');
+        dropdown?.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+  };
+
+  setupHeader();
+  document.addEventListener('astro:after-swap', setupHeader);
+</script>

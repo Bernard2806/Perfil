@@ -1,0 +1,204 @@
+---
+import portfolioData from "../data/portfolio.json";
+
+const { avatar } = portfolioData.personalInfo;
+const { paragraphs } = portfolioData.about;
+---
+
+<section id="about" class="section about-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Sobre Mí</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="about-grid">
+      <!-- Profile Image Column -->
+      <div class="about-image-wrapper">
+        <div class="image-border-glow">
+          <img src={avatar} alt="Bernardo González" class="about-image" />
+        </div>
+      </div>
+
+      <!-- Content Column -->
+      <div class="about-content">
+        <div class="about-bio glass-card">
+          <i class="fas fa-quote-left quote-icon"></i>
+          {paragraphs.map((paragraph) => (
+            <p class="bio-paragraph">{paragraph}</p>
+          ))}
+        </div>
+
+        <!-- Highlights Row -->
+        <div class="about-highlights">
+          <div class="highlight-item glass-card">
+            <div class="highlight-icon"><i class="fas fa-graduation-cap"></i></div>
+            <div class="highlight-info">
+              <h3 class="highlight-title">Formación Técnica</h3>
+              <p class="highlight-desc">E.S.T. N°1 Mariano Moreno</p>
+            </div>
+          </div>
+
+          <div class="highlight-item glass-card">
+            <div class="highlight-icon"><i class="fas fa-laptop-code"></i></div>
+            <div class="highlight-info">
+              <h3 class="highlight-title">Tecnologías Clave</h3>
+              <p class="highlight-desc">.NET, PHP, C#, SQL</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-section {
+    background-color: var(--bg-primary);
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .section-title {
+    font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-line {
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+    margin: 0 auto;
+    border-radius: 2px;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .about-image-wrapper {
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+
+  .image-border-glow {
+    position: relative;
+    padding: 6px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 50%, var(--accent-teal) 100%);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+    transition: transform var(--transition-speed) ease;
+  }
+
+  .image-border-glow:hover {
+    transform: scale(1.03);
+    box-shadow: 0 15px 40px rgba(139, 92, 246, 0.35);
+  }
+
+  .about-image {
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    object-cover: cover;
+    border: 4px solid var(--bg-primary);
+    background-color: var(--bg-secondary);
+  }
+
+  .about-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .about-bio {
+    position: relative;
+    padding-top: 3rem;
+  }
+
+  .quote-icon {
+    position: absolute;
+    top: 1.5rem;
+    left: 2rem;
+    font-size: 2rem;
+    color: var(--accent-purple);
+    opacity: 0.15;
+  }
+
+  .bio-paragraph {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.25rem;
+    line-height: 1.75;
+  }
+
+  .bio-paragraph:last-child {
+    margin-bottom: 0;
+  }
+
+  .about-highlights {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .highlight-item {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.5rem;
+  }
+
+  .highlight-item:hover {
+    transform: translateY(-2px);
+  }
+
+  .highlight-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    color: var(--accent-teal);
+    flex-shrink: 0;
+  }
+
+  .highlight-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .highlight-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 992px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .about-image {
+      width: 200px;
+      height: 200px;
+    }
+
+    .about-highlights {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

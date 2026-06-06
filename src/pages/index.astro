@@ -1,0 +1,38 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import About from "../components/About.astro";
+import Skills from "../components/Skills.astro";
+import Projects from "../components/Projects.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+import portfolioData from "../data/portfolio.json";
+
+const { name, lastName, title } = portfolioData.personalInfo;
+---
+
+<Layout title={`${name} ${lastName} | ${title}`}>
+  <!-- Navigation Header -->
+  <Header />
+
+  <main>
+    <!-- Hero Section -->
+    <Hero />
+
+    <!-- About Section -->
+    <About />
+
+    <!-- Skills Section -->
+    <Skills />
+
+    <!-- Projects Section -->
+    <Projects />
+
+    <!-- Contact Section -->
+    <Contact />
+  </main>
+
+  <!-- Footer Section -->
+  <Footer />
+</Layout>

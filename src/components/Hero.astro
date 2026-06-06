@@ -1,0 +1,526 @@
+---
+import portfolioData from "../data/portfolio.json";
+
+const { name, lastName, title, email, github, linkedin } = portfolioData.personalInfo;
+---
+
+<section class="hero-section">
+  <!-- Dynamic radial glow background -->
+  <div class="hero-glow"></div>
+
+  <div class="container hero-container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span class="badge-text">{title}</span>
+      </div>
+      
+      <h1 class="hero-title">
+        Hola, soy <br />
+        <span class="gradient-text">{name} {lastName}</span>
+      </h1>
+
+      <div class="typing-container">
+        <span class="typing-prefix">> </span>
+        <span id="typing-text" class="animate-typing"></span>
+      </div>
+
+      <p class="hero-description">
+        Técnico en Informática egresado de la Escuela Secundaria Técnica N°1 "Mariano Moreno". 
+        Especializado en la creación de aplicaciones web robustas, gestión de bases de datos y administración de servidores.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">
+          Ver Proyectos <i class="fas fa-arrow-right icon-arrow"></i>
+        </a>
+        <a href="#contact" class="btn btn-secondary">
+          Contactarme
+        </a>
+      </div>
+
+      <div class="hero-socials">
+        <a href={github} target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href={linkedin} target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href={`mailto:${email}`} class="social-icon" aria-label="Email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Interactive Terminal Panel -->
+    <div class="hero-visual">
+      <div class="terminal-container">
+        <div class="terminal-bar">
+          <div class="terminal-dots">
+            <span class="dot dot-close"></span>
+            <span class="dot dot-minimize"></span>
+            <span class="dot dot-expand"></span>
+          </div>
+          <div class="terminal-title">bernardo@terminal:~</div>
+          <div class="terminal-empty"></div>
+        </div>
+        
+        <!-- Terminal Tabs -->
+        <div class="terminal-tabs">
+          <button class="terminal-tab active" data-tab="whoami">quiensoy.sh</button>
+          <button class="terminal-tab" data-tab="skills">habilidades.json</button>
+          <button class="terminal-tab" data-tab="contact">contacto.md</button>
+        </div>
+
+        <!-- Terminal Panels -->
+        <div class="terminal-body">
+          <div class="terminal-panel active" id="panel-whoami">
+            <div class="terminal-line"><span class="prompt">$</span> whoami</div>
+            <div class="terminal-output text-highlight">Bernardo González Erramuspe</div>
+            <div class="terminal-line"><span class="prompt">$</span> cat info.txt</div>
+            <div class="terminal-output">
+              <ul>
+                <li><span class="label">Rol:</span> Desarrollador Web & Técnico IT</li>
+                <li><span class="label">Origen:</span> Chivilcoy, Buenos Aires, Argentina</li>
+                <li><span class="label">Educación:</span> E.S.T. N°1 "Mariano Moreno"</li>
+                <li><span class="label">Foco:</span> Desarrollo escalable, .NET y PHP</li>
+              </ul>
+            </div>
+            <div class="terminal-line"><span class="prompt">$</span> location</div>
+            <div class="terminal-output text-teal">Chivilcoy, Buenos Aires, Argentina</div>
+            <div class="terminal-line"><span class="prompt">$</span> <span class="cursor-blink">_</span></div>
+          </div>
+
+          <div class="terminal-panel" id="panel-skills">
+            <div class="terminal-line"><span class="prompt">$</span> cat habilidades.json</div>
+            <div class="terminal-output json-code">
+              {`{
+  "lenguajes": ["C#", "JavaScript", "PHP", "HTML/CSS"],
+  "backend": [".NET Core", "ASP.NET", "PHP Vanilla"],
+  "frontend": ["Astro", "Blazor", "AlpineJS"],
+  "bases_de_datos": ["SQL Server", "MySQL"],
+  "otros": ["Redes y VPS", "Mantenimiento PC"]
+}`}
+            </div>
+            <div class="terminal-line"><span class="prompt">$</span> <span class="cursor-blink">_</span></div>
+          </div>
+
+          <div class="terminal-panel" id="panel-contact">
+            <div class="terminal-line"><span class="prompt">$</span> view contacto.md</div>
+            <div class="terminal-output markdown-code">
+              <span class="md-header"># Canales de Contacto</span>
+              <br/>
+              - <span class="label">Email:</span> bgonzalezerramuspe2006@hotmail.com
+              - <span class="label">Teléfono:</span> +54 2346 614492
+              - <span class="label">LinkedIn:</span> /in/bernardo-gonzalez-erramuspe
+              - <span class="label">GitHub:</span> /Bernard2806
+            </div>
+            <div class="terminal-line"><span class="prompt">$</span> <span class="cursor-blink">_</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    min-h: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-top: 100px;
+    padding-bottom: 80px;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 25%;
+    left: 20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, rgba(139, 92, 246, 0.05) 50%, transparent 100%);
+    z-index: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+  }
+
+  .hero-container {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    z-index: 1;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .hero-badge {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    padding: 0.4rem 0.9rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    font-family: var(--font-heading);
+    color: var(--accent-teal);
+  }
+
+  .badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--accent-teal);
+    box-shadow: 0 0 10px var(--accent-teal);
+    animation: pulse-glow 2s infinite;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -1px;
+  }
+
+  .typing-container {
+    font-family: var(--font-code);
+    font-size: 1.35rem;
+    color: var(--accent-teal);
+    height: 35px;
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-description {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 540px;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .icon-arrow {
+    transition: transform var(--transition-speed) ease;
+  }
+
+  .btn-primary:hover .icon-arrow {
+    transform: translateX(4px);
+  }
+
+  .hero-socials {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .social-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .social-icon:hover {
+    color: var(--bg-primary);
+    border-color: transparent;
+    transform: translateY(-3px);
+  }
+
+  .social-icon:nth-child(1):hover {
+    background: #24292e; /* GitHub */
+    color: #ffffff;
+    box-shadow: 0 5px 15px rgba(36, 41, 46, 0.4);
+  }
+
+  .social-icon:nth-child(2):hover {
+    background: #0077b5; /* LinkedIn */
+    color: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 119, 181, 0.4);
+  }
+
+  .social-icon:nth-child(3):hover {
+    background: var(--accent-purple);
+    color: #ffffff;
+    box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+  }
+
+  /* Terminal CSS Styles */
+  .terminal-container {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
+  }
+
+  .terminal-bar {
+    background: var(--terminal-bar);
+    height: 38px;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+    padding: 0 1rem;
+  }
+
+  .terminal-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .dot-close { background-color: #ef4444; }
+  .dot-minimize { background-color: #eab308; }
+  .dot-expand { background-color: #22c55e; }
+
+  .terminal-title {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-family: var(--font-code);
+    text-align: center;
+  }
+
+  .terminal-tabs {
+    background: rgba(15, 23, 42, 0.9);
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .terminal-tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 0.6rem 0.5rem;
+    font-family: var(--font-code);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    text-align: center;
+  }
+
+  .terminal-tab:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .terminal-tab.active {
+    background: var(--terminal-bg);
+    color: var(--accent-teal);
+    border-bottom: 2px solid var(--accent-teal);
+    font-weight: 500;
+  }
+
+  .terminal-body {
+    background: var(--terminal-bg);
+    padding: 1.5rem;
+    font-family: var(--font-code);
+    font-size: 0.85rem;
+    min-height: 240px;
+    color: #cbd5e1;
+  }
+
+  .terminal-panel {
+    display: none;
+  }
+
+  .terminal-panel.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .terminal-line {
+    margin-bottom: 0.5rem;
+    color: var(--text-muted);
+  }
+
+  .prompt {
+    color: var(--accent-teal);
+    margin-right: 0.5rem;
+  }
+
+  .terminal-output {
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+  }
+
+  .terminal-output ul {
+    list-style: none;
+  }
+
+  .terminal-output li {
+    margin-bottom: 0.25rem;
+  }
+
+  .label {
+    color: var(--accent-blue);
+    font-weight: 500;
+  }
+
+  .text-highlight {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .text-teal {
+    color: var(--accent-teal);
+  }
+
+  .json-code {
+    white-space: pre-wrap;
+    color: var(--accent-purple);
+  }
+
+  .markdown-code {
+    color: var(--text-secondary);
+  }
+
+  .md-header {
+    color: var(--accent-blue);
+    font-weight: bold;
+  }
+
+  .cursor-blink {
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 992px) {
+    .hero-container {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      text-align: center;
+    }
+
+    .hero-content {
+      align-items: center;
+    }
+
+    .hero-badge, .hero-description {
+      align-self: center;
+    }
+
+    .typing-container {
+      justify-content: center;
+    }
+
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .hero-title {
+      font-size: 2.5rem;
+    }
+    
+    .hero-actions {
+      flex-direction: column;
+      width: 100%;
+      gap: 1rem;
+    }
+
+    .hero-actions .btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  // Typing Animation logic
+  import portfolioData from "../data/portfolio.json";
+  
+  const setupHero = () => {
+    const phrases = portfolioData.personalInfo.phrases;
+    const typingElement = document.getElementById("typing-text");
+    if (!typingElement) return;
+
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let speed = 100;
+
+    const type = () => {
+      const currentPhrase = phrases[phraseIndex];
+
+      if (isDeleting) {
+        typingElement.textContent = currentPhrase.substring(0, charIndex - 1);
+        charIndex--;
+        speed = 40;
+      } else {
+        typingElement.textContent = currentPhrase.substring(0, charIndex + 1);
+        charIndex++;
+        speed = 80;
+      }
+
+      if (!isDeleting && charIndex === currentPhrase.length) {
+        isDeleting = true;
+        speed = 2000; // Pause at full text
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        speed = 500; // Pause before typing next phrase
+      }
+
+      setTimeout(type, speed);
+    };
+
+    // Start
+    setTimeout(type, 800);
+
+    // Interactive Terminal Tabs logic
+    const tabs = document.querySelectorAll('.terminal-tab');
+    const panels = document.querySelectorAll('.terminal-panel');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs & panels
+        tabs.forEach(t => t.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+
+        // Add active to current clicked
+        tab.classList.add('active');
+        const targetId = `panel-\${tab.getAttribute('data-tab')\}`;
+        const targetPanel = document.getElementById(targetId);
+        if (targetPanel) {
+          targetPanel.classList.add('active');
+        }
+      });
+    });
+  };
+
+  setupHero();
+  document.addEventListener('astro:after-swap', setupHero);
+</script>
