@@ -1,16 +1,16 @@
 ---
 const ventures = [
   { 
-    name: "BookingHub", 
-    description: "Gestión de Turnos y Espacios",
+    name: "Fixtris", 
+    description: "Reparación de PC, laptop, netbook, consolas (modificación y liberación) y cámaras IP.",
     url: "https://github.com/Bernard2806", 
-    icon: "fas fa-calendar-check" 
+    logo: "/images/logo-fixtris.jpeg" 
   },
   { 
-    name: "BackupSync", 
-    description: "Respaldos Automatizados",
+    name: "MateLogic", 
+    description: "Creación de software para empresas y emprendimientos, y sistemas privados.",
     url: "https://github.com/Bernard2806", 
-    icon: "fas fa-sync" 
+    logo: "/images/logo-matelogic.png" 
   }
 ];
 ---
@@ -20,7 +20,11 @@ const ventures = [
     {ventures.map((venture) => (
       <a href={venture.url} target="_blank" rel="noopener noreferrer" class="venture-card">
         <div class="venture-card-icon">
-          <i class={venture.icon}></i>
+          {venture.logo ? (
+            <img src={venture.logo} alt={`Logo de ${venture.name}`} class="venture-logo" />
+          ) : (
+            <i class={venture.icon}></i>
+          )}
         </div>
         <div class="venture-card-info">
           <span class="venture-card-name">{venture.name}</span>
@@ -73,6 +77,14 @@ const ventures = [
     border: 1px solid var(--border-color);
     transition: all var(--transition-speed) ease;
     color: var(--text-secondary);
+    overflow: hidden;
+  }
+
+  .venture-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-speed) ease;
   }
 
   .venture-card-info {
