@@ -1,7 +1,7 @@
 ---
 import portfolioData from "../data/portfolio.json";
 
-const { github, linkedin, instagram, facebook } = portfolioData.personalInfo;
+const { github, linkedin, instagram, facebook, steam, xbox } = portfolioData.personalInfo;
 
 const socialLinks = [
   { name: "GitHub", url: github, icon: "fab fa-github" },
@@ -49,6 +49,32 @@ const socialLinks = [
         <i class="fab fa-twitch"></i>
       </div>
       <span class="social-card-name">Twitch</span>
+    </a>
+  </div>
+
+  <!-- Separador y Título de Gaming -->
+  <div class="streaming-divider">
+    <span class="divider-line"></span>
+    <h4 class="streaming-title">Gaming</h4>
+    <span class="divider-line"></span>
+  </div>
+
+  <!-- Redes de Gaming -->
+  <div class="socials-grid">
+    <!-- Steam -->
+    <a href={steam} target="_blank" rel="noopener noreferrer" class="social-card steam-card">
+      <div class="social-card-icon steam-icon-container">
+        <i class="fab fa-steam"></i>
+      </div>
+      <span class="social-card-name">Steam</span>
+    </a>
+
+    <!-- Xbox -->
+    <a href={xbox} target="_blank" rel="noopener noreferrer" class="social-card xbox-card">
+      <div class="social-card-icon xbox-icon-container">
+        <i class="fab fa-xbox"></i>
+      </div>
+      <span class="social-card-name">Xbox</span>
     </a>
   </div>
 </div>
@@ -207,5 +233,25 @@ const socialLinks = [
     border-color: #a970ff;
     color: #a970ff;
     box-shadow: 0 0 12px rgba(145, 70, 255, 0.25);
+  }
+
+  .social-card.steam-card:hover {
+    border-color: rgba(102, 192, 244, 0.3);
+    box-shadow: 0 10px 15px -3px rgba(102, 192, 244, 0.08);
+  }
+  .social-card.steam-card:hover .steam-icon-container {
+    border-color: #66c0f4;
+    color: #66c0f4;
+    box-shadow: 0 0 12px rgba(102, 192, 244, 0.25);
+  }
+
+  .social-card.xbox-card:hover {
+    border-color: rgba(16, 124, 16, 0.3);
+    box-shadow: 0 10px 15px -3px rgba(16, 124, 16, 0.08);
+  }
+  .social-card.xbox-card:hover .xbox-icon-container {
+    border-color: #107c10;
+    color: #107c10;
+    box-shadow: 0 0 12px rgba(16, 124, 16, 0.25);
   }
 </style>
