@@ -5,6 +5,22 @@ const { email, phone, location } = portfolioData.personalInfo;
 ---
 
 <div class="panel-contact">
+  <!-- Availability Card Widget -->
+  <div class="availability-card" id="availability-widget">
+    <div class="availability-header">
+      <span class="availability-title">Disponibilidad actual</span>
+      <span class="availability-timezone">ARG (GMT-3)</span>
+    </div>
+    <div class="availability-status">
+      <div class="status-indicator">
+        <span class="indicator-dot"></span>
+        <span class="indicator-pulse"></span>
+      </div>
+      <span class="status-label" id="availability-label">Cargando disponibilidad...</span>
+    </div>
+    <p class="availability-detail" id="availability-detail">Verificando zona horaria...</p>
+  </div>
+
   <div class="contact-cv-info">
     <p class="contact-cv-desc">
       Si quieres charlar, hacerme alguna consulta sobre mis proyectos o simplemente ponerte en contacto, podés escribirme directamente por cualquiera de estos medios:
@@ -48,9 +64,126 @@ const { email, phone, location } = portfolioData.personalInfo;
   .panel-contact {
     display: flex;
     flex-direction: column;
-    gap: 1.75rem;
+    gap: 1.5rem;
   }
 
+  /* Availability Widget Styles */
+  .availability-card {
+    background: rgba(34, 197, 94, 0.03);
+    border: 1px solid rgba(34, 197, 94, 0.12);
+    border-radius: 12px;
+    padding: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .availability-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  .availability-timezone {
+    background: rgba(241, 247, 244, 0.05);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-family: var(--font-code);
+  }
+
+  .availability-status {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .status-indicator {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .indicator-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--accent-blue);
+    z-index: 2;
+  }
+
+  .indicator-pulse {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--accent-blue);
+    opacity: 0.4;
+    animation: statusPulse 2s infinite ease-out;
+    z-index: 1;
+  }
+
+  @keyframes statusPulse {
+    0% {
+      transform: scale(0.6);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+  }
+
+  .status-label {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .availability-detail {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  /* Status Overrides */
+  .availability-card.status-free {
+    background: rgba(34, 197, 94, 0.04);
+    border-color: rgba(34, 197, 94, 0.18);
+  }
+  .availability-card.status-free .indicator-dot,
+  .availability-card.status-free .indicator-pulse {
+    background-color: #22c55e;
+  }
+
+  .availability-card.status-maybe {
+    background: rgba(234, 179, 8, 0.04);
+    border-color: rgba(234, 179, 8, 0.18);
+  }
+  .availability-card.status-maybe .indicator-dot,
+  .availability-card.status-maybe .indicator-pulse {
+    background-color: #eab308;
+  }
+
+  .availability-card.status-busy {
+    background: rgba(239, 68, 68, 0.04);
+    border-color: rgba(239, 68, 68, 0.18);
+  }
+  .availability-card.status-busy .indicator-dot,
+  .availability-card.status-busy .indicator-pulse {
+    background-color: #ef4444;
+  }
+
+  /* Existing Contact Styles */
   .contact-cv-desc {
     font-size: 0.9rem;
     color: var(--text-secondary);
@@ -106,3 +239,125 @@ const { email, phone, location } = portfolioData.personalInfo;
     padding: 0.8rem 1.25rem;
   }
 </style>
+
+<script>
+  function updateAvailability() {
+    const labelEl = document.getElementById('availability-label');
+    const detailEl = document.getElementById('availability-detail');
+    const widgetEl = document.getElementById('availability-widget');
+
+    if (!labelEl || !detailEl || !widgetEl) return;
+
+    try {
+      const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/Argentina/Buenos_Aires',
+        hour12: false,
+        weekday: 'short',
+        hour: 'numeric',
+        minute: 'numeric'
+      });
+      
+      const parts = formatter.formatToParts(new Date());
+      const partVal = (type) => parts.find(p => p.type === type)?.value;
+      
+      const weekday = partVal('weekday');
+      const hour = parseInt(partVal('hour'), 10);
+      const minute = parseInt(partVal('minute'), 10);
+      
+      const dayMap = { 'Sun': 0, 'Mon': 1, 'Tue': 2, 'Wed': 3, 'Thu': 4, 'Fri': 5, 'Sat': 6 };
+      const day = dayMap[weekday];
+      const time = hour + minute / 60;
+
+      let status = 'free';
+      let label = 'Disponible - Al pedo';
+      let detail = 'Escribime, respondo al toque!';
+
+      // 1. Sleeping hours (every day from 00:00 to 08:00)
+      if (time >= 0 && time < 8.0) {
+        status = 'busy';
+        label = 'Ocupado - No contesto';
+        detail = 'Durmiendo o fuera de horario.';
+      }
+      // 2. Class schedule checks
+      else if (day === 1) { // Lunes
+        if ((time >= 13.5 && time < 16.5) || (time >= 19.0 && time < 21.0)) {
+          status = 'busy';
+          label = 'Ocupado - No contesto';
+          detail = 'En clase en este momento (clase virtual/ciberseguridad).';
+        } else if ((time >= 13.0 && time < 13.5) || (time >= 16.5 && time < 17.0) || (time >= 18.5 && time < 19.0) || (time >= 21.0 && time < 21.5)) {
+          status = 'maybe';
+          label = 'Posiblemente ocupado';
+          detail = 'Preparándome para cursar o recién saliendo de clases.';
+        }
+      }
+      else if (day === 2) { // Martes
+        if (time >= 15.0 && time < 18.0) {
+          status = 'busy';
+          label = 'Ocupado - No contesto';
+          detail = 'Cursando materias de la universidad.';
+        } else if ((time >= 14.5 && time < 15.0) || (time >= 18.0 && time < 18.5)) {
+          status = 'maybe';
+          label = 'Posiblemente ocupado';
+          detail = 'Yendo a la universidad o saliendo de cursar.';
+        }
+      }
+      else if (day === 3) { // Miércoles
+        if ((time >= 14.0 && time < 17.0) || (time >= 19.0 && time < 21.0)) {
+          status = 'busy';
+          label = 'Ocupado - No contesto';
+          detail = 'En clase en este momento (clase virtual/ciberseguridad).';
+        } else if ((time >= 13.5 && time < 14.0) || (time >= 17.0 && time < 17.5) || (time >= 18.5 && time < 19.0) || (time >= 21.0 && time < 21.5)) {
+          status = 'maybe';
+          label = 'Posiblemente ocupado';
+          detail = 'Preparándome para cursar o recién saliendo de clases.';
+        }
+      }
+      else if (day === 4) { // Jueves
+        if ((time >= 14.0 && time < 17.0) || (time >= 18.0 && time < 21.0)) {
+          status = 'busy';
+          label = 'Ocupado - No contesto';
+          detail = 'En clases de la universidad.';
+        } else if ((time >= 13.5 && time < 14.0) || (time >= 17.0 && time < 18.0) || (time >= 21.0 && time < 21.5)) {
+          status = 'maybe';
+          label = 'Posiblemente ocupado';
+          detail = 'Entre clases de la universidad o saliendo.';
+        }
+      }
+      else if (day === 5) { // Viernes
+        if (time >= 14.0 && time < 17.0) {
+          status = 'busy';
+          label = 'Ocupado - No contesto';
+          detail = 'Cursando en la universidad.';
+        } else if ((time >= 13.5 && time < 14.0) || (time >= 17.0 && time < 17.5)) {
+          status = 'maybe';
+          label = 'Posiblemente ocupado';
+          detail = 'Yendo a la universidad o saliendo de cursar.';
+        }
+      }
+
+      // 3. Late night window (every day 22:30 to 00:00)
+      if (status !== 'busy' && status !== 'maybe' && (time >= 22.5 && time < 24.0)) {
+        status = 'maybe';
+        label = 'Posiblemente ocupado';
+        detail = 'Cenando o descansando.';
+      }
+
+      // Update classes & DOM
+      widgetEl.className = `availability-card status-${status}`;
+      labelEl.textContent = label;
+      detailEl.textContent = detail;
+    } catch (e) {
+      // Fallback
+      widgetEl.className = 'availability-card status-maybe';
+      labelEl.textContent = 'Posiblemente disponible';
+      detailEl.textContent = 'Escribime, responderé tan pronto como sea posible.';
+    }
+  }
+
+  // Run immediately and set up interval
+  updateAvailability();
+  setInterval(updateAvailability, 60000);
+
+  // Support Astro View Transitions page swaps
+  document.addEventListener('astro:after-swap', updateAvailability);
+</script>
