@@ -1,5 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap");
 
+@font-face {
+  font-family: "PixelifyCleanNumbers";
+  src: local("VT323"), url("https://fonts.gstatic.com/s/vt323/v18/pxiKyp0ihIEF2hsY.ttf") format("truetype");
+  unicode-range: U+30-39; /* 0-9 */
+}
+
 :root {
   /* Color Palette (Dark Theme Default) - Forest / Clothing Green */
   --bg-body: #0a0f0c;
@@ -15,8 +21,8 @@
   --border-color-hover: rgba(241, 247, 244, 0.18);
   --banner-gradient: linear-gradient(135deg, #14281d 0%, #0a0f0c 100%); /* Deep forest to black-green */
   
-  --font-sans: "Pixelify Sans", sans-serif;
-  --font-heading: "Pixelify Sans", sans-serif;
+  --font-sans: "PixelifyCleanNumbers", "Pixelify Sans", sans-serif;
+  --font-heading: "PixelifyCleanNumbers", "Pixelify Sans", sans-serif;
   --font-code: "Fira Code", monospace;
   --transition-speed: 0.25s;
 }
