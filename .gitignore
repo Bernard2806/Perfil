@@ -14,3 +14,8 @@ pnpm-debug.log*
 # OS metadata
 .DS_Store
 Thumbs.db
+
+# Environmental variables (secrets)
+.env
+.env.*
+!.env.template

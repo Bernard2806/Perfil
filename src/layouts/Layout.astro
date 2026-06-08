@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import BackgroundAnimation from "../components/BackgroundAnimation.astro";
+import portfolioData from "../data/portfolio.json";
 
 interface Props {
   title: string;
@@ -11,6 +12,57 @@ const {
   title, 
   description = "Perfil profesional de Bernardo González - Desarrollador Web especializado en .NET, PHP, C# y bases de datos SQL." 
 } = Astro.props;
+
+// Dynamic Canonical URL
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://bernard2806.is-a.dev/");
+
+// Environment Variables
+const googleAnalyticsId = import.meta.env.PUBLIC_GA_ID;
+const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
+
+// JSON-LD Structured Data
+const { name, lastName, title: jobTitle, github, linkedin, instagram, facebook } = portfolioData.personalInfo;
+const fullName = `${name} ${lastName}`;
+const siteUrl = Astro.site ? Astro.site.toString() : "https://bernard2806.is-a.dev/";
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": fullName,
+  "jobTitle": jobTitle,
+  "url": siteUrl,
+  "sameAs": [
+    github,
+    linkedin,
+    instagram,
+    facebook
+  ].filter(Boolean),
+  "knowsAbout": [
+    "Desarrollo Web",
+    "C#",
+    ".NET",
+    "PHP",
+    "SQL",
+    "Bases de Datos",
+    "Linux",
+    "Blazor"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Chivilcoy",
+    "addressRegion": "Buenos Aires",
+    "addressCountry": "AR"
+  }
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": `${fullName} - Portafolio`,
+  "url": siteUrl
+};
+
+const jsonLd = [personSchema, websiteSchema];
 ---
 
 <!DOCTYPE html>
@@ -24,13 +76,15 @@ const {
     <meta name="description" content={description} />
     <meta name="author" content="Bernardo González" />
     <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalURL} />
+    {googleSiteVerification && <meta name="google-site-verification" content={googleSiteVerification} />}
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content="https://github.com/Bernard2806.png" />
-    <meta property="og:url" content="https://bernard2806.is-a.dev" />
+    <meta property="og:url" content={canonicalURL} />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
@@ -48,6 +102,21 @@ const {
       crossorigin="anonymous"
     />
 
+    <!-- Google Analytics (GTags) -->
+    {googleAnalyticsId && (
+      <>
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}></script>
+        <script is:inline set:html={`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${googleAnalyticsId}');
+        `} />
+      </>
+    )}
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
     <BackgroundAnimation />
