@@ -28,6 +28,10 @@ jobs:
           path: .
           node-version: '20'
           package-manager: npm
+        env:
+          PUBLIC_GA_ID: ${{ vars.PUBLIC_GA_ID }}
+          PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.PUBLIC_GOOGLE_SITE_VERIFICATION }}
+
 
   deploy:
     needs: build
