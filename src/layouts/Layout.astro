@@ -23,6 +23,7 @@ const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 // JSON-LD Structured Data
 const { name, lastName, title: jobTitle, github, linkedin, instagram, facebook } = portfolioData.personalInfo;
 const fullName = `${name} ${lastName}`;
+const siteName = "Bernardo González";
 const siteUrl = Astro.site ? Astro.site.toString() : "https://bernard2806.is-a.dev/";
 
 const personSchema = {
@@ -58,7 +59,12 @@ const personSchema = {
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": `${fullName} - Portafolio`,
+  "name": siteName,
+  "alternateName": [
+    fullName,
+    "Bernardo González Erramuspe",
+    "Bernard2806"
+  ],
   "url": siteUrl
 };
 
@@ -85,6 +91,7 @@ const jsonLd = [personSchema, websiteSchema];
     <meta property="og:description" content={description} />
     <meta property="og:image" content="https://github.com/Bernard2806.png" />
     <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content={siteName} />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
