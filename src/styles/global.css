@@ -35,6 +35,16 @@ html {
   overflow-y: auto;
 }
 
+::selection {
+  background-color: #0a361c;
+  color: #34d399;
+}
+
+::-moz-selection {
+  background-color: #0a361c;
+  color: #34d399;
+}
+
 body {
   background-color: var(--bg-body);
   color: var(--text-primary);
@@ -113,15 +123,18 @@ body {
 }
 
 .hub-card {
-  /* Fondo translúcido verde oscuro para mejor contraste y menor carga visual */
-  background-color: rgba(4, 20, 12, 0.72); /* dark green with transparency */
-  border: 1px solid rgba(34, 197, 94, 0.10);
+  /* Fondo translúcido verde oscuro neón con transparencia y desenfoque */
+  background-color: rgba(3, 15, 9, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(34, 197, 94, 0.28);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+  /* Sombra con brillo neón sutil */
+  box-shadow: 0 0 25px rgba(34, 197, 94, 0.18), 0 16px 40px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
-  transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+  transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
 }
 
 /* Header Banner & Overlapping Avatar */
