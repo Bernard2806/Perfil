@@ -1,7 +1,7 @@
 ---
 import portfolioData from "../data/portfolio.json";
 
-const { github, linkedin, instagram, facebook, steam, xbox } = portfolioData.personalInfo;
+const { github, linkedin, instagram, facebook, steam, xbox, youtube } = portfolioData.personalInfo;
 
 const socialLinks = [
   { name: "GitHub", url: github, icon: "fab fa-github" },
@@ -32,7 +32,7 @@ const socialLinks = [
   </div>
 
   <!-- Redes de Streaming -->
-  <div class="socials-grid">
+  <div class="socials-grid streaming-grid">
     <!-- Kick -->
     <a href="https://kick.com/bernardtw2806" target="_blank" rel="noopener noreferrer" class="social-card kick-card">
       <div class="social-card-icon kick-icon-container">
@@ -41,6 +41,14 @@ const socialLinks = [
         </svg>
       </div>
       <span class="social-card-name">Kick</span>
+    </a>
+    
+    <!-- YouTube -->
+    <a href={youtube || "https://www.youtube.com/@bernardtw2806"} target="_blank" rel="noopener noreferrer" class="social-card youtube-card">
+      <div class="social-card-icon youtube-icon-container">
+        <i class="fab fa-youtube"></i>
+      </div>
+      <span class="social-card-name">YouTube</span>
     </a>
 
     <!-- Twitch -->
@@ -233,6 +241,30 @@ const socialLinks = [
     border-color: #a970ff;
     color: #a970ff;
     box-shadow: 0 0 12px rgba(145, 70, 255, 0.25);
+  }
+
+  /* YouTube Hover */
+  .social-card.youtube-card:hover {
+    border-color: rgba(255, 0, 0, 0.18);
+    box-shadow: 0 10px 15px -3px rgba(255, 0, 0, 0.06);
+  }
+  .social-card.youtube-card:hover .youtube-icon-container {
+    border-color: #ff0000;
+    color: #ff0000;
+    box-shadow: 0 0 12px rgba(255, 0, 0, 0.12);
+  }
+
+  /* Streaming grid: triángulo invertido (dos arriba, uno centrado abajo) */
+  .streaming-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .streaming-grid .social-card.twitch-card {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 60%;
+    max-width: 320px;
   }
 
   .social-card.steam-card:hover {

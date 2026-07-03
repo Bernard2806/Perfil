@@ -42,8 +42,42 @@ body {
   justify-content: flex-start;
   padding: 2.5rem 1rem;
   transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
-  background-image: radial-gradient(var(--border-color) 1.2px, transparent 1.2px);
-  background-size: 28px 28px;
+  /* Reemplazo de animación por video (mejor calidad y menor tamaño que GIF) */
+  background-color: var(--bg-body); /* fallback color */
+}
+
+/* Background video container */
+#bg-media {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+#bg-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: translateZ(0);
+  will-change: transform;
+  filter: contrast(0.98) saturate(0.95) brightness(0.98);
+}
+
+/* Overlay to darken background video for better contrast */
+#bg-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 10, 6, 0.45);
+  pointer-events: none;
+}
+
+/* Fallback for users who prefer reduced motion: hide video and use a static GIF or color */
+@media (prefers-reduced-motion: reduce) {
+  #bg-media { display: none; }
+  body { background-image: url('/images/bg.gif'); background-size: cover; background-position: center center; }
 }
 
 /* Tab/Section transition animations */
@@ -70,11 +104,12 @@ body {
 }
 
 .hub-card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
+  /* Fondo translúcido verde oscuro para mejor contraste y menor carga visual */
+  background-color: rgba(4, 20, 12, 0.72); /* dark green with transparency */
+  border: 1px solid rgba(34, 197, 94, 0.10);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
   display: flex;
   flex-direction: column;
   transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;

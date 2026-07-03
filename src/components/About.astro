@@ -2,11 +2,37 @@
 import portfolioData from "../data/portfolio.json";
 
 const { paragraphs } = portfolioData.about;
+
+const birthDate = portfolioData.personalInfo && portfolioData.personalInfo.birthDate;
+
+function calculateAge(birth) {
+  try {
+    const b = new Date(birth);
+    if (Number.isNaN(b.getTime())) return null;
+    const today = new Date();
+    let age = today.getFullYear() - b.getFullYear();
+    const m = today.getMonth() - b.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < b.getDate())) age--;
+    return age;
+  } catch (e) {
+    return null;
+  }
+}
+
+const age = birthDate ? calculateAge(birthDate) : null;
+const renderedParagraphs = paragraphs.map((p) => {
+  let out = p;
+  if (age !== null) {
+    out = out.replace(/\bTengo\s+\d+\s+años\b/g, `Tengo ${age} años`);
+    out = out.replace(/\{age\}/g, `${age}`);
+  }
+  return out;
+});
 ---
 
 <div class="panel-about">
   <div class="bio-content">
-    {paragraphs.map((paragraph) => (
+    {renderedParagraphs.map((paragraph) => (
       <p class="bio-text">{paragraph}</p>
     ))}
   </div>
