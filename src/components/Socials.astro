@@ -286,4 +286,32 @@ const socialLinks = [
     color: #107c10;
     box-shadow: 0 0 12px rgba(16, 124, 16, 0.25);
   }
+
+  /* Responsive: small mobile screens */
+  @media (max-width: 420px) {
+    .socials-grid {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    .social-card {
+      padding: 1.1rem;
+      flex-direction: row;
+      gap: 0.75rem;
+    }
+    .social-card-icon {
+      height: 44px;
+      width: 44px;
+      font-size: 1.5rem;
+    }
+    .streaming-grid .social-card.twitch-card {
+      width: 100%;
+      max-width: none;
+    }
+    .streaming-divider {
+      margin: 1rem 0 0.25rem 0;
+    }
+    .streaming-title {
+      font-size: 0.7rem;
+    }
+  }
 </style>

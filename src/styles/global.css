@@ -57,46 +57,6 @@ body {
   justify-content: flex-start;
   padding: 2.5rem 1rem;
   transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
-  /* Reemplazo de animación por video (mejor calidad y menor tamaño que GIF) */
-  background-color: var(--bg-body); /* fallback color */
-}
-
-/* Background video container */
-#bg-media {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-#bg-video {
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  display: block;
-  filter: contrast(0.98) saturate(0.95) brightness(0.98);
-}
-
-/* Overlay to darken background video for better contrast */
-#bg-media::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(2, 10, 6, 0.45);
-  pointer-events: none;
-}
-
-/* Fallback for users who prefer reduced motion: hide video and use a static GIF or color */
-@media (prefers-reduced-motion: reduce) {
-  #bg-media { display: none; }
-  body { background-image: url('/images/bg.gif'); background-size: cover; background-position: center center; }
 }
 
 /* Tab/Section transition animations */
@@ -135,6 +95,8 @@ body {
   display: flex;
   flex-direction: column;
   transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  /* Optimization: contain layout/paint to prevent full-page repaints */
+  contain: layout style;
 }
 
 /* Header Banner & Overlapping Avatar */
@@ -309,6 +271,9 @@ body {
   border-bottom-right-radius: 10px;
   margin-top: -1px;
   z-index: 1;
+  /* Lazy rendering: skip off-screen accordion panels */
+  content-visibility: auto;
+  contain-intrinsic-size: 0 auto;
 }
 
 .accordion-content.active {
@@ -342,6 +307,24 @@ body {
   }
   .linktree-menu {
     padding: 0 1rem 1rem 1rem;
+  }
+}
+
+/* Very small screens (SE, older devices) */
+@media (max-width: 380px) {
+  body {
+    padding: 0.5rem 0.25rem;
+  }
+  .linktree-menu {
+    gap: 0.5rem;
+    padding: 0 0.75rem 0.75rem 0.75rem;
+  }
+  .linktree-btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+  }
+  .profile-name {
+    font-size: 1.35rem;
   }
 }
 
