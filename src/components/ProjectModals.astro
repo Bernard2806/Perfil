@@ -20,7 +20,7 @@ const getTagColorClass = (tech: string) => {
   <div class="modal-overlay" id={`modal-${project.id}`}>
     <div class="modal-container">
       <div class="modal-header">
-        <h3 class="modal-title">{project.title}</h3>
+        <h2 class="modal-title">{project.title}</h2>
         <button class="modal-close-btn" data-close-target={`modal-${project.id}`} aria-label="Cerrar">
           <i class="fas fa-times"></i>
         </button>
@@ -37,13 +37,13 @@ const getTagColorClass = (tech: string) => {
         </div>
 
         <div class="modal-content-section">
-          <h4 class="modal-desc-heading">Descripción del Proyecto</h4>
+          <h3 class="modal-desc-heading">Descripción del Proyecto</h3>
           <p class="modal-desc">{project.longDescription || project.description}</p>
         </div>
 
         {project.features && project.features.length > 0 && (
           <div class="modal-content-section">
-            <h4 class="modal-desc-heading">Características Destacadas</h4>
+            <h3 class="modal-desc-heading">Características Destacadas</h3>
             <ul class="modal-list">
               {project.features.map((feature) => (
                 <li>
@@ -56,7 +56,7 @@ const getTagColorClass = (tech: string) => {
         )}
 
         <div class="modal-content-section">
-          <h4 class="modal-desc-heading">Tecnologías</h4>
+          <h3 class="modal-desc-heading">Tecnologías</h3>
           <div class="project-cv-tags">
             {project.technologies.map((tech) => (
               <span class={`tech-tag ${getTagColorClass(tech)}`}>{tech}</span>

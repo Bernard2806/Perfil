@@ -28,7 +28,7 @@
   --bg-hover: #1b2820;
   --text-primary: #f1f7f4;
   --text-secondary: #cbdcd1;
-  --text-muted: #759080;
+  --text-muted: #8eb59b;
   --accent-blue: #22c55e; /* Vibrant Green Accent */
   --accent-purple: #10b981; /* Mint Emerald Accent */
   --accent-teal: #34d399; /* Light Sage Accent */
@@ -206,6 +206,17 @@ body {
   display: flex;
   flex-direction: column;
   transition: all var(--transition-speed) ease;
+}
+
+/* Semantic wrapper reset for WAI-ARIA accordion heading accessibility */
+.accordion-header {
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  display: block;
 }
 
 /* Linktree Buttons list */
