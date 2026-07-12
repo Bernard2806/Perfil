@@ -1,11 +1,14 @@
 ---
+import logoOgresgames from "../assets/images/ogresgames.png";
+import { Image } from "astro:assets";
+
 // Featured Project: OGRES GAMES - Gaming Community Showcase
 const featured = {
   name: "OGRES GAMES",
   tagline: "Comunidad Gamer",
   description: "Una comunidad gamer abierta para jugar, compartir y competir. Eventos, sorteos y un espacio para conectar con otros jugadores.",
   url: "https://ogresblood.games/",
-  logo: "/images/ogresgames.png",
+  logo: logoOgresgames,
   highlights: [
     { icon: "🎮", label: "Comunidad Gamer", detail: "Jugá con otros" },
     { icon: "🏆", label: "Torneos & Sorteos", detail: "Eventos frecuentes" },
@@ -31,10 +34,12 @@ const featured = {
       <!-- Logo Column -->
       <div class="featured-logo-col">
         <div class="featured-logo-wrapper">
-          <img
+          <Image
             src={featured.logo}
             alt={`Logo de ${featured.name}`}
             class="featured-logo-img"
+            width={160}
+            height={160}
             loading="lazy"
           />
           <div class="featured-logo-glow"></div>

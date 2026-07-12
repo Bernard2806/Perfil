@@ -110,6 +110,15 @@ const jsonLd = [personSchema, websiteSchema];
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
 
+    <!-- Preload critical fonts to prevent layout shift and network chains -->
+    <link
+      rel="preload"
+      href="https://fonts.gstatic.com/s/vt323/v18/pxiKyp0ihIEF2hsY.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+
     <!-- Google Fonts — async load to avoid render-blocking -->
     <link
       rel="preload"

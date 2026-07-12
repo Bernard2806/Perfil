@@ -1,16 +1,20 @@
 ---
+import logoFixtris from "../assets/images/logo-fixtris.jpeg";
+import logoMatelogic from "../assets/images/logo-matelogic.png";
+import { Image } from "astro:assets";
+
 const ventures = [
   { 
     name: "Fixtris", 
     description: "Reparación de PC, laptop, netbook, consolas (modificación y liberación) y cámaras IP.",
     url: "https://github.com/Bernard2806", 
-    logo: "/images/logo-fixtris.jpeg" 
+    logo: logoFixtris 
   },
   { 
     name: "MateLogic", 
     description: "Creación de software para empresas y emprendimientos, y sistemas privados.",
     url: "https://github.com/Bernard2806", 
-    logo: "/images/logo-matelogic.png" 
+    logo: logoMatelogic 
   }
 ];
 ---
@@ -21,7 +25,7 @@ const ventures = [
       <a href={venture.url} target="_blank" rel="noopener noreferrer" class="venture-card">
         <div class="venture-card-icon">
           {venture.logo ? (
-            <img src={venture.logo} alt={`Logo de ${venture.name}`} class="venture-logo" />
+            <Image src={venture.logo} alt={`Logo de ${venture.name}`} class="venture-logo" width={112} height={112} loading="lazy" />
           ) : (
             <i class={venture.icon}></i>
           )}

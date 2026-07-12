@@ -1,7 +1,9 @@
 ---
 import portfolioData from "../data/portfolio.json";
+import avatarImage from "../assets/images/avatar.png";
+import { Image } from "astro:assets";
 
-const { name, lastName, title, location, email, github, linkedin, instagram, facebook, avatar } = portfolioData.personalInfo;
+const { name, lastName, title, location, email, github, linkedin, instagram, facebook } = portfolioData.personalInfo;
 
 // Calculate age dynamically based on birth date (June 28, 2006)
 const birthDate = new Date(2006, 5, 28); // Month index 5 is June
@@ -17,7 +19,7 @@ if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate()))
 </div>
 
 <div class="avatar-container">
-  <img src={avatar} alt={`${name} ${lastName}`} class="profile-avatar-overlay" />
+  <Image src={avatarImage} alt={`${name} ${lastName}`} class="profile-avatar-overlay" width={220} height={220} loading="eager" />
 </div>
 
 <div class="profile-info">

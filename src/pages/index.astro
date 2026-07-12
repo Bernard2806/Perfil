@@ -357,12 +357,7 @@ const currentYear = new Date().getFullYear();
 
           // Smooth scroll to the clicked accordion item to focus attention once the transition finishes
           setTimeout(() => {
-            const rect = button.getBoundingClientRect();
-            // Scroll only if the button is close to the viewport boundaries or offscreen
-            const threshold = window.innerHeight - 100; // 100px threshold from bottom
-            if (rect.bottom > threshold || rect.top < 0) {
-              button.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
+            button.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           }, 350);
         }
       });
