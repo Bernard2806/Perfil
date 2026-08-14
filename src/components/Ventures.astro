@@ -4,38 +4,82 @@ import logoMatelogic from "../assets/images/logo-matelogic.png";
 import { Image } from "astro:assets";
 
 const ventures = [
-  { 
-    name: "Fixtris", 
-    description: "Reparación de PC, laptop, netbook, consolas (modificación y liberación) y cámaras IP.",
-    url: "https://github.com/Bernard2806", 
-    logo: logoFixtris 
+  {
+    name: "Mate-Logic",
+    label: "Emprendimiento destacado",
+    description: "Desarrollo de software para empresas, emprendimientos y proyectos que necesitan soluciones a medida.",
+    details: "Creamos sistemas, sitios y herramientas digitales pensadas para resolver problemas reales y acompañar el crecimiento de cada proyecto.",
+    url: "https://mate-logic.tech/",
+    cta: "Conocer Mate-Logic",
+    logo: logoMatelogic
   },
-  { 
-    name: "MateLogic", 
-    description: "Creación de software para empresas y emprendimientos, y sistemas privados.",
-    url: "https://mate-logic.tech/", 
-    logo: logoMatelogic 
+  {
+    name: "Fixtris",
+    label: "Soporte y reparación",
+    description: "Servicio de reparación y mantenimiento de PC, laptops, netbooks, consolas y cámaras IP.",
+    details: "Diagnóstico, puesta a punto, instalación de software, modificación de consolas y soluciones técnicas para equipos del día a día.",
+    url: "https://github.com/Bernard2806",
+    cta: "Ver más información",
+    logo: logoFixtris
   }
 ];
 ---
 
 <div class="panel-ventures">
-  <div class="ventures-grid">
-    {ventures.map((venture) => (
-      <a href={venture.url} target="_blank" rel="noopener noreferrer" class="venture-card">
-        <div class="venture-card-icon">
-          {venture.logo ? (
-            <Image src={venture.logo} alt={`Logo de ${venture.name}`} class="venture-logo" width={112} height={112} loading="lazy" />
-          ) : (
-            <i class={venture.icon}></i>
-          )}
-        </div>
-        <div class="venture-card-info">
-          <span class="venture-card-name">{venture.name}</span>
-          <span class="venture-card-desc">{venture.description}</span>
-        </div>
-      </a>
-    ))}
+  <div class="ventures-heading">
+    <span class="ventures-kicker"><i class="fas fa-rocket"></i> Mis emprendimientos</span>
+    <p>Proyectos que nacen de mis intereses y de las ganas de crear soluciones útiles.</p>
+  </div>
+
+  <div class="ventures-carousel" aria-roledescription="carrusel" aria-label="Emprendimientos">
+    <div class="ventures-track">
+      {ventures.map((venture, index) => (
+        <article
+          class:list={["venture-slide", { "is-active": index === 0 }]}
+          data-slide={index}
+          aria-hidden={index !== 0}
+        >
+          <div class="venture-card-brand">
+            <div class="venture-card-icon">
+              <Image src={venture.logo} alt={`Logo de ${venture.name}`} class="venture-logo" width={128} height={128} loading={index === 0 ? "eager" : "lazy"} />
+            </div>
+            <span class="venture-slide-count">{String(index + 1).padStart(2, "0")} / {String(ventures.length).padStart(2, "0")}</span>
+          </div>
+
+          <div class="venture-card-info">
+            <span class="venture-card-label">{venture.label}</span>
+            <h3 class="venture-card-name">{venture.name}</h3>
+            <p class="venture-card-desc">{venture.description}</p>
+            <p class="venture-card-details">{venture.details}</p>
+            <a href={venture.url} target="_blank" rel="noopener noreferrer" class="venture-card-link">
+              {venture.cta}
+              <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="ventures-controls">
+      <button type="button" class="venture-control" data-direction="prev" aria-label="Emprendimiento anterior">
+        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+      </button>
+      <div class="venture-dots" role="tablist" aria-label="Seleccionar emprendimiento">
+        {ventures.map((venture, index) => (
+          <button
+            type="button"
+            class:list={["venture-dot", { "is-active": index === 0 }]}
+            data-slide-to={index}
+            role="tab"
+            aria-label={`Mostrar ${venture.name}`}
+            aria-selected={index === 0}
+          ></button>
+        ))}
+      </div>
+      <button type="button" class="venture-control" data-direction="next" aria-label="Siguiente emprendimiento">
+        <i class="fas fa-arrow-right" aria-hidden="true"></i>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -46,89 +90,257 @@ const ventures = [
     gap: 1rem;
   }
 
-  .ventures-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-    width: 100%;
+  .ventures-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
   }
 
-  .venture-card {
-    background-color: var(--bg-card);
+  .ventures-kicker,
+  .venture-card-label {
+    color: var(--accent-teal);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .ventures-kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .ventures-heading p {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .ventures-carousel {
+    background: linear-gradient(145deg, rgba(27, 40, 32, 0.9), var(--bg-body));
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 1.5rem 1rem;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .ventures-track {
+    display: grid;
+    touch-action: pan-y;
+  }
+
+  .venture-slide {
+    grid-area: 1 / 1;
+    display: grid;
+    grid-template-columns: 112px 1fr;
+    gap: 1.25rem;
+    align-items: center;
+    padding: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(18px);
+    transition: opacity 0.28s ease, transform 0.28s ease;
+  }
+
+  .venture-slide.is-active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+  }
+
+  .venture-card-brand {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     gap: 0.75rem;
-    text-decoration: none;
-    transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    text-align: center;
   }
 
   .venture-card-icon {
-    font-size: 2rem;
+    width: 104px;
+    height: 104px;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 56px;
-    width: 56px;
-    border-radius: 50%;
-    background-color: var(--bg-body);
-    border: 1px solid var(--border-color);
-    transition: all var(--transition-speed) ease;
-    color: var(--text-secondary);
     overflow: hidden;
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    border-radius: 22px;
+    background: var(--bg-card);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   }
 
   .venture-logo {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform var(--transition-speed) ease;
+  }
+
+  .venture-slide-count {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
   }
 
   .venture-card-info {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    align-items: flex-start;
+    gap: 0.45rem;
   }
 
   .venture-card-name {
+    color: var(--text-primary);
     font-family: var(--font-heading);
+    font-size: 1.45rem;
+    line-height: 1;
+  }
+
+  .venture-card-desc,
+  .venture-card-details {
+    color: var(--text-secondary);
+    font-size: 0.83rem;
+    line-height: 1.45;
+  }
+
+  .venture-card-details {
+    color: var(--text-muted);
+    font-size: 0.76rem;
+  }
+
+  .venture-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.35rem;
+    color: var(--accent-teal);
+    font-size: 0.78rem;
     font-weight: 700;
-    font-size: 0.95rem;
+    text-decoration: none;
+  }
+
+  .venture-card-link:hover {
     color: var(--text-primary);
   }
 
-  .venture-card-desc {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    line-height: 1.3;
+  .ventures-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem 1rem;
   }
 
-  /* Custom Hover Effects matching page palette */
-  .venture-card:hover {
-    background-color: var(--bg-hover);
-    transform: translateY(-3px);
-    border-color: var(--accent-blue);
-    box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.08);
+  .venture-control,
+  .venture-dot {
+    border: 0;
+    cursor: pointer;
   }
 
-  .venture-card:hover .venture-card-icon {
-    background-color: var(--bg-card);
-    transform: scale(1.05);
-    border-color: var(--accent-blue);
-    color: var(--accent-blue);
-    box-shadow: 0 0 12px rgba(34, 197, 94, 0.2);
+  .venture-control {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    transition: all var(--transition-speed) ease;
   }
 
-  @media (max-width: 576px) {
-    .ventures-grid {
+  .venture-control:hover,
+  .venture-control:focus-visible {
+    border-color: var(--accent-teal);
+    color: var(--accent-teal);
+    outline: none;
+  }
+
+  .venture-dots {
+    display: flex;
+    gap: 0.45rem;
+  }
+
+  .venture-dot {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    border-radius: 50%;
+    background: var(--border-color-hover);
+    transition: all var(--transition-speed) ease;
+  }
+
+  .venture-dot.is-active {
+    width: 20px;
+    border-radius: 999px;
+    background: var(--accent-teal);
+  }
+
+  @media (max-width: 480px) {
+    .venture-slide {
       grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 1.25rem;
+    }
+
+    .venture-card-brand {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .venture-card-icon {
+      width: 76px;
+      height: 76px;
+      border-radius: 16px;
     }
   }
 </style>
+
+<script>
+  const setupVenturesCarousel = () => {
+    document.querySelectorAll('.ventures-carousel').forEach((carousel) => {
+      if (carousel.hasAttribute('data-carousel-ready')) return;
+      carousel.setAttribute('data-carousel-ready', 'true');
+
+      const slides = Array.from(carousel.querySelectorAll('.venture-slide'));
+      const dots = Array.from(carousel.querySelectorAll('.venture-dot'));
+      const track = carousel.querySelector('.ventures-track');
+      let currentIndex = 0;
+      let touchStartX = 0;
+
+      const showSlide = (index) => {
+        currentIndex = (index + slides.length) % slides.length;
+
+        slides.forEach((slide, slideIndex) => {
+          const isActive = slideIndex === currentIndex;
+          slide.classList.toggle('is-active', isActive);
+          slide.setAttribute('aria-hidden', String(!isActive));
+        });
+
+        dots.forEach((dot, dotIndex) => {
+          const isActive = dotIndex === currentIndex;
+          dot.classList.toggle('is-active', isActive);
+          dot.setAttribute('aria-selected', String(isActive));
+        });
+      };
+
+      carousel.querySelector('[data-direction="prev"]')?.addEventListener('click', () => showSlide(currentIndex - 1));
+      carousel.querySelector('[data-direction="next"]')?.addEventListener('click', () => showSlide(currentIndex + 1));
+      dots.forEach((dot) => dot.addEventListener('click', () => showSlide(Number(dot.dataset.slideTo))));
+
+      carousel.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') showSlide(currentIndex - 1);
+        if (event.key === 'ArrowRight') showSlide(currentIndex + 1);
+      });
+
+      track?.addEventListener('touchstart', (event) => {
+        touchStartX = event.changedTouches[0].screenX;
+      }, { passive: true });
+
+      track?.addEventListener('touchend', (event) => {
+        const distance = event.changedTouches[0].screenX - touchStartX;
+        if (Math.abs(distance) < 40) return;
+        showSlide(currentIndex + (distance < 0 ? 1 : -1));
+      }, { passive: true });
+    });
+  };
+
+  setupVenturesCarousel();
+  document.addEventListener('astro:after-swap', setupVenturesCarousel);
+</script>
