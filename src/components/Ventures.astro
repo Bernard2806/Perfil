@@ -5,79 +5,170 @@ import { Image } from "astro:assets";
 
 const ventures = [
   {
+    id: "mate-logic",
     name: "Mate-Logic",
-    label: "Emprendimiento destacado",
-    description: "Desarrollo de software para empresas, emprendimientos y proyectos que necesitan soluciones a medida.",
-    details: "Creamos sistemas, sitios y herramientas digitales pensadas para resolver problemas reales y acompañar el crecimiento de cada proyecto.",
+    tagline: "Software & Soluciones Digitales",
+    badge: "Emprendimiento Destacado",
+    badgeIcon: "fas fa-rocket",
+    description: "Desarrollo de software y soluciones web a medida para empresas, negocios y proyectos que buscan automatizar y escalar.",
+    details: "Diseño y arquitectura de sistemas de gestión, plataformas web modernas, SaaS y herramientas digitales diseñadas para resolver problemas reales.",
+    tags: ["Desarrollo Web & SaaS", "Sistemas a Medida", "APIs & Automatización"],
     url: "https://mate-logic.tech/",
-    cta: "Conocer Mate-Logic",
-    logo: logoMatelogic
+    cta: "Explorar Mate-Logic",
+    logo: logoMatelogic,
+    colorAccent: "#22c55e"
   },
   {
+    id: "fixtris",
     name: "Fixtris",
-    label: "Soporte y reparación",
-    description: "Servicio de reparación y mantenimiento de PC, laptops, netbooks, consolas y cámaras IP.",
-    details: "Diagnóstico, puesta a punto, instalación de software, modificación de consolas y soluciones técnicas para equipos del día a día.",
+    tagline: "Soporte Técnico & Hardware",
+    badge: "Hardware & Reparación",
+    badgeIcon: "fas fa-wrench",
+    description: "Servicio integral de reparación, optimización y mantenimiento especializado de equipos informáticos y consolas.",
+    details: "Diagnóstico electrónico, puesta a punto de hardware, armado de PCs personalizadas, optimización de sistemas y mantenimiento de consolas y cámaras IP.",
+    tags: ["Reparación PC & Laptops", "Consolas & Retrogaming", "Redes & Cámaras IP"],
     url: "https://github.com/Bernard2806",
-    cta: "Ver más información",
-    logo: logoFixtris
+    cta: "Conocer Fixtris",
+    logo: logoFixtris,
+    colorAccent: "#34d399"
   }
 ];
 ---
 
 <div class="panel-ventures">
-  <div class="ventures-heading">
-    <span class="ventures-kicker"><i class="fas fa-rocket"></i> Mis emprendimientos</span>
-    <p>Proyectos que nacen de mis intereses y de las ganas de crear soluciones útiles.</p>
+  <!-- Venture Quick Switcher Tabs -->
+  <div class="ventures-tabs-nav" role="tablist" aria-label="Navegación de emprendimientos">
+    {ventures.map((venture, index) => (
+      <button
+        type="button"
+        class:list={["venture-tab-btn", { "is-active": index === 0 }]}
+        data-venture-target={index}
+        role="tab"
+        aria-selected={index === 0}
+        aria-controls={`venture-panel-${venture.id}`}
+      >
+        <span class="venture-tab-icon"><i class={venture.badgeIcon}></i></span>
+        <span class="venture-tab-title">{venture.name}</span>
+      </button>
+    ))}
   </div>
 
+  <!-- Carousel Main Container -->
   <div class="ventures-carousel" aria-roledescription="carrusel" aria-label="Emprendimientos">
-    <div class="ventures-track">
-      {ventures.map((venture, index) => (
-        <article
-          class:list={["venture-slide", { "is-active": index === 0 }]}
-          data-slide={index}
-          aria-hidden={index !== 0}
-        >
-          <div class="venture-card-brand">
-            <div class="venture-card-icon">
-              <Image src={venture.logo} alt={`Logo de ${venture.name}`} class="venture-logo" width={128} height={128} loading={index === 0 ? "eager" : "lazy"} />
-            </div>
-            <span class="venture-slide-count">{String(index + 1).padStart(2, "0")} / {String(ventures.length).padStart(2, "0")}</span>
-          </div>
-
-          <div class="venture-card-info">
-            <span class="venture-card-label">{venture.label}</span>
-            <h3 class="venture-card-name">{venture.name}</h3>
-            <p class="venture-card-desc">{venture.description}</p>
-            <p class="venture-card-details">{venture.details}</p>
-            <a href={venture.url} target="_blank" rel="noopener noreferrer" class="venture-card-link">
-              {venture.cta}
-              <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
-            </a>
-          </div>
-        </article>
-      ))}
+    <!-- Progress bar for autoplay -->
+    <div class="ventures-progress-bar" aria-hidden="true">
+      <div class="ventures-progress-fill"></div>
     </div>
 
-    <div class="ventures-controls">
-      <button type="button" class="venture-control" data-direction="prev" aria-label="Emprendimiento anterior">
-        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+    <div class="ventures-viewport">
+      <div class="ventures-track">
+        {ventures.map((venture, index) => (
+          <article
+            class:list={["venture-slide", { "is-active": index === 0 }]}
+            id={`venture-panel-${venture.id}`}
+            data-slide={index}
+            aria-hidden={index !== 0}
+          >
+            <!-- Top Meta Header -->
+            <div class="venture-meta-header">
+              <span class="venture-badge">
+                <i class={venture.badgeIcon}></i>
+                {venture.badge}
+              </span>
+              <span class="venture-slide-count">
+                <span class="count-current">{String(index + 1).padStart(2, "0")}</span>
+                <span class="count-sep">/</span>
+                <span class="count-total">{String(ventures.length).padStart(2, "0")}</span>
+              </span>
+            </div>
+
+            <!-- Card Body -->
+            <div class="venture-card-body">
+              <!-- Left: Logo container -->
+              <div class="venture-brand-col">
+                <div class="venture-logo-box">
+                  <Image 
+                    src={venture.logo} 
+                    alt={`Logo oficial de ${venture.name}`} 
+                    class="venture-logo-img" 
+                    width={140} 
+                    height={140} 
+                    loading={index === 0 ? "eager" : "lazy"} 
+                  />
+                  <div class="venture-logo-glow" aria-hidden="true"></div>
+                </div>
+              </div>
+
+              <!-- Right: Info Content -->
+              <div class="venture-info-col">
+                <div class="venture-headings">
+                  <h3 class="venture-title">{venture.name}</h3>
+                  <p class="venture-tagline">{venture.tagline}</p>
+                </div>
+
+                <p class="venture-description">{venture.description}</p>
+                <p class="venture-details">{venture.details}</p>
+
+                <!-- Tags / Skills pills -->
+                <div class="venture-tags-list" aria-label="Especialidades">
+                  {venture.tags.map((tag) => (
+                    <span class="venture-tag-pill">{tag}</span>
+                  ))}
+                </div>
+
+                <!-- CTA Button -->
+                <div class="venture-cta-wrapper">
+                  <a 
+                    href={venture.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    class="venture-cta-btn"
+                  >
+                    <span>{venture.cta}</span>
+                    <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+
+    <!-- Carousel Controls Bar -->
+    <div class="ventures-controls-bar">
+      <button 
+        type="button" 
+        class="venture-nav-btn venture-prev" 
+        data-direction="prev" 
+        aria-label="Emprendimiento anterior"
+      >
+        <i class="fas fa-chevron-left" aria-hidden="true"></i>
       </button>
-      <div class="venture-dots" role="tablist" aria-label="Seleccionar emprendimiento">
+
+      <!-- Dots Indicators -->
+      <div class="venture-dots-list" role="tablist" aria-label="Indicadores de diapositiva">
         {ventures.map((venture, index) => (
           <button
             type="button"
-            class:list={["venture-dot", { "is-active": index === 0 }]}
+            class:list={["venture-dot-item", { "is-active": index === 0 }]}
             data-slide-to={index}
             role="tab"
-            aria-label={`Mostrar ${venture.name}`}
+            aria-label={`Ir a emprendimiento ${venture.name}`}
             aria-selected={index === 0}
-          ></button>
+          >
+            <span class="dot-indicator"></span>
+          </button>
         ))}
       </div>
-      <button type="button" class="venture-control" data-direction="next" aria-label="Siguiente emprendimiento">
-        <i class="fas fa-arrow-right" aria-hidden="true"></i>
+
+      <button 
+        type="button" 
+        class="venture-nav-btn venture-next" 
+        data-direction="next" 
+        aria-label="Siguiente emprendimiento"
+      >
+        <i class="fas fa-chevron-right" aria-hidden="true"></i>
       </button>
     </div>
   </div>
@@ -87,257 +178,570 @@ const ventures = [
   .panel-ventures {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.85rem;
+    width: 100%;
   }
 
-  .ventures-heading {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
+  /* Quick Switcher Tabs */
+  .ventures-tabs-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    width: 100%;
   }
 
-  .ventures-kicker,
-  .venture-card-label {
-    color: var(--accent-teal);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .ventures-kicker {
+  .venture-tab-btn {
     display: flex;
     align-items: center;
-    gap: 0.45rem;
-  }
-
-  .ventures-heading p {
-    color: var(--text-secondary);
-    font-size: 0.82rem;
-    line-height: 1.45;
-  }
-
-  .ventures-carousel {
-    background: linear-gradient(145deg, rgba(27, 40, 32, 0.9), var(--bg-body));
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.85rem;
+    border-radius: 10px;
+    background: rgba(18, 27, 22, 0.7);
     border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .venture-tab-btn:hover {
+    background: var(--bg-hover);
+    border-color: rgba(52, 211, 153, 0.3);
+    color: var(--text-primary);
+  }
+
+  .venture-tab-btn.is-active {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.18) 0%, rgba(16, 185, 129, 0.08) 100%);
+    border-color: var(--accent-blue);
+    color: var(--accent-teal);
+    box-shadow: 0 2px 10px rgba(34, 197, 94, 0.15);
+  }
+
+  .venture-tab-icon {
+    font-size: 0.85rem;
+    color: var(--accent-teal);
+  }
+
+  /* Carousel Card */
+  .ventures-carousel {
+    position: relative;
+    background: linear-gradient(155deg, rgba(20, 32, 25, 0.92) 0%, rgba(10, 15, 12, 0.98) 100%);
+    border: 1px solid rgba(52, 211, 153, 0.2);
     border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Autoplay Progress Bar */
+  .ventures-progress-bar {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ventures-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-teal));
+    transition: width 0.1s linear;
+  }
+
+  .ventures-progress-fill.running {
+    animation: ventureProgressAnim 5.5s linear infinite;
+  }
+
+  @keyframes ventureProgressAnim {
+    from { width: 0%; }
+    to { width: 100%; }
+  }
+
+  .ventures-carousel:hover .ventures-progress-fill.running {
+    animation-play-state: paused;
+  }
+
+  /* Viewport and Track */
+  .ventures-viewport {
+    position: relative;
+    width: 100%;
     overflow: hidden;
   }
 
   .ventures-track {
     display: grid;
+    width: 100%;
     touch-action: pan-y;
   }
 
   .venture-slide {
     grid-area: 1 / 1;
-    display: grid;
-    grid-template-columns: 112px 1fr;
-    gap: 1.25rem;
-    align-items: center;
-    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.35rem;
     opacity: 0;
     pointer-events: none;
-    transform: translateX(18px);
-    transition: opacity 0.28s ease, transform 0.28s ease;
+    transform: translateX(20px) scale(0.98);
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .venture-slide.is-active {
     opacity: 1;
     pointer-events: auto;
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
+    z-index: 2;
   }
 
-  .venture-card-brand {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .venture-card-icon {
-    width: 104px;
-    height: 104px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    border: 1px solid rgba(52, 211, 153, 0.3);
-    border-radius: 22px;
-    background: var(--bg-card);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  }
-
-  .venture-logo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .venture-slide-count {
-    color: var(--text-muted);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-  }
-
-  .venture-card-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.45rem;
-  }
-
-  .venture-card-name {
-    color: var(--text-primary);
-    font-family: var(--font-heading);
-    font-size: 1.45rem;
-    line-height: 1;
-  }
-
-  .venture-card-desc,
-  .venture-card-details {
-    color: var(--text-secondary);
-    font-size: 0.83rem;
-    line-height: 1.45;
-  }
-
-  .venture-card-details {
-    color: var(--text-muted);
-    font-size: 0.76rem;
-  }
-
-  .venture-card-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    margin-top: 0.35rem;
-    color: var(--accent-teal);
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  .venture-card-link:hover {
-    color: var(--text-primary);
-  }
-
-  .ventures-controls {
+  /* Top Meta Header */
+  .venture-meta-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.75rem 1rem 1rem;
+    width: 100%;
   }
 
-  .venture-control,
-  .venture-dot {
-    border: 0;
-    cursor: pointer;
+  .venture-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-teal);
+    background: rgba(34, 197, 94, 0.12);
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid rgba(52, 211, 153, 0.25);
   }
 
-  .venture-control {
+  .venture-slide-count {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    font-family: var(--font-heading);
+    letter-spacing: 0.05em;
+  }
+
+  .count-current {
+    color: var(--accent-teal);
+  }
+
+  .count-sep {
+    opacity: 0.5;
+    margin: 0 2px;
+  }
+
+  /* Card Body */
+  .venture-card-body {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  /* Logo */
+  .venture-brand-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .venture-logo-box {
+    position: relative;
+    width: 105px;
+    height: 105px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(18, 27, 22, 0.95);
+    border: 2px solid rgba(52, 211, 153, 0.35);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .ventures-carousel:hover .venture-logo-box {
+    border-color: var(--accent-teal);
+    box-shadow: 0 12px 28px rgba(34, 197, 94, 0.2);
+  }
+
+  .venture-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Info Column */
+  .venture-info-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    min-width: 0;
+  }
+
+  .venture-headings {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .venture-title {
+    font-family: var(--font-heading);
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .venture-tagline {
+    font-size: 0.8rem;
+    color: var(--accent-teal);
+    font-weight: 600;
+  }
+
+  .venture-description {
+    font-size: 0.84rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+  }
+
+  .venture-details {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* Tags */
+  .venture-tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.15rem;
+  }
+
+  .venture-tag-pill {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .venture-tag-pill:hover {
+    background: rgba(34, 197, 94, 0.1);
+    border-color: rgba(52, 211, 153, 0.25);
+    color: var(--text-primary);
+  }
+
+  /* CTA Button */
+  .venture-cta-wrapper {
+    margin-top: 0.4rem;
+  }
+
+  .venture-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.15rem;
+    border-radius: 9px;
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+    color: #ffffff;
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(34, 197, 94, 0.3);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .venture-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.45);
+    filter: brightness(1.1);
+  }
+
+  .venture-cta-btn i {
+    font-size: 0.75rem;
+    transition: transform 0.2s ease;
+  }
+
+  .venture-cta-btn:hover i {
+    transform: translate(2px, -2px);
+  }
+
+  /* Controls Bar */
+  .ventures-controls-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 1.25rem 0.9rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(14, 22, 17, 0.6);
+  }
+
+  .venture-nav-btn {
     width: 32px;
     height: 32px;
-    border: 1px solid var(--border-color);
     border-radius: 50%;
+    border: 1px solid var(--border-color);
     background: var(--bg-card);
     color: var(--text-secondary);
-    transition: all var(--transition-speed) ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
   }
 
-  .venture-control:hover,
-  .venture-control:focus-visible {
+  .venture-nav-btn:hover {
+    background: var(--bg-hover);
     border-color: var(--accent-teal);
     color: var(--accent-teal);
-    outline: none;
+    transform: scale(1.08);
   }
 
-  .venture-dots {
+  .venture-nav-btn:active {
+    transform: scale(0.95);
+  }
+
+  /* Dots */
+  .venture-dots-list {
     display: flex;
+    align-items: center;
     gap: 0.45rem;
   }
 
-  .venture-dot {
-    width: 7px;
-    height: 7px;
-    padding: 0;
-    border-radius: 50%;
-    background: var(--border-color-hover);
-    transition: all var(--transition-speed) ease;
+  .venture-dot-item {
+    background: transparent;
+    border: none;
+    padding: 6px 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .venture-dot.is-active {
-    width: 20px;
+  .dot-indicator {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .venture-dot-item:hover .dot-indicator {
+    background: rgba(52, 211, 153, 0.6);
+  }
+
+  .venture-dot-item.is-active .dot-indicator {
+    width: 24px;
     border-radius: 999px;
     background: var(--accent-teal);
+    box-shadow: 0 0 10px rgba(52, 211, 153, 0.6);
   }
 
-  @media (max-width: 480px) {
+  /* Responsive Adjustments */
+  @media (max-width: 520px) {
     .venture-slide {
+      padding: 1.1rem;
+      gap: 0.85rem;
+    }
+
+    .venture-card-body {
       grid-template-columns: 1fr;
-      gap: 1rem;
-      padding: 1.25rem;
+      gap: 0.85rem;
     }
 
-    .venture-card-brand {
+    .venture-brand-col {
       flex-direction: row;
-      justify-content: space-between;
+      justify-content: flex-start;
     }
 
-    .venture-card-icon {
+    .venture-logo-box {
       width: 76px;
       height: 76px;
       border-radius: 16px;
+    }
+
+    .venture-title {
+      font-size: 1.25rem;
+    }
+
+    .venture-cta-btn {
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>
 
 <script>
   const setupVenturesCarousel = () => {
-    document.querySelectorAll('.ventures-carousel').forEach((carousel) => {
-      if (carousel.hasAttribute('data-carousel-ready')) return;
-      carousel.setAttribute('data-carousel-ready', 'true');
+    document.querySelectorAll('.panel-ventures').forEach((root) => {
+      if (root.hasAttribute('data-carousel-ready')) return;
+      root.setAttribute('data-carousel-ready', 'true');
+
+      const carousel = root.querySelector('.ventures-carousel');
+      if (!carousel) return;
 
       const slides = Array.from(carousel.querySelectorAll('.venture-slide'));
-      const dots = Array.from(carousel.querySelectorAll('.venture-dot'));
+      const dots = Array.from(carousel.querySelectorAll('.venture-dot-item'));
+      const tabBtns = Array.from(root.querySelectorAll('.venture-tab-btn'));
+      const progressFill = carousel.querySelector('.ventures-progress-fill');
       const track = carousel.querySelector('.ventures-track');
-      let currentIndex = 0;
-      let touchStartX = 0;
 
-      const showSlide = (index) => {
+      let currentIndex = 0;
+      let autoplayTimer: any = null;
+      const AUTOPLAY_INTERVAL = 5500;
+      let isPaused = false;
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      const showSlide = (index: number) => {
         currentIndex = (index + slides.length) % slides.length;
 
-        slides.forEach((slide, slideIndex) => {
-          const isActive = slideIndex === currentIndex;
+        slides.forEach((slide, sIdx) => {
+          const isActive = sIdx === currentIndex;
           slide.classList.toggle('is-active', isActive);
           slide.setAttribute('aria-hidden', String(!isActive));
         });
 
-        dots.forEach((dot, dotIndex) => {
-          const isActive = dotIndex === currentIndex;
+        dots.forEach((dot, dIdx) => {
+          const isActive = dIdx === currentIndex;
           dot.classList.toggle('is-active', isActive);
           dot.setAttribute('aria-selected', String(isActive));
         });
+
+        tabBtns.forEach((tab, tIdx) => {
+          const isActive = tIdx === currentIndex;
+          tab.classList.toggle('is-active', isActive);
+          tab.setAttribute('aria-selected', String(isActive));
+        });
+
+        restartAutoplay();
       };
 
-      carousel.querySelector('[data-direction="prev"]')?.addEventListener('click', () => showSlide(currentIndex - 1));
-      carousel.querySelector('[data-direction="next"]')?.addEventListener('click', () => showSlide(currentIndex + 1));
-      dots.forEach((dot) => dot.addEventListener('click', () => showSlide(Number(dot.dataset.slideTo))));
+      const nextSlide = () => showSlide(currentIndex + 1);
+      const prevSlide = () => showSlide(currentIndex - 1);
 
-      carousel.addEventListener('keydown', (event) => {
-        if (event.key === 'ArrowLeft') showSlide(currentIndex - 1);
-        if (event.key === 'ArrowRight') showSlide(currentIndex + 1);
+      const startAutoplay = () => {
+        stopAutoplay();
+        if (progressFill) {
+          progressFill.classList.remove('running');
+          // Force reflow to restart CSS animation
+          void (progressFill as HTMLElement).offsetWidth;
+          progressFill.classList.add('running');
+        }
+        autoplayTimer = setInterval(() => {
+          if (!isPaused) {
+            nextSlide();
+          }
+        }, AUTOPLAY_INTERVAL);
+      };
+
+      const stopAutoplay = () => {
+        if (autoplayTimer) {
+          clearInterval(autoplayTimer);
+          autoplayTimer = null;
+        }
+        if (progressFill) {
+          progressFill.classList.remove('running');
+        }
+      };
+
+      const restartAutoplay = () => {
+        startAutoplay();
+      };
+
+      // Button Event Listeners
+      carousel.querySelector('[data-direction="prev"]')?.addEventListener('click', () => {
+        prevSlide();
       });
 
-      track?.addEventListener('touchstart', (event) => {
-        touchStartX = event.changedTouches[0].screenX;
+      carousel.querySelector('[data-direction="next"]')?.addEventListener('click', () => {
+        nextSlide();
+      });
+
+      dots.forEach((dot) => {
+        dot.addEventListener('click', () => {
+          const idx = Number(dot.getAttribute('data-slide-to'));
+          if (!isNaN(idx)) showSlide(idx);
+        });
+      });
+
+      tabBtns.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const idx = Number(tab.getAttribute('data-venture-target'));
+          if (!isNaN(idx)) showSlide(idx);
+        });
+      });
+
+      // Pause on Hover & Focus
+      carousel.addEventListener('mouseenter', () => {
+        isPaused = true;
+      });
+
+      carousel.addEventListener('mouseleave', () => {
+        isPaused = false;
+      });
+
+      carousel.addEventListener('focusin', () => {
+        isPaused = true;
+      });
+
+      carousel.addEventListener('focusout', () => {
+        isPaused = false;
+      });
+
+      // Keyboard navigation
+      carousel.addEventListener('keydown', (e: Event) => {
+        const keyEvent = e as KeyboardEvent;
+        if (keyEvent.key === 'ArrowLeft') {
+          prevSlide();
+        } else if (keyEvent.key === 'ArrowRight') {
+          nextSlide();
+        }
+      });
+
+      // Touch / Swipe Navigation
+      track?.addEventListener('touchstart', (e: Event) => {
+        const touchEvent = e as TouchEvent;
+        touchStartX = touchEvent.changedTouches[0].screenX;
+        touchStartY = touchEvent.changedTouches[0].screenY;
       }, { passive: true });
 
-      track?.addEventListener('touchend', (event) => {
-        const distance = event.changedTouches[0].screenX - touchStartX;
-        if (Math.abs(distance) < 40) return;
-        showSlide(currentIndex + (distance < 0 ? 1 : -1));
+      track?.addEventListener('touchend', (e: Event) => {
+        const touchEvent = e as TouchEvent;
+        const diffX = touchEvent.changedTouches[0].screenX - touchStartX;
+        const diffY = touchEvent.changedTouches[0].screenY - touchStartY;
+
+        // Check if horizontal swipe is dominant
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
+          if (diffX < 0) {
+            nextSlide();
+          } else {
+            prevSlide();
+          }
+        }
       }, { passive: true });
+
+      // Start initial autoplay
+      startAutoplay();
     });
   };
 

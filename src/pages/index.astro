@@ -25,16 +25,33 @@ const currentYear = new Date().getFullYear();
       
       <!-- Accordion Navigation Stack -->
       <div class="linktree-menu">
+        <!-- Item: Emprendimientos (Destacado - Arriba de todo) -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="linktree-btn featured-venture-btn active" data-tab="ventures">
+              <span class="btn-icon"><i class="fas fa-rocket"></i></span>
+              <span class="btn-text">Emprendimientos</span>
+              <span class="featured-pill"><i class="fas fa-star"></i> Destacado</span>
+              <span class="btn-chevron"><i class="fas fa-chevron-right"></i></span>
+            </button>
+          </h2>
+          <div class="accordion-content active" id="panel-ventures">
+            <div class="accordion-content-inner">
+              <Ventures />
+            </div>
+          </div>
+        </div>
+
         <!-- Item: Sobre Mí -->
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button class="linktree-btn active" data-tab="about">
+            <button class="linktree-btn" data-tab="about">
               <span class="btn-icon"><i class="fas fa-user-tie"></i></span>
               <span class="btn-text">Sobre Mí</span>
               <span class="btn-chevron"><i class="fas fa-chevron-right"></i></span>
             </button>
           </h2>
-          <div class="accordion-content active" id="panel-about">
+          <div class="accordion-content" id="panel-about">
             <div class="accordion-content-inner">
               <About />
             </div>
@@ -89,27 +106,11 @@ const currentYear = new Date().getFullYear();
           </div>
         </div>
 
-        <!-- Item: Emprendimientos -->
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="linktree-btn" data-tab="ventures">
-              <span class="btn-icon"><i class="fas fa-rocket"></i></span>
-              <span class="btn-text">Emprendimientos</span>
-              <span class="btn-chevron"><i class="fas fa-chevron-right"></i></span>
-            </button>
-          </h2>
-          <div class="accordion-content" id="panel-ventures">
-            <div class="accordion-content-inner">
-              <Ventures />
-            </div>
-          </div>
-        </div>
-
         <!-- Item: Proyectos de Desarrollo -->
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="linktree-btn" data-tab="projects">
-              <span class="btn-icon"><i class="fas fa-briefcase"></i></span>
+              <span class="btn-icon"><i class="fas fa-code"></i></span>
               <span class="btn-text">Proyectos de Desarrollo</span>
               <span class="btn-chevron"><i class="fas fa-chevron-right"></i></span>
             </button>
@@ -192,6 +193,72 @@ const currentYear = new Date().getFullYear();
 </Layout>
 
 <style>
+  /* Featured Venture Linktree Button */
+  :global(.linktree-btn.featured-venture-btn) {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.16) 0%, rgba(18, 27, 22, 0.95) 100%) !important;
+    border: 1px solid rgba(52, 211, 153, 0.45) !important;
+    box-shadow: 0 0 16px rgba(34, 197, 94, 0.12);
+    position: relative;
+    overflow: hidden;
+  }
+
+  :global(.linktree-btn.featured-venture-btn::after) {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(52, 211, 153, 0.18), transparent);
+    transform: skewX(-20deg);
+    animation: featuredShimmer 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    pointer-events: none;
+  }
+
+  @keyframes featuredShimmer {
+    0% { left: -100%; }
+    35%, 100% { left: 200%; }
+  }
+
+  :global(.linktree-btn.featured-venture-btn:hover) {
+    border-color: var(--accent-teal) !important;
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
+  }
+
+  :global(.linktree-btn.featured-venture-btn.active) {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.22) 0%, rgba(18, 27, 22, 0.98) 100%) !important;
+    border-color: var(--accent-blue) !important;
+    box-shadow: 0 4px 18px rgba(34, 197, 94, 0.2);
+  }
+
+  :global(.featured-pill) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.22rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(34, 197, 94, 0.2);
+    color: var(--accent-teal);
+    border: 1px solid rgba(52, 211, 153, 0.4);
+    margin-left: auto;
+    margin-right: 0.5rem;
+    animation: badgePulse 3s infinite ease-in-out;
+  }
+
+  :global(.featured-pill i) {
+    font-size: 0.6rem;
+    color: #facc15;
+  }
+
+  @keyframes badgePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
   /* Footer styles centered below the card */
   .hub-footer {
     margin-top: 2rem;
