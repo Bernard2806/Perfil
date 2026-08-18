@@ -278,60 +278,110 @@ const { email, phone, location } = portfolioData.personalInfo;
         label = 'Ocupado - No contesto';
         detail = 'Durmiendo o fuera de horario.';
       }
-      // 2. Class schedule checks
+      // 2. Class schedule checks (2° Cuatrimestre 2026 - Licenciatura en Sistemas UNLu & UNTREF)
       else if (day === 1) { // Lunes
-        if ((time >= 13.5 && time < 16.5) || (time >= 19.0 && time < 21.0)) {
+        // 09:00 - 12:00: Programación Estructurada (Virtual - UNLu)
+        if (time >= 9.0 && time < 12.0) {
           status = 'busy';
           label = 'Ocupado - No contesto';
-          detail = 'En clase en este momento (clase virtual/ciberseguridad).';
-        } else if ((time >= 13.0 && time < 13.5) || (time >= 16.5 && time < 17.0) || (time >= 18.5 && time < 19.0) || (time >= 21.0 && time < 21.5)) {
+          detail = 'En clase virtual de Programación Estructurada (UNLu).';
+        } 
+        // 15:00 - 18:00: Álgebra Lineal y Geometría (Aula 2 - Presencial UNLu)
+        else if (time >= 15.0 && time < 18.0) {
+          status = 'busy';
+          label = 'Ocupado - No contesto';
+          detail = 'Cursando Álgebra Lineal y Geometría en la UNLu.';
+        } 
+        // 19:00 - 21:00: Diplomatura en Ciberseguridad (Virtual - UNTREF)
+        else if (time >= 19.0 && time < 21.0) {
+          status = 'busy';
+          label = 'Ocupado - No contesto';
+          detail = 'En clase de Diplomatura en Ciberseguridad (UNTREF).';
+        } 
+        // Transiciones / Prep / Viajes
+        else if ((time >= 8.5 && time < 9.0) || (time >= 12.0 && time < 12.5) || 
+                 (time >= 14.5 && time < 15.0) || (time >= 18.0 && time < 18.5) || 
+                 (time >= 18.5 && time < 19.0) || (time >= 21.0 && time < 21.5)) {
           status = 'maybe';
           label = 'Posiblemente ocupado';
-          detail = 'Preparándome para cursar o recién saliendo de clases.';
+          detail = 'Preparándome para cursar, viajando a la facultad o saliendo de clase.';
         }
       }
       else if (day === 2) { // Martes
-        if (time >= 15.0 && time < 18.0) {
+        // 12:00 - 14:00: Org. de Computadoras (Aula 2) + 14:00 - 17:00: Sistemas de Información I (Sala Cómputos) - Presencial UNLu
+        if (time >= 12.0 && time < 17.0) {
           status = 'busy';
           label = 'Ocupado - No contesto';
-          detail = 'Cursando materias de la universidad.';
-        } else if ((time >= 14.5 && time < 15.0) || (time >= 18.0 && time < 18.5)) {
+          detail = 'Cursando en la UNLu (Org. de Computadoras / Sistemas de Información).';
+        } 
+        // Transiciones / Viaje
+        else if ((time >= 11.5 && time < 12.0) || (time >= 17.0 && time < 17.83)) {
           status = 'maybe';
           label = 'Posiblemente ocupado';
-          detail = 'Yendo a la universidad o saliendo de cursar.';
+          detail = 'Yendo a la universidad o regresando de cursar.';
         }
       }
       else if (day === 3) { // Miércoles
-        if ((time >= 14.0 && time < 17.0) || (time >= 19.0 && time < 21.0)) {
+        // 16:00 - 19:00: Sistemas de Información I (Virtual) + 19:00 - 21:00: Diplomatura Ciberseguridad (Virtual)
+        if (time >= 16.0 && time < 21.0) {
           status = 'busy';
           label = 'Ocupado - No contesto';
-          detail = 'En clase en este momento (clase virtual/ciberseguridad).';
-        } else if ((time >= 13.5 && time < 14.0) || (time >= 17.0 && time < 17.5) || (time >= 18.5 && time < 19.0) || (time >= 21.0 && time < 21.5)) {
+          detail = 'En clases virtuales (Sistemas de Información I / Ciberseguridad UNTREF).';
+        } 
+        // Transiciones
+        else if ((time >= 15.5 && time < 16.0) || (time >= 21.0 && time < 21.5)) {
           status = 'maybe';
           label = 'Posiblemente ocupado';
-          detail = 'Preparándome para cursar o recién saliendo de clases.';
+          detail = 'Preparándome para cursar virtual o recién finalizando clases.';
         }
       }
       else if (day === 4) { // Jueves
-        if ((time >= 14.0 && time < 17.0) || (time >= 18.0 && time < 21.0)) {
+        // 09:00 - 13:00: Competencia Inglés Nivel I (Aula 1 - Presencial UNLu)
+        if (time >= 9.0 && time < 13.0) {
           status = 'busy';
           label = 'Ocupado - No contesto';
-          detail = 'En clases de la universidad.';
-        } else if ((time >= 13.5 && time < 14.0) || (time >= 17.0 && time < 18.0) || (time >= 21.0 && time < 21.5)) {
+          detail = 'Cursando Competencia en Inglés en la UNLu.';
+        } 
+        // 15:00 - 18:00: Álgebra Lineal y Geometría (Aula 1) + 18:00 - 21:00: Programación Estructurada (Sala Cómputos)
+        else if (time >= 15.0 && time < 21.0) {
+          status = 'busy';
+          label = 'Ocupado - No contesto';
+          detail = 'Cursando en la UNLu (Álgebra Lineal / Programación Estructurada).';
+        } 
+        // Transiciones / Viajes
+        else if ((time >= 8.5 && time < 9.0) || (time >= 13.0 && time < 13.5) || 
+                 (time >= 14.5 && time < 15.0) || (time >= 21.0 && time < 21.83)) {
           status = 'maybe';
           label = 'Posiblemente ocupado';
-          detail = 'Entre clases de la universidad o saliendo.';
+          detail = 'Yendo a la universidad, en pausa intermedia o regresando de cursar.';
         }
       }
       else if (day === 5) { // Viernes
-        if (time >= 14.0 && time < 17.0) {
+        // 09:00 - 12:00: Competencias Básicas en Informática (Virtual - UNLu)
+        if (time >= 9.0 && time < 12.0) {
           status = 'busy';
           label = 'Ocupado - No contesto';
-          detail = 'Cursando en la universidad.';
-        } else if ((time >= 13.5 && time < 14.0) || (time >= 17.0 && time < 17.5)) {
+          detail = 'En clase virtual de Competencias Básicas en Informática (UNLu).';
+        } 
+        // Transiciones
+        else if ((time >= 8.5 && time < 9.0) || (time >= 12.0 && time < 12.5)) {
           status = 'maybe';
           label = 'Posiblemente ocupado';
-          detail = 'Yendo a la universidad o saliendo de cursar.';
+          detail = 'Preparándome para cursar o saliendo de clases virtuales.';
+        }
+      }
+      else if (day === 6) { // Sábado
+        // 12:00 - 14:00: Organización de Computadoras (Virtual - UNLu)
+        if (time >= 12.0 && time < 14.0) {
+          status = 'busy';
+          label = 'Ocupado - No contesto';
+          detail = 'En clase virtual de Organización de Computadoras (UNLu).';
+        } 
+        // Transiciones
+        else if ((time >= 11.5 && time < 12.0) || (time >= 14.0 && time < 14.5)) {
+          status = 'maybe';
+          label = 'Posiblemente ocupado';
+          detail = 'Preparándome para cursar o recién saliendo de clases virtuales.';
         }
       }
 
