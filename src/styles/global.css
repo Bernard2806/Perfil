@@ -585,3 +585,42 @@ body {
     display: none !important;
   }
 }
+
+/* ============================================================
+   Rediseño de escritorio (PC) — no altera el diseño móvil
+   ============================================================ */
+@media (min-width: 992px) {
+  .hub-wrapper {
+    max-width: 1320px;
+    padding: 0 1.5rem;
+  }
+
+  .hub-card {
+    display: grid;
+    grid-template-columns: 340px minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+    background-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+    contain: none;
+  }
+
+  .hub-sidebar {
+    position: sticky;
+    top: 1.5rem;
+    background-color: rgba(3, 15, 9, 0.78);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(34, 197, 94, 0.28);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 0 25px rgba(34, 197, 94, 0.18), 0 16px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .hub-main {
+    min-width: 0;
+  }
+}
