@@ -624,3 +624,100 @@ body {
     min-width: 0;
   }
 }
+
+/* ============================================================
+   Tarjetas bento en escritorio (acordeones siempre visibles)
+   ============================================================ */
+@media (min-width: 992px) {
+  /* Mosaico de dos columnas, distribución intencionalmente irregular */
+  .linktree-menu {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    padding: 0;
+  }
+
+  /* Cada sección se convierte en su propia tarjeta glass */
+  .accordion-item {
+    background-color: rgba(3, 15, 9, 0.78);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(34, 197, 94, 0.22);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 0 18px rgba(34, 197, 94, 0.10), 0 10px 30px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease, transform var(--transition-speed) ease;
+  }
+
+  .accordion-item:hover {
+    border-color: rgba(52, 211, 153, 0.45);
+    box-shadow: 0 0 24px rgba(34, 197, 94, 0.18), 0 14px 36px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+  }
+
+  /* Cabecera de tarjeta (antes botón de acordeón) */
+  .linktree-btn {
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    cursor: default;
+    padding-top: 1.1rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid var(--border-color) !important;
+  }
+
+  .linktree-btn:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+
+  .linktree-btn .btn-icon {
+    color: var(--accent-teal);
+  }
+
+  .linktree-btn .btn-text {
+    font-size: 1rem;
+  }
+
+  .btn-chevron {
+    display: none;
+  }
+
+  /* Forzar el contenido abierto en escritorio */
+  .accordion-content {
+    grid-template-rows: 1fr !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background-color: transparent !important;
+    content-visibility: visible !important;
+    contain-intrinsic-size: auto !important;
+    margin-top: 0 !important;
+    z-index: auto !important;
+  }
+
+  .accordion-content-inner {
+    opacity: 1 !important;
+    transform: none !important;
+    padding: 0 1.5rem 1.5rem 1.5rem !important;
+  }
+
+  /* Destacado: coherencia visual dentro de su tarjeta */
+  .linktree-btn.featured-venture-btn {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+
+  /* Distribución "no perfecta" del mosaico */
+  .accordion-item:nth-of-type(1) { grid-column: 1 / -1; } /* Emprendimientos (destacado) */
+  .accordion-item:nth-of-type(6) { grid-column: 1 / -1; } /* Proyectos */
+  .accordion-item:nth-of-type(7) { grid-column: 1 / -1; } /* Productos */
+  .accordion-item:nth-of-type(8) { grid-column: 1 / -1; } /* Contacto */
+
+  /* Scrollbar personalizada en el área principal */
+  .hub-main {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(52, 211, 153, 0.4) transparent;
+  }
+}
