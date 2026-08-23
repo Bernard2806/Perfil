@@ -429,9 +429,12 @@ const currentYear = new Date().getFullYear();
           targetPanel.classList.add('active');
 
           // Smooth scroll to the clicked accordion item to focus attention once the transition finishes
-          setTimeout(() => {
-            button.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }, 350);
+          // (solo en móvil; en escritorio el contenido ya está visible en el grid)
+          if (window.matchMedia('(max-width: 991px)').matches) {
+            setTimeout(() => {
+              button.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 350);
+          }
         }
       });
     });
