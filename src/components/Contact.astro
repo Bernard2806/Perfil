@@ -4,107 +4,202 @@ import portfolioData from "../data/portfolio.json";
 const { email, phone, location } = portfolioData.personalInfo;
 ---
 
-<div class="panel-contact">
-  <!-- Availability Card Widget -->
-  <div class="availability-card" id="availability-widget">
-    <div class="availability-header">
-      <span class="availability-title">Disponibilidad actual</span>
-      <span class="availability-timezone">ARG (GMT-3)</span>
-    </div>
-    <div class="availability-status">
-      <div class="status-indicator">
-        <span class="indicator-dot"></span>
-        <span class="indicator-pulse"></span>
+<div class="contact-hub">
+  <!-- Zona 1: Estación de Tiempo & Disponibilidad en Vivo (Argentina vs Mundo) -->
+  <div class="hub-station-card">
+    <!-- Header de Estado con Radar -->
+    <div class="station-status-header">
+      <div class="live-status-pill">
+        <div class="radar-ping">
+          <span class="ping-core"></span>
+          <span class="ping-wave"></span>
+        </div>
+        <span class="live-status-title" id="availability-label">Sincronizando estado...</span>
       </div>
-      <span class="status-label" id="availability-label">Cargando disponibilidad...</span>
+
+      <!-- Badge Nacional Argentino con Bandera SVG Vectorial -->
+      <div class="argentina-pill" title="Huso Horario: Argentina (GMT-3)">
+        <svg class="arg-flag-icon" viewBox="0 0 768 480" width="22" height="14" aria-hidden="true">
+          <rect width="768" height="480" fill="#74acdf"/>
+          <rect y="160" width="768" height="160" fill="#ffffff"/>
+          <circle cx="384" cy="240" r="36" fill="#f6b40e" stroke="#853406" stroke-width="2"/>
+          <g stroke="#f6b40e" stroke-width="4">
+            <line x1="384" y1="182" x2="384" y2="198"/>
+            <line x1="384" y1="282" x2="384" y2="298"/>
+            <line x1="326" y1="240" x2="342" y2="240"/>
+            <line x1="426" y1="240" x2="442" y2="240"/>
+            <line x1="343" y1="199" x2="354" y2="210"/>
+            <line x1="414" y1="270" x2="425" y2="281"/>
+            <line x1="343" y1="281" x2="354" y2="270"/>
+            <line x1="414" y1="210" x2="425" y2="199"/>
+          </g>
+        </svg>
+        <span class="arg-name">Buenos Aires, ARG</span>
+        <span class="arg-tz-tag">GMT-3</span>
+      </div>
     </div>
-    <p class="availability-detail" id="availability-detail">Verificando zona horaria...</p>
+
+    <!-- Instrumento HUD: Reloj Digital de Alta Precisión -->
+    <div class="time-instrument-panel">
+      <div class="instrument-main">
+        <div class="instrument-meta">
+          <span class="instrument-title"><i class="fas fa-clock"></i> Hora en Argentina</span>
+          <span class="solar-badge" id="arg-solar-badge"><i class="fas fa-moon"></i> Noche</span>
+        </div>
+        <div class="digital-clock-display" id="bernardo-clock">--:--:--</div>
+      </div>
+
+      <!-- Comparador con el Visitante -->
+      <div class="visitor-sync-box" id="visitor-sync-box">
+        <div class="visitor-sync-header">
+          <span class="visitor-sync-title"><i class="fas fa-globe-americas"></i> <span id="visitor-city-name">Tu zona horaria</span></span>
+          <span class="visitor-time-val" id="visitor-clock">--:--</span>
+        </div>
+        <div class="visitor-sync-status" id="visitor-diff-badge">
+          <i class="fas fa-satellite-dish"></i> Sincronizando...
+        </div>
+      </div>
+    </div>
+
+    <!-- Actividad & Agenda Académica (UNLu / UNTREF) -->
+    <div class="academic-activity-card">
+      <div class="activity-icon-box">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <div class="activity-text-box">
+        <span class="activity-heading">Agenda & Formación Actual</span>
+        <p class="activity-detail" id="availability-detail">Verificando cronograma universitario...</p>
+      </div>
+    </div>
   </div>
 
-  <div class="contact-cv-info">
-    <p class="contact-cv-desc">
-      Si quieres charlar, hacerme alguna consulta sobre mis proyectos o simplemente ponerte en contacto, podés escribirme directamente por cualquiera de estos medios:
-    </p>
-    
-    <div class="contact-cv-details">
-      <div class="contact-detail-item">
-        <i class="fas fa-envelope"></i>
-        <a href={`mailto:${email}`} class="detail-link">{email}</a>
-      </div>
-      <div class="contact-detail-item">
-        <i class="fas fa-phone"></i>
-        <span>{phone}</span>
-      </div>
-      <div class="contact-detail-item">
-        <i class="fas fa-map-marker-alt"></i>
-        <span>{location}</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="contact-wsp-action">
+  <!-- Zona 2: Canales de Conexión & Acciones Directas -->
+  <div class="hub-actions-zone">
+    <!-- Botón Destacado: WhatsApp -->
     <a 
-      href="https://wa.me/5492346409771?text=Hola%20Bernardo!%20Vengo%20desde%20tu%20web." 
+      href="https://wa.me/5492346409771?text=Hola%20Bernardo!%20Vengo%20desde%20tu%20perfil%20web." 
       target="_blank" 
       rel="noopener noreferrer" 
-      class="btn btn-primary btn-submit-cv"
+      class="action-channel-card whatsapp-channel"
     >
-      Contactar por WhatsApp <i class="fab fa-whatsapp"></i>
+      <div class="channel-icon-wrap wsp-icon">
+        <i class="fab fa-whatsapp"></i>
+      </div>
+      <div class="channel-info">
+        <div class="channel-title-row">
+          <span class="channel-title">WhatsApp Directo</span>
+          <span class="channel-badge">Respuesta Rápida</span>
+        </div>
+        <span class="channel-val">+54 9 2346 40-9771</span>
+      </div>
+      <div class="channel-arrow">
+        <i class="fas fa-arrow-right"></i>
+      </div>
     </a>
-    <a 
-      href={`tel:${phone.replace(/\s+/g, '')}`} 
-      class="btn btn-secondary btn-submit-cv btn-call-mobile"
-    >
-      Llamar por Teléfono <i class="fas fa-phone-alt"></i>
-    </a>
+
+    <!-- Tarjeta Interactiva: Correo Electrónico -->
+    <div class="action-channel-card email-channel" id="btn-copy-email" data-copy={email} title="Clic para copiar correo">
+      <div class="channel-icon-wrap mail-icon">
+        <i class="fas fa-envelope"></i>
+      </div>
+      <div class="channel-info">
+        <div class="channel-title-row">
+          <span class="channel-title">Correo Electrónico</span>
+          <span class="copy-hint-pill" id="email-copy-pill"><i class="fas fa-copy"></i> Copiar</span>
+        </div>
+        <span class="channel-val">{email}</span>
+      </div>
+      <a href={`mailto:${email}`} class="channel-direct-link" title="Abrir en cliente de correo" onclick="event.stopPropagation();">
+        <i class="fas fa-external-link-alt"></i>
+      </a>
+    </div>
+
+    <!-- Tarjeta Interactiva: Teléfono / Llamadas -->
+    <div class="action-channel-card phone-channel" id="btn-copy-phone" data-copy={phone} title="Clic para copiar teléfono">
+      <div class="channel-icon-wrap phone-icon">
+        <i class="fas fa-phone-alt"></i>
+      </div>
+      <div class="channel-info">
+        <div class="channel-title-row">
+          <span class="channel-title">Teléfono / Celular</span>
+          <span class="copy-hint-pill"><i class="fas fa-copy"></i> Copiar</span>
+        </div>
+        <span class="channel-val">{phone}</span>
+      </div>
+      <a href={`tel:${phone.replace(/\s+/g, '')}`} class="btn-call-quick" title="Llamar directamente" onclick="event.stopPropagation();">
+        <i class="fas fa-phone"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Toast flotante de copiado con feedback premium -->
+<div id="copy-toast" class="copy-toast" role="alert">
+  <div class="toast-content">
+    <i class="fas fa-check-circle"></i>
+    <span>¡Correo copiado al portapapeles!</span>
   </div>
 </div>
 
 <style>
-  .panel-contact {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  .contact-hub {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    width: 100%;
   }
 
-  /* Availability Widget Styles */
-  .availability-card {
-    background: rgba(34, 197, 94, 0.03);
-    border: 1px solid rgba(34, 197, 94, 0.12);
-    border-radius: 12px;
-    padding: 1.1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    transition: all 0.3s ease;
+  @media (min-width: 992px) {
+    .contact-hub {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1.5rem;
+      align-items: stretch;
+    }
   }
 
-  .availability-header {
+  /* ============================================================
+     Zona 1: Estación de Tiempo & Disponibilidad
+     ============================================================ */
+  .hub-station-card {
+    background: linear-gradient(160deg, rgba(18, 27, 22, 0.85) 0%, rgba(6, 16, 11, 0.95) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.35rem;
     display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hub-station-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #74acdf, #ffffff, #74acdf);
+    opacity: 0.8;
+  }
+
+  /* Cabecera de Estado & Bandera */
+  .station-status-header {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
+    gap: 0.75rem;
+    flex-wrap: wrap;
   }
 
-  .availability-timezone {
-    background: rgba(241, 247, 244, 0.05);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.68rem;
-    font-family: var(--font-code);
-  }
-
-  .availability-status {
+  .live-status-pill {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.65rem;
   }
 
-  .status-indicator {
+  .radar-ping {
     position: relative;
     width: 10px;
     height: 10px;
@@ -113,323 +208,671 @@ const { email, phone, location } = portfolioData.personalInfo;
     justify-content: center;
   }
 
-  .indicator-dot {
+  .ping-core {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: var(--accent-blue);
+    background-color: #22c55e;
     z-index: 2;
+    transition: background-color 0.3s ease;
   }
 
-  .indicator-pulse {
+  .ping-wave {
     position: absolute;
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    background-color: var(--accent-blue);
+    background-color: #22c55e;
     opacity: 0.4;
-    animation: statusPulse 2s infinite ease-out;
+    animation: radarWave 2s infinite cubic-bezier(0, 0.2, 0.8, 1);
     z-index: 1;
   }
 
-  @keyframes statusPulse {
-    0% {
-      transform: scale(0.6);
-      opacity: 0.8;
-    }
-    100% {
-      transform: scale(1.6);
-      opacity: 0;
-    }
+  @keyframes radarWave {
+    0% { transform: scale(0.4); opacity: 0.8; }
+    100% { transform: scale(1.8); opacity: 0; }
   }
 
-  .status-label {
-    font-size: 1.05rem;
+  .live-status-title {
+    font-family: var(--font-heading);
+    font-size: 0.96rem;
     font-weight: 700;
     color: var(--text-primary);
   }
 
-  .availability-detail {
-    font-size: 0.82rem;
+  /* Badge Argentino */
+  .argentina-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(116, 172, 223, 0.08);
+    border: 1px solid rgba(116, 172, 223, 0.28);
+    padding: 3px 9px;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(116, 172, 223, 0.12);
+  }
+
+  .arg-flag-icon {
+    border-radius: 2px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    flex-shrink: 0;
+  }
+
+  .arg-name {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #bae6fd;
+    letter-spacing: 0.02em;
+  }
+
+  .arg-tz-tag {
+    font-size: 0.68rem;
+    font-family: var(--font-code);
+    background: rgba(255, 255, 255, 0.06);
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: #93c5fd;
+    font-weight: 600;
+  }
+
+  /* Panel HUD de Tiempo */
+  .time-instrument-panel {
+    background: rgba(3, 12, 7, 0.9);
+    border: 1px solid rgba(52, 211, 153, 0.18);
+    border-radius: 12px;
+    padding: 1rem 1.15rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
+  }
+
+  @media (min-width: 480px) {
+    .time-instrument-panel {
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center;
+      gap: 1.25rem;
+    }
+  }
+
+  .instrument-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .instrument-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .solar-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.7rem;
+    color: #fbbf24;
+  }
+
+  .digital-clock-display {
+    font-family: var(--font-code);
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #4ade80;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-shadow: 0 0 16px rgba(74, 222, 128, 0.35);
+  }
+
+  /* Comparador con Visitante */
+  .visitor-sync-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding-left: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 0.75rem;
+  }
+
+  @media (min-width: 480px) {
+    .visitor-sync-box {
+      border-top: none;
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 0;
+      padding-left: 1.15rem;
+    }
+  }
+
+  .visitor-sync-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .visitor-time-val {
+    font-family: var(--font-code);
+    font-weight: 700;
+    color: #38bdf8;
+    font-size: 0.92rem;
+  }
+
+  .visitor-sync-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.22);
+    color: #38bdf8;
+  }
+
+  .visitor-sync-status.same-tz {
+    background: rgba(34, 197, 94, 0.08);
+    border-color: rgba(34, 197, 94, 0.25);
+    color: #4ade80;
+  }
+
+  /* Agenda Académica */
+  .academic-activity-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .activity-icon-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-teal);
+    font-size: 0.88rem;
+    flex-shrink: 0;
+  }
+
+  .activity-text-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .activity-heading {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  .activity-detail {
+    font-size: 0.84rem;
     color: var(--text-secondary);
     line-height: 1.4;
+    margin: 0;
   }
 
-  /* Status Overrides */
-  .availability-card.status-free {
-    background: rgba(34, 197, 94, 0.04);
-    border-color: rgba(34, 197, 94, 0.18);
-  }
-  .availability-card.status-free .indicator-dot,
-  .availability-card.status-free .indicator-pulse {
-    background-color: #22c55e;
-  }
-
-  .availability-card.status-maybe {
-    background: rgba(234, 179, 8, 0.04);
-    border-color: rgba(234, 179, 8, 0.18);
-  }
-  .availability-card.status-maybe .indicator-dot,
-  .availability-card.status-maybe .indicator-pulse {
-    background-color: #eab308;
-  }
-
-  .availability-card.status-busy {
-    background: rgba(239, 68, 68, 0.04);
-    border-color: rgba(239, 68, 68, 0.18);
-  }
-  .availability-card.status-busy .indicator-dot,
-  .availability-card.status-busy .indicator-pulse {
-    background-color: #ef4444;
-  }
-
-  /* Existing Contact Styles */
-  .contact-cv-desc {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    line-height: 1.5;
-    margin-bottom: 1rem;
-  }
-
-  .contact-cv-details {
+  /* ============================================================
+     Zona 2: Canales de Conexión
+     ============================================================ */
+  .hub-actions-zone {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
-    font-size: 0.88rem;
-    font-weight: 500;
+    gap: 0.85rem;
+    justify-content: space-between;
   }
 
-  .contact-detail-item {
+  .action-channel-card {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    color: var(--text-secondary);
-  }
-
-  .contact-detail-item i {
-    color: var(--accent-blue);
-    width: 16px;
-    text-align: center;
-  }
-
-  .detail-link {
-    color: var(--text-primary);
+    gap: 1rem;
+    padding: 0.95rem 1.15rem;
+    background: rgba(18, 27, 22, 0.65);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
     text-decoration: none;
-    transition: color var(--transition-speed) ease;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    cursor: pointer;
   }
 
-  .detail-link:hover {
-    color: var(--accent-blue);
-    text-decoration: none;
+  .action-channel-card:hover {
+    transform: translateY(-2px);
+    background: var(--bg-hover);
+    border-color: rgba(52, 211, 153, 0.4);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
   }
 
-  .contact-wsp-action {
-    border-top: 1px solid var(--border-color);
-    padding-top: 1.5rem;
+  /* WhatsApp Hero Card */
+  .action-channel-card.whatsapp-channel {
+    background: linear-gradient(135deg, rgba(37, 211, 102, 0.12) 0%, rgba(18, 140, 126, 0.08) 100%);
+    border-color: rgba(37, 211, 102, 0.35);
+    box-shadow: 0 4px 18px rgba(37, 211, 102, 0.15);
+  }
+
+  .action-channel-card.whatsapp-channel:hover {
+    background: linear-gradient(135deg, rgba(37, 211, 102, 0.2) 0%, rgba(18, 140, 126, 0.15) 100%);
+    border-color: rgba(37, 211, 102, 0.6);
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.3);
+  }
+
+  .channel-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .action-channel-card:hover .channel-icon-wrap {
+    transform: scale(1.08);
+  }
+
+  .wsp-icon {
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    color: #ffffff;
+    box-shadow: 0 0 14px rgba(37, 211, 102, 0.4);
+  }
+
+  .mail-icon {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    color: var(--accent-teal);
+  }
+
+  .phone-icon {
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    color: #38bdf8;
+  }
+
+  .channel-info {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    align-items: center;
+    gap: 0.15rem;
+    flex-grow: 1;
+    min-width: 0;
   }
 
-  .btn-submit-cv {
-    width: 100%;
+  .channel-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 0.5rem;
-    font-size: 0.95rem;
-    padding: 0.8rem 1.25rem;
   }
 
-  /* Escritorio ancho: contacto distribuido en tres columnas limpias */
-  @media (min-width: 992px) {
-    .panel-contact {
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.15fr) minmax(0, 0.85fr);
-      gap: 1.5rem;
-      align-items: start;
-    }
+  .channel-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
 
-    .contact-cv-desc {
-      margin-bottom: 1.25rem;
-    }
+  .channel-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #4ade80;
+    background: rgba(74, 222, 128, 0.12);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
 
-    .contact-wsp-action {
-      border-top: none;
-      border-left: 1px solid var(--border-color);
-      padding-top: 0;
-      padding-left: 1.5rem;
-      align-self: center;
-    }
+  .copy-hint-pill {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--accent-teal);
+    background: rgba(34, 197, 94, 0.1);
+    padding: 1px 6px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: all 0.2s ease;
+  }
+
+  .action-channel-card:hover .copy-hint-pill {
+    background: var(--accent-teal);
+    color: #030f09;
+  }
+
+  .channel-val {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .channel-arrow {
+    color: #25d366;
+    font-size: 1rem;
+    transition: transform 0.2s ease;
+  }
+
+  .whatsapp-channel:hover .channel-arrow {
+    transform: translateX(4px);
+  }
+
+  .channel-direct-link,
+  .btn-call-quick {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .channel-direct-link:hover,
+  .btn-call-quick:hover {
+    background: var(--accent-teal);
+    color: #030f09;
+    border-color: var(--accent-teal);
+  }
+
+  /* Toast */
+  .copy-toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: linear-gradient(135deg, #059669, #10b981);
+    color: #ffffff;
+    padding: 0.85rem 1.35rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 99999;
+  }
+
+  .copy-toast.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .toast-content {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
   }
 </style>
 
 <script>
-  function updateAvailability() {
+  function runWorldClockAndAvailability() {
     const labelEl = document.getElementById('availability-label');
     const detailEl = document.getElementById('availability-detail');
-    const widgetEl = document.getElementById('availability-widget');
+    const pingCoreEl = document.querySelector('.ping-core') as HTMLElement | null;
+    const pingWaveEl = document.querySelector('.ping-wave') as HTMLElement | null;
+    const bernardoClockEl = document.getElementById('bernardo-clock');
+    const visitorClockEl = document.getElementById('visitor-clock');
+    const visitorCityEl = document.getElementById('visitor-city-name');
+    const visitorDiffBadge = document.getElementById('visitor-diff-badge');
+    const argSolarBadge = document.getElementById('arg-solar-badge');
 
-    if (!labelEl || !detailEl || !widgetEl) return;
+    if (!bernardoClockEl) return;
 
     try {
-      const formatter = new Intl.DateTimeFormat('en-US', {
+      const now = new Date();
+
+      // 1. Reloj de Bernardo (Argentina, GMT-3)
+      const bFormatter = new Intl.DateTimeFormat('es-AR', {
         timeZone: 'America/Argentina/Buenos_Aires',
         hour12: false,
         weekday: 'short',
-        hour: 'numeric',
-        minute: 'numeric'
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
       });
-      
-      const parts = formatter.formatToParts(new Date());
-      const partVal = (type) => parts.find(p => p.type === type)?.value;
-      
-      const weekday = partVal('weekday');
-      const hour = parseInt(partVal('hour'), 10);
-      const minute = parseInt(partVal('minute'), 10);
-      
-      const dayMap = { 'Sun': 0, 'Mon': 1, 'Tue': 2, 'Wed': 3, 'Thu': 4, 'Fri': 5, 'Sat': 6 };
-      const day = dayMap[weekday];
-      const time = hour + minute / 60;
 
-      let status = 'free';
-      let label = 'Disponible - Al pedo';
-      let detail = 'Escribime, respondo al toque!';
+      const bParts = bFormatter.formatToParts(now);
+      const getB = (t: string) => bParts.find(p => p.type === t)?.value || '';
 
-      // 1. Sleeping hours (every day from 00:00 to 08:00)
-      if (time >= 0 && time < 8.0) {
-        status = 'busy';
-        label = 'Ocupado - No contesto';
-        detail = 'Durmiendo o fuera de horario.';
+      const bHourStr = getB('hour');
+      const bMinStr = getB('minute');
+      const bSecStr = getB('second');
+      const bWeekday = getB('weekday');
+      const bHourNum = parseInt(bHourStr, 10);
+      const minute = parseInt(bMinStr, 10);
+
+      bernardoClockEl.textContent = `${bHourStr}:${bMinStr}:${bSecStr}`;
+
+      // Sol / Luna en Argentina
+      if (argSolarBadge) {
+        if (bHourNum >= 7 && bHourNum < 20) {
+          argSolarBadge.innerHTML = '<i class="fas fa-sun" style="color: #fbbf24;"></i> Día soleado';
+        } else {
+          argSolarBadge.innerHTML = '<i class="fas fa-moon" style="color: #93c5fd;"></i> Noche';
+        }
       }
-      // 2. Class schedule checks (2° Cuatrimestre 2026 - Licenciatura en Sistemas UNLu & UNTREF)
+
+      // 2. Reloj del Visitante
+      const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+      const uFormatter = new Intl.DateTimeFormat('es-AR', {
+        timeZone: userTz,
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      const uParts = uFormatter.formatToParts(now);
+      const getU = (t: string) => uParts.find(p => p.type === t)?.value || '';
+      const uHourStr = getU('hour');
+      const uMinStr = getU('minute');
+
+      if (visitorClockEl) {
+        visitorClockEl.textContent = `${uHourStr}:${uMinStr}`;
+      }
+
+      // Cálculo de diferencia horaria
+      const bDateVal = new Date(now.toLocaleString('en-US', { timeZone: 'America/Argentina/Buenos_Aires' })).getTime();
+      const uDateVal = new Date(now.toLocaleString('en-US', { timeZone: userTz })).getTime();
+      const diffMinutes = Math.round((uDateVal - bDateVal) / (1000 * 60));
+      const diffHours = Math.round(diffMinutes / 60);
+
+      const rawCity = userTz.split('/').pop()?.replace(/_/g, ' ') || userTz;
+      if (visitorCityEl) visitorCityEl.textContent = `Tu hora (${rawCity})`;
+
+      if (visitorDiffBadge) {
+        if (Math.abs(diffMinutes) < 30) {
+          visitorDiffBadge.className = 'visitor-sync-status same-tz';
+          visitorDiffBadge.innerHTML = '<i class="fas fa-check-circle"></i> Misma hora local';
+        } else {
+          visitorDiffBadge.className = 'visitor-sync-status';
+          const isAhead = diffHours > 0;
+          const absH = Math.abs(diffHours);
+          const hText = absH === 1 ? '1h' : `${absH}h`;
+          visitorDiffBadge.innerHTML = `<i class="fas fa-hourglass-half"></i> ${hText} ${isAhead ? 'adelantado' : 'atrasado'}`;
+        }
+      }
+
+      // 3. Agenda Académica & Disponibilidad en Tiempo Real
+      const dayMap: Record<string, number> = { 'dom': 0, 'lun': 1, 'mar': 2, 'mié': 3, 'jue': 4, 'vie': 5, 'sáb': 6, 'sun': 0, 'mon': 1, 'tue': 2, 'wed': 3, 'thu': 4, 'fri': 5, 'sat': 6 };
+      const normalizedWeekday = bWeekday.toLowerCase().replace('.', '').slice(0, 3);
+      const day = dayMap[normalizedWeekday] ?? now.getDay();
+      const time = bHourNum + minute / 60;
+
+      let statusColor = '#22c55e';
+      let label = 'Disponible para charlar';
+      let detail = '¡Escribime por WhatsApp o correo, respondo al toque!';
+
+      // Madrugada
+      if (time >= 0 && time < 8.0) {
+        statusColor = '#ef4444';
+        label = 'Descansando / Fuera de horario';
+        detail = 'Dejame tu mensaje y te responderé en cuanto despierte.';
+      }
+      // Horarios de cursada UNLu y UNTREF
       else if (day === 1) { // Lunes
-        // 09:00 - 12:00: Programación Estructurada (Virtual - UNLu)
         if (time >= 9.0 && time < 12.0) {
-          status = 'busy';
-          label = 'Ocupado - No contesto';
-          detail = 'En clase virtual de Programación Estructurada (UNLu).';
-        } 
-        // 15:00 - 18:00: Álgebra Lineal y Geometría (Aula 2 - Presencial UNLu)
-        else if (time >= 15.0 && time < 18.0) {
-          status = 'busy';
-          label = 'Ocupado - No contesto';
-          detail = 'Cursando Álgebra Lineal y Geometría en la UNLu.';
-        } 
-        // 19:00 - 21:00: Diplomatura en Ciberseguridad (Virtual - UNTREF)
-        else if (time >= 19.0 && time < 21.0) {
-          status = 'busy';
-          label = 'Ocupado - No contesto';
-          detail = 'En clase de Diplomatura en Ciberseguridad (UNTREF).';
-        } 
-        // Transiciones / Prep / Viajes
-        else if ((time >= 8.5 && time < 9.0) || (time >= 12.0 && time < 12.5) || 
-                 (time >= 14.5 && time < 15.0) || (time >= 18.0 && time < 18.5) || 
-                 (time >= 18.5 && time < 19.0) || (time >= 21.0 && time < 21.5)) {
-          status = 'maybe';
-          label = 'Posiblemente ocupado';
-          detail = 'Preparándome para cursar, viajando a la facultad o saliendo de clase.';
+          statusColor = '#ef4444';
+          label = 'En clase virtual (UNLu)';
+          detail = 'Cursando Programación Estructurada.';
+        } else if (time >= 15.0 && time < 18.0) {
+          statusColor = '#ef4444';
+          label = 'Cursando en la UNLu';
+          detail = 'Álgebra Lineal y Geometría en la universidad.';
+        } else if (time >= 19.0 && time < 21.0) {
+          statusColor = '#ef4444';
+          label = 'En clase de Ciberseguridad';
+          detail = 'Diplomatura en Ciberseguridad (UNTREF).';
+        } else if ((time >= 8.5 && time < 9.0) || (time >= 12.0 && time < 12.5) || 
+                   (time >= 14.5 && time < 15.0) || (time >= 18.0 && time < 18.5) || 
+                   (time >= 18.5 && time < 19.0) || (time >= 21.0 && time < 21.5)) {
+          statusColor = '#eab308';
+          label = 'En traslado / Entre clases';
+          detail = 'Viajando o preparándome para la siguiente materia.';
         }
       }
       else if (day === 2) { // Martes
-        // 12:00 - 14:00: Org. de Computadoras (Aula 2) + 14:00 - 17:00: Sistemas de Información I (Sala Cómputos) - Presencial UNLu
         if (time >= 12.0 && time < 17.0) {
-          status = 'busy';
-          label = 'Ocupado - No contesto';
-          detail = 'Cursando en la UNLu (Org. de Computadoras / Sistemas de Información).';
-        } 
-        // Transiciones / Viaje
-        else if ((time >= 11.5 && time < 12.0) || (time >= 17.0 && time < 17.83)) {
-          status = 'maybe';
-          label = 'Posiblemente ocupado';
+          statusColor = '#ef4444';
+          label = 'Cursando en la UNLu';
+          detail = 'Org. de Computadoras y Sistemas de Información.';
+        } else if ((time >= 11.5 && time < 12.0) || (time >= 17.0 && time < 17.83)) {
+          statusColor = '#eab308';
+          label = 'En camino a la facultad';
           detail = 'Yendo a la universidad o regresando de cursar.';
         }
       }
       else if (day === 3) { // Miércoles
-        // 16:00 - 19:00: Sistemas de Información I (Virtual) + 19:00 - 21:00: Diplomatura Ciberseguridad (Virtual)
         if (time >= 16.0 && time < 21.0) {
-          status = 'busy';
-          label = 'Ocupado - No contesto';
-          detail = 'En clases virtuales (Sistemas de Información I / Ciberseguridad UNTREF).';
-        } 
-        // Transiciones
-        else if ((time >= 15.5 && time < 16.0) || (time >= 21.0 && time < 21.5)) {
-          status = 'maybe';
+          statusColor = '#ef4444';
+          label = 'En clases virtuales';
+          detail = 'Sistemas de Información I y Ciberseguridad UNTREF.';
+        } else if ((time >= 15.5 && time < 16.0) || (time >= 21.0 && time < 21.5)) {
+          statusColor = '#eab308';
           label = 'Posiblemente ocupado';
-          detail = 'Preparándome para cursar virtual o recién finalizando clases.';
+          detail = 'Preparando cursada virtual o finalizando clase.';
         }
       }
       else if (day === 4) { // Jueves
-        // 09:00 - 13:00: Competencia Inglés Nivel I (Aula 1 - Presencial UNLu)
         if (time >= 9.0 && time < 13.0) {
-          status = 'busy';
-          label = 'Ocupado - No contesto';
-          detail = 'Cursando Competencia en Inglés en la UNLu.';
-        } 
-        // 15:00 - 18:00: Álgebra Lineal y Geometría (Aula 1) + 18:00 - 21:00: Programación Estructurada (Sala Cómputos)
-        else if (time >= 15.0 && time < 21.0) {
-          status = 'busy';
-          label = 'Ocupado - No contesto';
-          detail = 'Cursando en la UNLu (Álgebra Lineal / Programación Estructurada).';
-        } 
-        // Transiciones / Viajes
-        else if ((time >= 8.5 && time < 9.0) || (time >= 13.0 && time < 13.5) || 
-                 (time >= 14.5 && time < 15.0) || (time >= 21.0 && time < 21.83)) {
-          status = 'maybe';
-          label = 'Posiblemente ocupado';
-          detail = 'Yendo a la universidad, en pausa intermedia o regresando de cursar.';
+          statusColor = '#ef4444';
+          label = 'Cursando en la UNLu';
+          detail = 'Competencia en Inglés Nivel I.';
+        } else if (time >= 15.0 && time < 21.0) {
+          statusColor = '#ef4444';
+          label = 'Cursando en la UNLu';
+          detail = 'Álgebra Lineal y Programación Estructurada.';
+        } else if ((time >= 8.5 && time < 9.0) || (time >= 13.0 && time < 13.5) || 
+                   (time >= 14.5 && time < 15.0) || (time >= 21.0 && time < 21.83)) {
+          statusColor = '#eab308';
+          label = 'Pausa universitaria / En viaje';
+          detail = 'En receso universitario o viajando a la facultad.';
         }
       }
       else if (day === 5) { // Viernes
-        // 09:00 - 12:00: Competencias Básicas en Informática (Virtual - UNLu)
         if (time >= 9.0 && time < 12.0) {
-          status = 'busy';
-          label = 'Ocupado - No contesto';
-          detail = 'En clase virtual de Competencias Básicas en Informática (UNLu).';
-        } 
-        // Transiciones
-        else if ((time >= 8.5 && time < 9.0) || (time >= 12.0 && time < 12.5)) {
-          status = 'maybe';
-          label = 'Posiblemente ocupado';
-          detail = 'Preparándome para cursar o saliendo de clases virtuales.';
+          statusColor = '#ef4444';
+          label = 'En clase virtual (UNLu)';
+          detail = 'Competencias Básicas en Informática.';
+        } else if ((time >= 8.5 && time < 9.0) || (time >= 12.0 && time < 12.5)) {
+          statusColor = '#eab308';
+          label = 'Preparando materia';
+          detail = 'En pausa previa o cerrando clase virtual.';
         }
       }
       else if (day === 6) { // Sábado
-        // 12:00 - 14:00: Organización de Computadoras (Virtual - UNLu)
         if (time >= 12.0 && time < 14.0) {
-          status = 'busy';
-          label = 'Ocupado - No contesto';
-          detail = 'En clase virtual de Organización de Computadoras (UNLu).';
-        } 
-        // Transiciones
-        else if ((time >= 11.5 && time < 12.0) || (time >= 14.0 && time < 14.5)) {
-          status = 'maybe';
-          label = 'Posiblemente ocupado';
-          detail = 'Preparándome para cursar o recién saliendo de clases virtuales.';
+          statusColor = '#ef4444';
+          label = 'En clase virtual (UNLu)';
+          detail = 'Organización de Computadoras.';
+        } else if ((time >= 11.5 && time < 12.0) || (time >= 14.0 && time < 14.5)) {
+          statusColor = '#eab308';
+          label = 'Finalizando cursada';
+          detail = 'Terminando jornada de estudio semanal.';
         }
       }
 
-      // 3. Late night window (every day 22:30 to 00:00)
-      if (status !== 'busy' && status !== 'maybe' && (time >= 22.5 && time < 24.0)) {
-        status = 'maybe';
-        label = 'Posiblemente ocupado';
-        detail = 'Cenando o descansando.';
+      // Cena / Descanso nocturno
+      if (statusColor === '#22c55e' && (time >= 22.5 && time < 24.0)) {
+        statusColor = '#eab308';
+        label = 'Cenando / Descanso';
+        detail = 'Cenando o descansando, pero atento al celular.';
       }
 
-      // Update classes & DOM
-      widgetEl.className = `availability-card status-${status}`;
-      labelEl.textContent = label;
-      detailEl.textContent = detail;
+      if (labelEl) labelEl.textContent = label;
+      if (detailEl) detailEl.textContent = detail;
+      if (pingCoreEl) pingCoreEl.style.backgroundColor = statusColor;
+      if (pingWaveEl) pingWaveEl.style.backgroundColor = statusColor;
     } catch (e) {
-      // Fallback
-      widgetEl.className = 'availability-card status-maybe';
-      labelEl.textContent = 'Posiblemente disponible';
-      detailEl.textContent = 'Escribime, responderé tan pronto como sea posible.';
+      if (labelEl) labelEl.textContent = 'Disponible para charlar';
     }
   }
 
-  // Run immediately and set up interval
-  updateAvailability();
-  setInterval(updateAvailability, 60000);
+  // Copiado interactivo con Toast
+  function setupCopyActions() {
+    const copyCards = [
+      { el: document.getElementById('btn-copy-email'), msg: '¡Correo copiado al portapapeles!' },
+      { el: document.getElementById('btn-copy-phone'), msg: '¡Teléfono copiado al portapapeles!' }
+    ];
+    const toast = document.getElementById('copy-toast');
 
-  // Support Astro View Transitions page swaps
-  document.addEventListener('astro:after-swap', updateAvailability);
+    copyCards.forEach(({ el, msg }) => {
+      if (!el) return;
+      el.addEventListener('click', async () => {
+        const text = el.getAttribute('data-copy');
+        if (!text) return;
+
+        try {
+          await navigator.clipboard.writeText(text);
+          if (toast) {
+            const span = toast.querySelector('span');
+            if (span) span.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+              toast.classList.remove('show');
+            }, 2400);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    });
+  }
+
+  // Inicialización inmediata
+  runWorldClockAndAvailability();
+  setInterval(runWorldClockAndAvailability, 1000);
+  setupCopyActions();
+
+  document.addEventListener('astro:after-swap', () => {
+    runWorldClockAndAvailability();
+    setupCopyActions();
+  });
 </script>
