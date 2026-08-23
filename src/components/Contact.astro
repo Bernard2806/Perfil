@@ -240,11 +240,11 @@ const { email, phone, location } = portfolioData.personalInfo;
   }
 
   /* Escritorio ancho: contacto distribuido en tres columnas */
-  @media (min-width: 1440px) {
+  @media (min-width: 992px) {
     .panel-contact {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 0.85fr);
-      gap: 2rem;
+      gap: 1.5rem;
       align-items: start;
     }
 
@@ -256,7 +256,7 @@ const { email, phone, location } = portfolioData.personalInfo;
       border-top: none;
       border-left: 1px solid var(--border-color);
       padding-top: 0;
-      padding-left: 2rem;
+      padding-left: 1.5rem;
       align-self: center;
     }
   }
