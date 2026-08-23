@@ -837,3 +837,41 @@ body {
   /* Fila 4: Contacto a ancho completo */
   .accordion-item:nth-of-type(8) { grid-column: 1 / -1; grid-row: 4; }
 }
+
+/* Perfil con más presencia en monitores grandes */
+@media (min-width: 1440px) {
+  .card-banner {
+    height: 140px;
+  }
+
+  .avatar-container {
+    margin-top: -66px;
+  }
+
+  .profile-avatar-overlay {
+    width: 126px;
+    height: 126px;
+    border-width: 5px;
+  }
+
+  .profile-name {
+    font-size: 1.9rem;
+  }
+
+  .profile-title {
+    font-size: 1.02rem;
+  }
+
+  .profile-meta {
+    font-size: 0.86rem;
+  }
+
+  .profile-socials {
+    gap: 1.4rem;
+    margin: 0.9rem 0 1.4rem 0;
+  }
+
+  .social-icon {
+    font-size: 1.35rem;
+  }
+}
