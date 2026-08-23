@@ -4,86 +4,92 @@ import portfolioData from "../data/portfolio.json";
 const { github, linkedin, instagram, facebook, steam, xbox, youtube } = portfolioData.personalInfo;
 
 const socialLinks = [
-  { name: "GitHub", url: github, icon: "fab fa-github" },
-  { name: "LinkedIn", url: linkedin, icon: "fab fa-linkedin-in" },
-  { name: "Instagram", url: instagram, icon: "fab fa-instagram" },
-  { name: "Facebook", url: facebook, icon: "fab fa-facebook-f" }
+  { name: "GitHub", url: github, icon: "fab fa-github", brand: "github" },
+  { name: "LinkedIn", url: linkedin, icon: "fab fa-linkedin-in", brand: "linkedin" },
+  { name: "Instagram", url: instagram, icon: "fab fa-instagram", brand: "instagram" },
+  { name: "Facebook", url: facebook, icon: "fab fa-facebook-f", brand: "facebook" }
 ];
 ---
 
 <div class="panel-socials">
   <!-- Redes Principales -->
-  <div class="socials-grid">
-    {socialLinks.map((social) => (
-      <a href={social.url} target="_blank" rel="noopener noreferrer" class="social-card">
-        <div class="social-card-icon">
-          <i class={social.icon}></i>
-        </div>
-        <span class="social-card-name">{social.name}</span>
-      </a>
-    ))}
+  <div class="socials-group">
+    <div class="socials-grid grid-2">
+      {socialLinks.map((social) => (
+        <a href={social.url} target="_blank" rel="noopener noreferrer" class={`social-card brand-${social.brand}`}>
+          <div class="social-card-icon">
+            <i class={social.icon}></i>
+          </div>
+          <span class="social-card-name">{social.name}</span>
+        </a>
+      ))}
+    </div>
   </div>
 
   <!-- Separador y Título de Streaming -->
-  <div class="streaming-divider">
-    <span class="divider-line"></span>
-    <h3 class="streaming-title">Creador de contenido (ocasional)</h3>
-    <span class="divider-line"></span>
-  </div>
+  <div class="socials-group">
+    <div class="streaming-divider">
+      <span class="divider-line"></span>
+      <h3 class="streaming-title"><i class="fas fa-broadcast-tower"></i> Streaming & Contenido</h3>
+      <span class="divider-line"></span>
+    </div>
 
-  <!-- Redes de Streaming -->
-  <div class="socials-grid streaming-grid">
-    <!-- Kick -->
-    <a href="https://kick.com/bernardtw2806" target="_blank" rel="noopener noreferrer" class="social-card kick-card">
-      <div class="social-card-icon kick-icon-container">
-        <svg viewBox="0 0 512 512" fill="currentColor" class="kick-svg">
-          <path d="M37 .036h164.448v113.621h54.71v-56.82h54.731V.036h164.448v170.777h-54.73v56.82h-54.711v56.8h54.71v56.82h54.73V512.03H310.89v-56.82h-54.73v-56.8h-54.711v113.62H37V.036z"/>
-        </svg>
-      </div>
-      <span class="social-card-name">Kick</span>
-    </a>
-    
-    <!-- YouTube -->
-    <a href={youtube || "https://www.youtube.com/@bernardtw2806"} target="_blank" rel="noopener noreferrer" class="social-card youtube-card">
-      <div class="social-card-icon youtube-icon-container">
-        <i class="fab fa-youtube"></i>
-      </div>
-      <span class="social-card-name">YouTube</span>
-    </a>
+    <!-- Redes de Streaming -->
+    <div class="socials-grid grid-3">
+      <!-- Kick -->
+      <a href="https://kick.com/bernardtw2806" target="_blank" rel="noopener noreferrer" class="social-card brand-kick">
+        <div class="social-card-icon">
+          <svg viewBox="0 0 512 512" fill="currentColor" class="kick-svg">
+            <path d="M37 .036h164.448v113.621h54.71v-56.82h54.731V.036h164.448v170.777h-54.73v56.82h-54.711v56.8h54.71v56.82h54.73V512.03H310.89v-56.82h-54.73v-56.8h-54.711v113.62H37V.036z"/>
+          </svg>
+        </div>
+        <span class="social-card-name">Kick</span>
+      </a>
+      
+      <!-- YouTube -->
+      <a href={youtube || "https://www.youtube.com/@bernardtw2806"} target="_blank" rel="noopener noreferrer" class="social-card brand-youtube">
+        <div class="social-card-icon">
+          <i class="fab fa-youtube"></i>
+        </div>
+        <span class="social-card-name">YouTube</span>
+      </a>
 
-    <!-- Twitch -->
-    <a href="https://www.twitch.tv/bernardtw2806" target="_blank" rel="noopener noreferrer" class="social-card twitch-card">
-      <div class="social-card-icon twitch-icon-container">
-        <i class="fab fa-twitch"></i>
-      </div>
-      <span class="social-card-name">Twitch</span>
-    </a>
+      <!-- Twitch -->
+      <a href="https://www.twitch.tv/bernardtw2806" target="_blank" rel="noopener noreferrer" class="social-card brand-twitch">
+        <div class="social-card-icon">
+          <i class="fab fa-twitch"></i>
+        </div>
+        <span class="social-card-name">Twitch</span>
+      </a>
+    </div>
   </div>
 
   <!-- Separador y Título de Gaming -->
-  <div class="streaming-divider">
-    <span class="divider-line"></span>
-    <h3 class="streaming-title">Gaming</h3>
-    <span class="divider-line"></span>
-  </div>
+  <div class="socials-group">
+    <div class="streaming-divider">
+      <span class="divider-line"></span>
+      <h3 class="streaming-title"><i class="fas fa-gamepad"></i> Gaming</h3>
+      <span class="divider-line"></span>
+    </div>
 
-  <!-- Redes de Gaming -->
-  <div class="socials-grid">
-    <!-- Steam -->
-    <a href={steam} target="_blank" rel="noopener noreferrer" class="social-card steam-card">
-      <div class="social-card-icon steam-icon-container">
-        <i class="fab fa-steam"></i>
-      </div>
-      <span class="social-card-name">Steam</span>
-    </a>
+    <!-- Redes de Gaming -->
+    <div class="socials-grid grid-2">
+      <!-- Steam -->
+      <a href={steam} target="_blank" rel="noopener noreferrer" class="social-card brand-steam">
+        <div class="social-card-icon">
+          <i class="fab fa-steam"></i>
+        </div>
+        <span class="social-card-name">Steam</span>
+      </a>
 
-    <!-- Xbox -->
-    <a href={xbox} target="_blank" rel="noopener noreferrer" class="social-card xbox-card">
-      <div class="social-card-icon xbox-icon-container">
-        <i class="fab fa-xbox"></i>
-      </div>
-      <span class="social-card-name">Xbox</span>
-    </a>
+      <!-- Xbox -->
+      <a href={xbox} target="_blank" rel="noopener noreferrer" class="social-card brand-xbox">
+        <div class="social-card-icon">
+          <i class="fab fa-xbox"></i>
+        </div>
+        <span class="social-card-name">Xbox</span>
+      </a>
+    </div>
   </div>
 </div>
 
@@ -91,38 +97,55 @@ const socialLinks = [
   .panel-socials {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    justify-content: space-between;
+    gap: 1.25rem;
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+  }
+
+  .socials-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
   }
 
   .socials-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    gap: 0.75rem;
     width: 100%;
   }
 
+  .socials-grid.grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .socials-grid.grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .social-card {
-    background-color: var(--bg-card);
+    background: rgba(18, 27, 22, 0.75);
     border: 1px solid var(--border-color);
     border-radius: 12px;
-    padding: 1.5rem;
+    padding: 1.15rem 0.75rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
+    gap: 0.6rem;
     text-decoration: none;
     transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   }
 
   .social-card-icon {
-    font-size: 2rem;
+    font-size: 1.6rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 56px;
-    width: 56px;
+    height: 48px;
+    width: 48px;
     border-radius: 50%;
     background-color: var(--bg-body);
     border: 1px solid var(--border-color);
@@ -130,74 +153,144 @@ const socialLinks = [
     color: var(--text-secondary);
   }
 
+  .kick-svg {
+    width: 18px;
+    height: 18px;
+  }
+
   .social-card-name {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     color: var(--text-primary);
+    text-align: center;
+    letter-spacing: 0.02em;
   }
 
-  /* Custom Hover Effects matching page palette */
+  /* Hover States */
   .social-card:hover {
     background-color: var(--bg-hover);
     transform: translateY(-3px);
   }
 
   .social-card:hover .social-card-icon {
-    background-color: var(--bg-card);
-    transform: scale(1.05);
+    transform: scale(1.08);
   }
 
   /* GitHub Hover */
-  .social-card:nth-child(1):hover {
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 10px 15px -3px rgba(255, 255, 255, 0.05);
+  .social-card.brand-github:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.08);
   }
-  .social-card:nth-child(1):hover .social-card-icon {
+  .social-card.brand-github:hover .social-card-icon {
     border-color: #ffffff;
     color: #ffffff;
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+    background-color: #1a221d;
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.2);
   }
 
   /* LinkedIn Hover */
-  .social-card:nth-child(2):hover {
-    border-color: rgba(10, 102, 194, 0.3);
-    box-shadow: 0 10px 15px -3px rgba(10, 102, 194, 0.08);
+  .social-card.brand-linkedin:hover {
+    border-color: rgba(10, 102, 194, 0.5);
+    box-shadow: 0 8px 20px rgba(10, 102, 194, 0.15);
   }
-  .social-card:nth-child(2):hover .social-card-icon {
+  .social-card.brand-linkedin:hover .social-card-icon {
     border-color: #0a66c2;
     color: #0a66c2;
-    box-shadow: 0 0 12px rgba(10, 102, 194, 0.2);
+    background-color: #1a221d;
+    box-shadow: 0 0 14px rgba(10, 102, 194, 0.3);
   }
 
   /* Instagram Hover */
-  .social-card:nth-child(3):hover {
-    border-color: rgba(225, 48, 108, 0.3);
-    box-shadow: 0 10px 15px -3px rgba(225, 48, 108, 0.08);
+  .social-card.brand-instagram:hover {
+    border-color: rgba(225, 48, 108, 0.5);
+    box-shadow: 0 8px 20px rgba(225, 48, 108, 0.15);
   }
-  .social-card:nth-child(3):hover .social-card-icon {
+  .social-card.brand-instagram:hover .social-card-icon {
     border-color: #e1306c;
     color: #e1306c;
-    box-shadow: 0 0 12px rgba(225, 48, 108, 0.2);
+    background-color: #1a221d;
+    box-shadow: 0 0 14px rgba(225, 48, 108, 0.3);
   }
 
   /* Facebook Hover */
-  .social-card:nth-child(4):hover {
-    border-color: rgba(24, 119, 242, 0.3);
-    box-shadow: 0 10px 15px -3px rgba(24, 119, 242, 0.08);
+  .social-card.brand-facebook:hover {
+    border-color: rgba(24, 119, 242, 0.5);
+    box-shadow: 0 8px 20px rgba(24, 119, 242, 0.15);
   }
-  .social-card:nth-child(4):hover .social-card-icon {
+  .social-card.brand-facebook:hover .social-card-icon {
     border-color: #1877f2;
     color: #1877f2;
-    box-shadow: 0 0 12px rgba(24, 119, 242, 0.2);
+    background-color: #1a221d;
+    box-shadow: 0 0 14px rgba(24, 119, 242, 0.3);
   }
 
-  /* Streaming Divider */
+  /* Kick Hover */
+  .social-card.brand-kick:hover {
+    border-color: rgba(83, 252, 24, 0.5);
+    box-shadow: 0 8px 20px rgba(83, 252, 24, 0.18);
+  }
+  .social-card.brand-kick:hover .social-card-icon {
+    border-color: #53fc18;
+    color: #53fc18;
+    background-color: #1a221d;
+    box-shadow: 0 0 14px rgba(83, 252, 24, 0.3);
+  }
+
+  /* YouTube Hover */
+  .social-card.brand-youtube:hover {
+    border-color: rgba(255, 0, 0, 0.4);
+    box-shadow: 0 8px 20px rgba(255, 0, 0, 0.15);
+  }
+  .social-card.brand-youtube:hover .social-card-icon {
+    border-color: #ff0000;
+    color: #ff0000;
+    background-color: #1a221d;
+    box-shadow: 0 0 14px rgba(255, 0, 0, 0.3);
+  }
+
+  /* Twitch Hover */
+  .social-card.brand-twitch:hover {
+    border-color: rgba(145, 70, 255, 0.5);
+    box-shadow: 0 8px 20px rgba(145, 70, 255, 0.18);
+  }
+  .social-card.brand-twitch:hover .social-card-icon {
+    border-color: #a970ff;
+    color: #a970ff;
+    background-color: #1a221d;
+    box-shadow: 0 0 14px rgba(145, 70, 255, 0.3);
+  }
+
+  /* Steam Hover */
+  .social-card.brand-steam:hover {
+    border-color: rgba(102, 192, 244, 0.5);
+    box-shadow: 0 8px 20px rgba(102, 192, 244, 0.18);
+  }
+  .social-card.brand-steam:hover .social-card-icon {
+    border-color: #66c0f4;
+    color: #66c0f4;
+    background-color: #1a221d;
+    box-shadow: 0 0 14px rgba(102, 192, 244, 0.3);
+  }
+
+  /* Xbox Hover */
+  .social-card.brand-xbox:hover {
+    border-color: rgba(16, 124, 16, 0.5);
+    box-shadow: 0 8px 20px rgba(16, 124, 16, 0.18);
+  }
+  .social-card.brand-xbox:hover .social-card-icon {
+    border-color: #107c10;
+    color: #107c10;
+    background-color: #1a221d;
+    box-shadow: 0 0 14px rgba(16, 124, 16, 0.3);
+  }
+
+  /* Dividers */
   .streaming-divider {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin: 1.5rem 0 0.5rem 0;
+    gap: 0.75rem;
+    margin: 0.6rem 0 0.2rem 0;
     width: 100%;
   }
 
@@ -209,109 +302,42 @@ const socialLinks = [
 
   .streaming-title {
     font-family: var(--font-heading);
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.08em;
     color: var(--text-muted);
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
   }
 
-  /* Kick & Twitch specific styles */
-  .kick-svg {
-    width: 20px;
-    height: 20px;
+  .streaming-title i {
+    color: var(--accent-teal);
+    font-size: 0.75rem;
   }
 
-  .social-card.kick-card:hover {
-    border-color: rgba(83, 252, 24, 0.3);
-    box-shadow: 0 10px 15px -3px rgba(83, 252, 24, 0.08);
-  }
-  .social-card.kick-card:hover .kick-icon-container {
-    border-color: #53fc18;
-    color: #53fc18;
-    box-shadow: 0 0 12px rgba(83, 252, 24, 0.25);
-  }
-
-  .social-card.twitch-card:hover {
-    border-color: rgba(145, 70, 255, 0.3);
-    box-shadow: 0 10px 15px -3px rgba(145, 70, 255, 0.08);
-  }
-  .social-card.twitch-card:hover .twitch-icon-container {
-    border-color: #a970ff;
-    color: #a970ff;
-    box-shadow: 0 0 12px rgba(145, 70, 255, 0.25);
-  }
-
-  /* YouTube Hover */
-  .social-card.youtube-card:hover {
-    border-color: rgba(255, 0, 0, 0.18);
-    box-shadow: 0 10px 15px -3px rgba(255, 0, 0, 0.06);
-  }
-  .social-card.youtube-card:hover .youtube-icon-container {
-    border-color: #ff0000;
-    color: #ff0000;
-    box-shadow: 0 0 12px rgba(255, 0, 0, 0.12);
-  }
-
-  /* Streaming grid: triángulo invertido (dos arriba, uno centrado abajo) */
-  .streaming-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-
-  .streaming-grid .social-card.twitch-card {
-    grid-column: 1 / -1;
-    justify-self: center;
-    width: 60%;
-    max-width: 320px;
-  }
-
-  .social-card.steam-card:hover {
-    border-color: rgba(102, 192, 244, 0.3);
-    box-shadow: 0 10px 15px -3px rgba(102, 192, 244, 0.08);
-  }
-  .social-card.steam-card:hover .steam-icon-container {
-    border-color: #66c0f4;
-    color: #66c0f4;
-    box-shadow: 0 0 12px rgba(102, 192, 244, 0.25);
-  }
-
-  .social-card.xbox-card:hover {
-    border-color: rgba(16, 124, 16, 0.3);
-    box-shadow: 0 10px 15px -3px rgba(16, 124, 16, 0.08);
-  }
-  .social-card.xbox-card:hover .xbox-icon-container {
-    border-color: #107c10;
-    color: #107c10;
-    box-shadow: 0 0 12px rgba(16, 124, 16, 0.25);
-  }
-
-  /* Responsive: small mobile screens */
-  @media (max-width: 420px) {
-    .socials-grid {
-      grid-template-columns: 1fr;
-      gap: 0.75rem;
+  /* Responsive para móviles pequeños */
+  @media (max-width: 480px) {
+    .socials-grid.grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.5rem;
     }
+    
     .social-card {
-      padding: 1.1rem;
-      flex-direction: row;
-      gap: 0.75rem;
+      padding: 0.9rem 0.4rem;
+      gap: 0.4rem;
     }
+
     .social-card-icon {
-      height: 44px;
-      width: 44px;
-      font-size: 1.5rem;
+      height: 40px;
+      width: 40px;
+      font-size: 1.3rem;
     }
-    .streaming-grid .social-card.twitch-card {
-      width: 100%;
-      max-width: none;
-    }
-    .streaming-divider {
-      margin: 1rem 0 0.25rem 0;
-    }
-    .streaming-title {
-      font-size: 0.7rem;
+
+    .social-card-name {
+      font-size: 0.8rem;
     }
   }
 </style>
