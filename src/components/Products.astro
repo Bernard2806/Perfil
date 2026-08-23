@@ -253,6 +253,26 @@ const showProducts = false; // Set to true when products/SaaS are ready to be sh
     }
   }
 
+  .panel-products {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .products-construction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    background-color: var(--bg-hover);
+    border: 1px dashed var(--accent-blue);
+    border-radius: 12px;
+    gap: 1.25rem;
+    position: relative;
+    overflow: hidden;
+  }
+
   .construction-body-info {
     display: flex;
     flex-direction: column;
@@ -270,8 +290,8 @@ const showProducts = false; // Set to true when products/SaaS are ready to be sh
     .products-construction {
       flex-direction: row;
       text-align: left;
-      padding: 1.6rem 2.25rem;
-      gap: 2rem;
+      padding: 1.4rem 2rem;
+      gap: 1.75rem;
       justify-content: space-between;
       align-items: center;
     }
@@ -279,6 +299,7 @@ const showProducts = false; // Set to true when products/SaaS are ready to be sh
     .construction-body-info {
       flex-grow: 1;
       max-width: none;
+      align-items: flex-start;
     }
 
     .construction-text {
@@ -289,7 +310,7 @@ const showProducts = false; // Set to true when products/SaaS are ready to be sh
       align-items: flex-end;
       flex-shrink: 0;
       border-left: 1px solid var(--border-color);
-      padding-left: 2rem;
+      padding-left: 1.75rem;
     }
   }
 

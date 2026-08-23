@@ -164,12 +164,12 @@ const getTagColorClass = (tech: string) => {
     transform: translateX(3px);
   }
 
-  /* En escritorio la tarjeta es ancha: aprovechar en dos columnas */
+  /* En escritorio: dos columnas amplias y simétricas */
   @media (min-width: 992px) {
     .projects-cv-list {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
+      gap: 1.25rem;
     }
   }
 </style>
