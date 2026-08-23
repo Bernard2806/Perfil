@@ -7,7 +7,6 @@ import Education from "../components/Education.astro";
 import Socials from "../components/Socials.astro";
 import Ventures from "../components/Ventures.astro";
 import Projects from "../components/Projects.astro";
-import Products from "../components/Products.astro";
 import Contact from "../components/Contact.astro";
 import ProjectModals from "../components/ProjectModals.astro";
 import portfolioData from "../data/portfolio.json";
@@ -29,40 +28,24 @@ const currentYear = new Date().getFullYear();
       <div class="hub-main">
         <!-- Accordion Navigation Stack -->
       <div class="linktree-menu">
-        <!-- Item: Emprendimientos (Destacado - Arriba de todo) -->
-        <div class="accordion-item item-fullwidth">
-          <h2 class="accordion-header">
-            <button class="linktree-btn featured-venture-btn active" data-tab="ventures">
-              <span class="btn-icon"><i class="fas fa-rocket"></i></span>
-              <span class="btn-text">Emprendimientos</span>
-              <span class="featured-pill"><i class="fas fa-star"></i> Destacado</span>
-              <span class="btn-chevron"><i class="fas fa-chevron-right"></i></span>
-            </button>
-          </h2>
-          <div class="accordion-content active" id="panel-ventures">
-            <div class="accordion-content-inner">
-              <Ventures />
-            </div>
-          </div>
-        </div>
-
-        <!-- Item: Sobre Mí -->
+        <!-- Fila 1 - Pareja 1: Sobre Mí & Experiencia Laboral -->
+        <!-- Item 1: Sobre Mí -->
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button class="linktree-btn" data-tab="about">
+            <button class="linktree-btn active" data-tab="about">
               <span class="btn-icon"><i class="fas fa-user-tie"></i></span>
               <span class="btn-text">Sobre Mí</span>
               <span class="btn-chevron"><i class="fas fa-chevron-right"></i></span>
             </button>
           </h2>
-          <div class="accordion-content" id="panel-about">
+          <div class="accordion-content active" id="panel-about">
             <div class="accordion-content-inner">
               <About />
             </div>
           </div>
         </div>
 
-        <!-- Item: Experiencia Laboral -->
+        <!-- Item 2: Experiencia Laboral -->
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="linktree-btn" data-tab="experience">
@@ -78,7 +61,8 @@ const currentYear = new Date().getFullYear();
           </div>
         </div>
 
-        <!-- Item: Estudios -->
+        <!-- Fila 2 - Pareja 2: Estudios & Redes Sociales -->
+        <!-- Item 3: Estudios -->
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="linktree-btn" data-tab="education">
@@ -94,7 +78,7 @@ const currentYear = new Date().getFullYear();
           </div>
         </div>
 
-        <!-- Item: Redes Sociales -->
+        <!-- Item 4: Redes Sociales -->
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="linktree-btn" data-tab="socials">
@@ -110,7 +94,24 @@ const currentYear = new Date().getFullYear();
           </div>
         </div>
 
-        <!-- Item: Proyectos de Desarrollo -->
+        <!-- Fila 3 - Individual: Emprendimientos (2 columnas internas) -->
+        <div class="accordion-item item-fullwidth">
+          <h2 class="accordion-header">
+            <button class="linktree-btn featured-venture-btn" data-tab="ventures">
+              <span class="btn-icon"><i class="fas fa-rocket"></i></span>
+              <span class="btn-text">Emprendimientos</span>
+              <span class="featured-pill"><i class="fas fa-star"></i> Destacado</span>
+              <span class="btn-chevron"><i class="fas fa-chevron-right"></i></span>
+            </button>
+          </h2>
+          <div class="accordion-content" id="panel-ventures">
+            <div class="accordion-content-inner">
+              <Ventures />
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila 4 - Individual: Proyectos de Desarrollo (2 columnas internas) -->
         <div class="accordion-item item-fullwidth">
           <h2 class="accordion-header">
             <button class="linktree-btn" data-tab="projects">
@@ -126,23 +127,7 @@ const currentYear = new Date().getFullYear();
           </div>
         </div>
 
-        <!-- Item: Software & SaaS en Venta -->
-        <div class="accordion-item item-fullwidth">
-          <h2 class="accordion-header">
-            <button class="linktree-btn" data-tab="products">
-              <span class="btn-icon"><i class="fas fa-shopping-bag"></i></span>
-              <span class="btn-text">Software & SaaS en Venta</span>
-              <span class="btn-chevron"><i class="fas fa-chevron-right"></i></span>
-            </button>
-          </h2>
-          <div class="accordion-content" id="panel-products">
-            <div class="accordion-content-inner">
-              <Products />
-            </div>
-          </div>
-        </div>
-
-        <!-- Item: Enviar Mensaje -->
+        <!-- Fila 5 - Individual: Enviar Mensaje (3 columnas internas) -->
         <div class="accordion-item item-fullwidth">
           <h2 class="accordion-header">
             <button class="linktree-btn" data-tab="contact">
