@@ -238,6 +238,28 @@ const { email, phone, location } = portfolioData.personalInfo;
     font-size: 0.95rem;
     padding: 0.8rem 1.25rem;
   }
+
+  /* Escritorio ancho: contacto distribuido en tres columnas */
+  @media (min-width: 1440px) {
+    .panel-contact {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 0.85fr);
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .contact-cv-desc {
+      margin-bottom: 1.25rem;
+    }
+
+    .contact-wsp-action {
+      border-top: none;
+      border-left: 1px solid var(--border-color);
+      padding-top: 0;
+      padding-left: 2rem;
+      align-self: center;
+    }
+  }
 </style>
 
 <script>
