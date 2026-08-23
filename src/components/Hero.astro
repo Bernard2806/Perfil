@@ -51,12 +51,206 @@ if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate()))
   )}
 </div>
 
+<!-- Menú Navegación Companion (Visible en escritorio como índice activo) -->
+<nav class="sidebar-nav-menu" aria-label="Índice de secciones">
+  <a href="#sec-about" class="sidebar-nav-item active" data-nav="sec-about">
+    <span class="nav-icon"><i class="fas fa-user-tie"></i></span>
+    <span class="nav-label">Sobre Mí</span>
+  </a>
+  <a href="#sec-experience" class="sidebar-nav-item" data-nav="sec-experience">
+    <span class="nav-icon"><i class="fas fa-briefcase"></i></span>
+    <span class="nav-label">Experiencia</span>
+  </a>
+  <a href="#sec-education" class="sidebar-nav-item" data-nav="sec-education">
+    <span class="nav-icon"><i class="fas fa-graduation-cap"></i></span>
+    <span class="nav-label">Estudios</span>
+  </a>
+  <a href="#sec-socials" class="sidebar-nav-item" data-nav="sec-socials">
+    <span class="nav-icon"><i class="fas fa-share-nodes"></i></span>
+    <span class="nav-label">Redes Sociales</span>
+  </a>
+  <a href="#sec-ventures" class="sidebar-nav-item" data-nav="sec-ventures">
+    <span class="nav-icon"><i class="fas fa-rocket"></i></span>
+    <span class="nav-label">Emprendimientos</span>
+    <span class="nav-star"><i class="fas fa-star"></i></span>
+  </a>
+  <a href="#sec-projects" class="sidebar-nav-item" data-nav="sec-projects">
+    <span class="nav-icon"><i class="fas fa-code"></i></span>
+    <span class="nav-label">Proyectos</span>
+  </a>
+  <a href="#sec-contact" class="sidebar-nav-item" data-nav="sec-contact">
+    <span class="nav-icon"><i class="fas fa-envelope"></i></span>
+    <span class="nav-label">Contacto</span>
+  </a>
+</nav>
+
+<!-- Footer de la Barra Lateral -->
+<div class="sidebar-footer-card">
+  <div class="sidebar-live-pill">
+    <span class="sidebar-pulse-dot"></span>
+    <span class="sidebar-live-text">Disponible para proyectos</span>
+  </div>
+  <a 
+    href="https://wa.me/5492346409771?text=Hola%20Bernardo!%20Vengo%20desde%20tu%20perfil%20web." 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    class="sidebar-cta-btn"
+  >
+    <i class="fab fa-whatsapp"></i> Chat Directo
+  </a>
+</div>
+
 <style>
   .banner-toggle-position {
     position: absolute;
     top: 1rem;
     right: 1rem;
     z-index: 20;
+  }
+
+  /* Menú de navegación companion - oculto en móvil, activo en desktop */
+  .sidebar-nav-menu {
+    display: none;
+  }
+
+  .sidebar-footer-card {
+    display: none;
+  }
+
+  @media (min-width: 992px) {
+    .sidebar-nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: 0.5rem 1.25rem 1rem 1.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .sidebar-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0.85rem;
+      border-radius: 9px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 600;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .sidebar-nav-item:hover {
+      background: rgba(34, 197, 94, 0.08);
+      color: var(--text-primary);
+      transform: translateX(3px);
+    }
+
+    .sidebar-nav-item.active {
+      background: rgba(34, 197, 94, 0.15);
+      color: #34d399;
+      border-left: 3px solid #34d399;
+      padding-left: calc(0.85rem - 3px);
+    }
+
+    .sidebar-nav-item .nav-icon {
+      width: 18px;
+      font-size: 0.88rem;
+      text-align: center;
+      color: var(--accent-teal);
+    }
+
+    .sidebar-nav-item.active .nav-icon {
+      color: #34d399;
+    }
+
+    .nav-label {
+      flex-grow: 1;
+    }
+
+    .nav-star {
+      font-size: 0.68rem;
+      color: #f59e0b;
+    }
+
+    /* Footer del sidebar */
+    .sidebar-footer-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      padding: 1rem 1.25rem;
+      margin: 0 1rem 1rem 1rem;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(52, 211, 153, 0.15);
+      border-radius: 12px;
+    }
+
+    .sidebar-live-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #4ade80;
+    }
+
+    .sidebar-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+    }
+
+    .sidebar-cta-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.55rem;
+      background: linear-gradient(135deg, rgba(37, 211, 102, 0.15), rgba(18, 140, 126, 0.12));
+      border: 1px solid rgba(37, 211, 102, 0.35);
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-cta-btn:hover {
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+      transform: translateY(-1px);
+    }
+  }
+
+  /* Optimización para laptops / pantallas de 768px de alto (1366x768 / 1360x768) */
+  @media (min-width: 992px) and (max-height: 860px) {
+    .sidebar-nav-menu {
+      gap: 0.18rem;
+      padding: 0.35rem 0.85rem 0.45rem 0.85rem;
+    }
+
+    .sidebar-nav-item {
+      padding: 0.36rem 0.65rem;
+      font-size: 0.8rem;
+    }
+
+    .sidebar-footer-card {
+      padding: 0.45rem 0.75rem;
+      margin: 0 0.75rem 0.65rem 0.75rem;
+      gap: 0.4rem;
+    }
+
+    .sidebar-live-pill {
+      font-size: 0.68rem;
+    }
+
+    .sidebar-cta-btn {
+      padding: 0.38rem;
+      font-size: 0.74rem;
+    }
   }
 </style>
 
@@ -186,13 +380,62 @@ if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate()))
     }
   };
 
+  const setupScrollSpy = () => {
+    const navItems = document.querySelectorAll('.sidebar-nav-item');
+    if (!navItems.length) return;
+
+    const sections = Array.from(navItems).map(item => {
+      const id = item.getAttribute('data-nav');
+      return { item, el: id ? document.getElementById(id) : null };
+    }).filter(s => s.el !== null);
+
+    const onScroll = () => {
+      const scrollPos = window.scrollY + 200;
+      let currentSectionId = '';
+
+      for (const { el } of sections) {
+        if (el && el.offsetTop <= scrollPos) {
+          currentSectionId = el.id;
+        }
+      }
+
+      if (currentSectionId) {
+        navItems.forEach(item => {
+          if (item.getAttribute('data-nav') === currentSectionId) {
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active');
+          }
+        });
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    navItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        const id = item.getAttribute('data-nav');
+        if (!id) return;
+        const targetEl = document.getElementById(id);
+        if (targetEl) {
+          e.preventDefault();
+          const targetY = targetEl.getBoundingClientRect().top + window.pageYOffset - 30;
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
+      });
+    });
+  };
+
   // Run on load
   startRotation();
   setupBannerColor();
+  setupScrollSpy();
 
   // Run on Astro page transition swaps
   document.addEventListener('astro:after-swap', () => {
     startRotation();
     setupBannerColor();
+    setupScrollSpy();
   });
 </script>

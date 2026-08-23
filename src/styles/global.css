@@ -591,14 +591,14 @@ body {
    ============================================================ */
 @media (min-width: 992px) {
   .hub-wrapper {
-    max-width: 1440px;
+    max-width: 1460px;
     padding: 0 1.5rem;
   }
 
   .hub-card {
     display: grid;
-    grid-template-columns: 320px minmax(0, 1fr);
-    gap: 1.5rem;
+    grid-template-columns: 340px minmax(0, 1fr);
+    gap: 1.75rem;
     align-items: start;
     background-color: transparent;
     backdrop-filter: none;
@@ -606,22 +606,122 @@ body {
     border: none;
     box-shadow: none;
     contain: none;
+    overflow: visible !important;
   }
 
   .hub-sidebar {
+    position: -webkit-sticky;
     position: sticky;
     top: 1.5rem;
-    background-color: rgba(3, 15, 9, 0.78);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    align-self: start;
+    max-height: calc(100vh - 3rem);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none; /* Aspecto limpio de app sidebar */
+    background-color: rgba(3, 15, 9, 0.85);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgba(34, 197, 94, 0.28);
     border-radius: 16px;
-    overflow: hidden;
     box-shadow: 0 0 25px rgba(34, 197, 94, 0.18), 0 16px 40px rgba(0, 0, 0, 0.5);
+    z-index: 40;
+  }
+
+  .hub-sidebar::-webkit-scrollbar {
+    display: none;
   }
 
   .hub-main {
     min-width: 0;
+  }
+}
+
+/* ============================================================
+   Optimización para laptops / pantallas de 768px de alto (1366x768)
+   ============================================================ */
+@media (min-width: 992px) and (max-height: 860px) {
+  body {
+    padding: 1.25rem 1rem;
+  }
+
+  .hub-sidebar {
+    top: 1.25rem;
+    max-height: calc(100vh - 2.5rem);
+  }
+
+  .card-banner {
+    display: none !important;
+  }
+
+  .avatar-container {
+    margin-top: 0 !important;
+    padding-top: 1.15rem !important;
+    padding-bottom: 0.15rem !important;
+  }
+
+  .profile-avatar-overlay {
+    width: 98px !important;
+    height: 98px !important;
+  }
+
+  .profile-info {
+    padding: 0.35rem 1rem 0.15rem 1rem !important;
+  }
+
+  .profile-name {
+    font-size: 1.35rem !important;
+    letter-spacing: -0.3px;
+  }
+
+  .profile-title {
+    font-size: 0.85rem !important;
+  }
+
+  .profile-meta {
+    font-size: 0.74rem !important;
+    gap: 0.15rem !important;
+    margin-top: 0.15rem !important;
+  }
+
+  .profile-socials {
+    margin: 0.3rem 0 0.45rem 0 !important;
+    gap: 0.85rem !important;
+  }
+
+  .social-icon {
+    font-size: 1.05rem !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .card-banner {
+    display: none !important;
+  }
+
+  .avatar-container {
+    margin-top: 0 !important;
+    padding-top: 1.4rem;
+    padding-bottom: 0.2rem;
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(180deg, rgba(34, 197, 94, 0.12) 0%, transparent 100%);
+  }
+
+  .profile-avatar-overlay {
+    width: 106px !important;
+    height: 106px !important;
+    border-radius: 50% !important;
+    border: 3px solid rgba(52, 211, 153, 0.45) !important;
+    box-shadow: 0 0 22px rgba(34, 197, 94, 0.25), 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+    transition: all var(--transition-speed) ease;
+  }
+
+  .profile-avatar-overlay:hover {
+    transform: scale(1.04);
+    border-color: #34d399 !important;
+    box-shadow: 0 0 30px rgba(52, 211, 153, 0.45), 0 8px 24px rgba(0, 0, 0, 0.5) !important;
   }
 
   /* Grilla simétrica de dos columnas en escritorio */
@@ -768,8 +868,8 @@ body {
   }
 
   .hub-card {
-    grid-template-columns: 350px minmax(0, 1fr);
-    gap: 1.75rem;
+    grid-template-columns: 370px minmax(0, 1fr);
+    gap: 2rem;
   }
 
   .linktree-menu {
