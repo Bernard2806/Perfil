@@ -588,6 +588,86 @@ const ventures = [
       justify-content: center;
     }
   }
+
+  /* ============================================================
+     Escritorio: ambos emprendimientos visibles, sin carrusel
+     ============================================================ */
+  @media (min-width: 992px) {
+    .panel-ventures {
+      gap: 0;
+    }
+
+    /* Los selectores y controles del carrusel sobran en PC */
+    .ventures-tabs-nav,
+    .ventures-progress-bar,
+    .ventures-controls-bar {
+      display: none;
+    }
+
+    /* Apilados y a ancho completo entre 1366 y 1439 */
+    .ventures-track {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .venture-slide {
+      grid-area: auto;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      transform: none !important;
+      padding: 1.4rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .venture-slide:last-child {
+      border-bottom: none;
+    }
+  }
+
+  /* Monitores grandes: lado a lado con más aire */
+  @media (min-width: 1440px) {
+    .ventures-track {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .venture-slide {
+      padding: 1.6rem 1.75rem;
+      border-bottom: none;
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .venture-slide:last-child {
+      border-right: none;
+    }
+
+    .venture-card-body {
+      grid-template-columns: 128px 1fr;
+      gap: 1.5rem;
+    }
+
+    .venture-logo-box {
+      width: 120px;
+      height: 120px;
+    }
+
+    .venture-title {
+      font-size: 1.65rem;
+    }
+
+    .venture-tagline {
+      font-size: 0.88rem;
+    }
+
+    .venture-description {
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .venture-details {
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+  }
 </style>
 
 <script>
