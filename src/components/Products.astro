@@ -42,18 +42,20 @@ const showProducts = false; // Set to true when products/SaaS are ready to be sh
       <div class="construction-icon-wrapper">
         <i class="fas fa-screwdriver-wrench construction-icon"></i>
       </div>
-      <h3 class="construction-title">Sección en Construcción</h3>
-      <p class="construction-text">
-        Actualmente me encuentro planificando y desarrollando herramientas de software y plataformas SaaS.
-        ¡Pronto verás mis productos disponibles aquí!
-      </p>
-      <div class="construction-divider"></div>
-      <p class="construction-footer">
-        ¿Tienes una propuesta o necesitas software a medida?
-      </p>
-      <button class="btn btn-primary btn-contact-redirect" id="btn-construction-contact">
-        <i class="fas fa-paper-plane"></i> Contactar ahora
-      </button>
+      <div class="construction-body-info">
+        <h3 class="construction-title">Sección en Construcción</h3>
+        <p class="construction-text">
+          Actualmente me encuentro planificando y desarrollando herramientas de software y plataformas SaaS. ¡Pronto verás mis productos disponibles aquí!
+        </p>
+      </div>
+      <div class="construction-action-box">
+        <p class="construction-footer">
+          ¿Tienes una propuesta o necesitas software a medida?
+        </p>
+        <button class="btn btn-primary btn-contact-redirect" id="btn-construction-contact">
+          <i class="fas fa-paper-plane"></i> Contactar ahora
+        </button>
+      </div>
     </div>
   )}
 </div>
@@ -251,6 +253,46 @@ const showProducts = false; // Set to true when products/SaaS are ready to be sh
     }
   }
 
+  .construction-body-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .construction-action-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  @media (min-width: 992px) {
+    .products-construction {
+      flex-direction: row;
+      text-align: left;
+      padding: 1.6rem 2.25rem;
+      gap: 2rem;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .construction-body-info {
+      flex-grow: 1;
+      max-width: none;
+    }
+
+    .construction-text {
+      max-width: 580px;
+    }
+
+    .construction-action-box {
+      align-items: flex-end;
+      flex-shrink: 0;
+      border-left: 1px solid var(--border-color);
+      padding-left: 2rem;
+    }
+  }
+
   .construction-title {
     font-family: var(--font-heading);
     font-size: 1.35rem;
@@ -263,15 +305,7 @@ const showProducts = false; // Set to true when products/SaaS are ready to be sh
     font-size: 0.9rem;
     color: var(--text-secondary);
     line-height: 1.6;
-    max-width: 400px;
     margin: 0;
-  }
-
-  .construction-divider {
-    width: 60px;
-    height: 1px;
-    background-color: var(--border-color);
-    margin: 0.5rem 0;
   }
 
   .construction-footer {
