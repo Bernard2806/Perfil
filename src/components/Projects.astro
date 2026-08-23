@@ -160,8 +160,17 @@ const getTagColorClass = (tech: string) => {
     transition: transform var(--transition-speed) ease;
   }
 
-  .project-cv-item:hover .btn-more i {
+  .project-cv-item:hover   .btn-more i {
     transform: translateX(3px);
+  }
+
+  /* En escritorio la tarjeta es ancha: aprovechar en dos columnas */
+  @media (min-width: 992px) {
+    .projects-cv-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
   }
 </style>
 
