@@ -859,6 +859,21 @@ body {
 }
 
 /* ============================================================
+   Escritorio chico (992–1199px: laptops viejas, tablets horizontales)
+   Sidebar más angosto y una sola columna de tarjetas para que el texto respire
+   ============================================================ */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .hub-card {
+    grid-template-columns: 290px minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+
+  .linktree-menu {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ============================================================
    Mosaico optimizado para 1080p / 2K / 4K (1920x1080)
    ============================================================ */
 @media (min-width: 1440px) {
