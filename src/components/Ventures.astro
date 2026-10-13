@@ -313,7 +313,6 @@ const ventures = [
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.06em;
-    text-transform: uppercase;
     color: var(--accent-teal);
     background: rgba(34, 197, 94, 0.12);
     padding: 0.25rem 0.65rem;
@@ -431,7 +430,7 @@ const ventures = [
   }
 
   .venture-tag-pill {
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     font-weight: 600;
     color: var(--text-secondary);
     background: rgba(255, 255, 255, 0.04);
@@ -595,6 +594,11 @@ const ventures = [
   @media (min-width: 992px) {
     .panel-ventures {
       gap: 0;
+    }
+
+    /* Lado a lado no hay carrusel: el "01 / 02" sugeriría un orden que no existe */
+    .venture-slide-count {
+      display: none;
     }
 
     .ventures-carousel {

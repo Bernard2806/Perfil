@@ -90,14 +90,20 @@ if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate()))
     <span class="sidebar-pulse-dot"></span>
     <span class="sidebar-live-text">Disponible para proyectos</span>
   </div>
-  <a 
-    href="https://wa.me/5492346409771?text=Hola%20Bernardo!%20Vengo%20desde%20tu%20perfil%20web." 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    class="sidebar-cta-btn"
-  >
-    <i class="fab fa-whatsapp"></i> Chat Directo
-  </a>
+  <div class="sidebar-cta-row">
+    <a
+      href="https://wa.me/5492346409771?text=Hola%20Bernardo!%20Vengo%20desde%20tu%20perfil%20web."
+      target="_blank"
+      rel="noopener noreferrer"
+      class="sidebar-cta-btn"
+    >
+      <i class="fab fa-whatsapp"></i> Chat Directo
+    </a>
+    <!-- En escritorio reemplaza al botón flotante, que tapaba el contenido -->
+    <button type="button" class="sidebar-share-btn js-open-share" aria-label="Compartir perfil" title="Compartir perfil">
+      <i class="fas fa-share-nodes"></i>
+    </button>
+  </div>
 </div>
 
 <style>
@@ -169,7 +175,7 @@ if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate()))
     }
 
     .nav-star {
-      font-size: 0.68rem;
+      font-size: 0.72rem;
       color: #f59e0b;
     }
 
@@ -221,7 +227,34 @@ if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate()))
     .sidebar-cta-btn:hover {
       background: linear-gradient(135deg, #25d366, #128c7e);
       box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
-      transform: translateY(-1px);
+    }
+
+    .sidebar-cta-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .sidebar-cta-row .sidebar-cta-btn {
+      flex: 1;
+    }
+
+    .sidebar-share-btn {
+      flex: 0 0 2.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      border-radius: 8px;
+      color: var(--accent-teal);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .sidebar-share-btn:hover {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: var(--accent-teal);
     }
   }
 
@@ -244,7 +277,7 @@ if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate()))
     }
 
     .sidebar-live-pill {
-      font-size: 0.68rem;
+      font-size: 0.72rem;
     }
 
     .sidebar-cta-btn {
