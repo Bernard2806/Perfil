@@ -23,12 +23,16 @@
 
 :root {
   /* Color Palette (Dark Theme Default) - Forest / Clothing Green */
-  --bg-body: #0a0f0c;
-  --bg-card: #121b16;
-  --bg-hover: #1b2820;
-  --text-primary: #f1f7f4;
-  --text-secondary: #cbdcd1;
-  --text-muted: #8eb59b;
+  /* Fondo pino (no negro neutro) y dos fósforos de monitor CRT con roles fijos:
+     verde = información, ámbar = lo que genera trabajo (emprendimientos, contacto) */
+  --bg-body: #0e1a15;
+  --bg-card: #13231c;
+  --bg-hover: #1a2e25;
+  --text-primary: #e6f2ea;
+  --text-secondary: #c4d8cb;
+  --text-muted: #93b5a0;
+  --accent-amber: #f5b13d;
+  --accent-amber-soft: rgba(245, 177, 61, 0.14);
   --accent-blue: #22c55e; /* Vibrant Green Accent */
   --accent-purple: #10b981; /* Mint Emerald Accent */
   --accent-teal: #34d399; /* Light Sage Accent */
@@ -36,7 +40,8 @@
   --border-color-hover: rgba(241, 247, 244, 0.18);
   --banner-gradient: linear-gradient(135deg, #14281d 0%, #0a0f0c 100%); /* Deep forest to black-green */
   
-  --font-sans: "PixelifyCleanNumbers", "Pixelify Sans", sans-serif;
+  /* Pixelify queda solo para display; el cuerpo usa una fuente pensada para leer */
+  --font-sans: "Atkinson Hyperlegible", system-ui, sans-serif;
   --font-heading: "PixelifyCleanNumbers", "Pixelify Sans", sans-serif;
   --font-code: "Fira Code", monospace;
   --transition-speed: 0.25s;
@@ -120,7 +125,7 @@ body {
 
 .hub-card {
   /* Fondo translúcido verde oscuro neón con transparencia y desenfoque */
-  background-color: rgba(3, 15, 9, 0.78);
+  background-color: rgba(19, 35, 28, 0.78);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(34, 197, 94, 0.28);
@@ -638,7 +643,7 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: none; /* Aspecto limpio de app sidebar */
-    background-color: rgba(3, 15, 9, 0.85);
+    background-color: rgba(19, 35, 28, 0.85);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgba(34, 197, 94, 0.28);
@@ -750,18 +755,19 @@ body {
     padding: 0;
   }
 
+  /* Panel base: borde simple, sin brillo. La jerarquía la dan los tratamientos de abajo */
   .accordion-item {
-    background-color: rgba(3, 15, 9, 0.78);
+    background-color: rgba(19, 35, 28, 0.82);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(34, 197, 94, 0.22);
-    border-radius: 16px;
+    border: 1px solid rgba(147, 181, 160, 0.16);
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 0 18px rgba(34, 197, 94, 0.10), 0 10px 30px rgba(0, 0, 0, 0.35);
     display: flex;
     flex-direction: column;
     position: relative;
-    transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease, transform var(--transition-speed) ease;
+    align-self: start;
+    transition: border-color var(--transition-speed) ease;
   }
 
   .accordion-item.item-fullwidth {
@@ -769,8 +775,52 @@ body {
   }
 
   .accordion-item:hover {
-    border-color: rgba(52, 211, 153, 0.45);
-    box-shadow: 0 0 24px rgba(34, 197, 94, 0.18), 0 14px 36px rgba(0, 0, 0, 0.4);
+    border-color: rgba(52, 211, 153, 0.35);
+  }
+
+  /* Sobre mí: texto abierto, sin caja, como introducción */
+  #sec-about {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-color: transparent;
+  }
+
+  #sec-about .accordion-header {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  #sec-about .accordion-content-inner {
+    padding: 0.5rem 0 0.75rem 0 !important;
+  }
+
+  #sec-about .bio-text {
+    font-size: 1.12rem;
+    line-height: 1.7;
+    max-width: 68ch;
+  }
+
+  #sec-about .bio-text:first-child {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    color: var(--text-primary);
+  }
+
+  /* Emprendimientos: el único bloque destacado, en ámbar */
+  #sec-ventures {
+    border: 1px solid rgba(245, 177, 61, 0.45);
+    border-radius: 20px;
+    background-color: rgba(30, 32, 20, 0.85);
+    box-shadow: 0 0 32px rgba(245, 177, 61, 0.10), 0 16px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  #sec-ventures:hover {
+    border-color: var(--accent-amber);
   }
 
   /* Cabecera de tarjeta (antes botón de acordeón) */
@@ -855,24 +905,46 @@ body {
     50% { opacity: 0; }
   }
 
-  /* Barra de acento superior en cada tarjeta bento */
-  .accordion-item::before {
+  /* Barra de acento superior: solo en el bloque destacado */
+  #sec-ventures::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent-teal), transparent);
-    opacity: 0.55;
-    transition: opacity var(--transition-speed) ease;
+    background: linear-gradient(90deg, transparent, var(--accent-amber), transparent);
     z-index: 3;
     pointer-events: none;
   }
+}
 
-  .accordion-item:hover::before {
-    opacity: 1;
+/* ============================================================
+   Escritorio amplio (≥1200px): mosaico con jerarquía
+   Sobre mí abierto arriba; Experiencia y Redes apiladas a la izquierda,
+   Estudios (el más largo) a la derecha. La fila de Redes absorbe el sobrante
+   para que no queden huecos entre tarjetas.
+   ============================================================ */
+@media (min-width: 1200px) {
+  .linktree-menu {
+    grid-template-areas:
+      "about     about"
+      "exp       edu"
+      "socials   edu"
+      "ventures  ventures"
+      "projects  projects"
+      "contact   contact";
+    grid-template-rows: auto auto 1fr auto auto auto;
+    align-items: start;
   }
+
+  #sec-about      { grid-area: about; }
+  #sec-experience { grid-area: exp; }
+  #sec-education  { grid-area: edu; }
+  #sec-socials    { grid-area: socials; }
+  #sec-ventures   { grid-area: ventures; }
+  #sec-projects   { grid-area: projects; }
+  #sec-contact    { grid-area: contact; }
 }
 
 /* ============================================================

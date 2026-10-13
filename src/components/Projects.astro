@@ -37,7 +37,7 @@ const getTagColorClass = (tech: string) => {
               <span class="tech-tag tag-default">+{project.technologies.length - 3}</span>
             )}
           </div>
-          <span class="btn-more">Ver detalles <i class="fas fa-arrow-right"></i></span>
+          <span class="btn-more">Ver detalles</span>
         </div>
       </div>
     ))}
@@ -74,8 +74,6 @@ const getTagColorClass = (tech: string) => {
   .project-cv-item:hover {
     border-color: var(--border-color-hover);
     background-color: var(--bg-hover);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2), 0 8px 8px -5px rgba(0, 0, 0, 0.1);
   }
 
   .project-cv-header {
@@ -155,16 +153,9 @@ const getTagColorClass = (tech: string) => {
     gap: 0.3rem;
   }
 
-  .btn-more i {
-    transition: transform var(--transition-speed) ease;
-  }
-
-  .project-cv-item:hover   .btn-more i {
-    transform: translateX(3px);
-  }
 
   /* En escritorio: dos columnas amplias y simétricas */
-  @media (min-width: 992px) {
+  @media (min-width: 1200px) {
     .projects-cv-list {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));

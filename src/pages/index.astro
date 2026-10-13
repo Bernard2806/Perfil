@@ -185,9 +185,9 @@ const currentYear = new Date().getFullYear();
 <style>
   /* Featured Venture Linktree Button */
   :global(.linktree-btn.featured-venture-btn) {
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.16) 0%, rgba(18, 27, 22, 0.95) 100%) !important;
-    border: 1px solid rgba(52, 211, 153, 0.45) !important;
-    box-shadow: 0 0 16px rgba(34, 197, 94, 0.12);
+    background: linear-gradient(135deg, rgba(245, 177, 61, 0.14) 0%, rgba(19, 35, 28, 0.95) 100%) !important;
+    border: 1px solid rgba(245, 177, 61, 0.45) !important;
+    box-shadow: 0 0 16px rgba(245, 177, 61, 0.10);
     position: relative;
     overflow: hidden;
   }
@@ -199,7 +199,7 @@ const currentYear = new Date().getFullYear();
     left: -100%;
     width: 60%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(52, 211, 153, 0.18), transparent);
+    background: linear-gradient(90deg, transparent, rgba(245, 177, 61, 0.2), transparent);
     transform: skewX(-20deg);
     /* Un par de pasadas al cargar para señalar lo destacado, luego queda quieto */
     animation: featuredShimmer 4s cubic-bezier(0.4, 0, 0.2, 1) 2;
@@ -212,14 +212,18 @@ const currentYear = new Date().getFullYear();
   }
 
   :global(.linktree-btn.featured-venture-btn:hover) {
-    border-color: var(--accent-teal) !important;
-    box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
+    border-color: var(--accent-amber) !important;
+    box-shadow: 0 0 20px rgba(245, 177, 61, 0.2);
   }
 
   :global(.linktree-btn.featured-venture-btn.active) {
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.22) 0%, rgba(18, 27, 22, 0.98) 100%) !important;
-    border-color: var(--accent-blue) !important;
-    box-shadow: 0 4px 18px rgba(34, 197, 94, 0.2);
+    background: linear-gradient(135deg, rgba(245, 177, 61, 0.2) 0%, rgba(19, 35, 28, 0.98) 100%) !important;
+    border-color: var(--accent-amber) !important;
+    box-shadow: 0 4px 18px rgba(245, 177, 61, 0.16);
+  }
+
+  :global(.linktree-btn.featured-venture-btn .btn-icon) {
+    color: var(--accent-amber) !important;
   }
 
   :global(.featured-pill) {
@@ -231,9 +235,9 @@ const currentYear = new Date().getFullYear();
     letter-spacing: 0.02em;
     padding: 0.22rem 0.6rem;
     border-radius: 999px;
-    background: rgba(34, 197, 94, 0.2);
-    color: var(--accent-teal);
-    border: 1px solid rgba(52, 211, 153, 0.4);
+    background: var(--accent-amber-soft);
+    color: var(--accent-amber);
+    border: 1px solid rgba(245, 177, 61, 0.4);
     margin-left: auto;
     margin-right: 0.5rem;
   }
