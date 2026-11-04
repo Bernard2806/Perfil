@@ -3,7 +3,10 @@
 ---
 
 <header class="hud-superior mono">
-  <span class="sistema"><span class="marca">BG</span>//PERFIL <span class="version">v2.0.26</span></span>
+  <span class="sistema">
+    <img class="logo" src="/favicon.svg" width="30" height="30" alt="BG" />
+    <span>//PERFIL <span class="version">v2.0.26</span></span>
+  </span>
   <span class="estado"><span class="punto" aria-hidden="true"></span>EN LÍNEA</span>
   <time class="reloj" aria-hidden="true">--:--:--</time>
 </header>
@@ -20,12 +23,17 @@
     border-bottom: 1px solid var(--c-linea);
   }
 
-  .marca {
-    padding: 0.1rem 0.35rem;
-    margin-right: 0.15rem;
-    font-weight: 500;
-    color: var(--c-fondo);
-    background: var(--c-rojo);
+  .sistema {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .logo {
+    display: block;
+    width: 30px;
+    height: 30px;
+    image-rendering: pixelated;
   }
 
   .version {
