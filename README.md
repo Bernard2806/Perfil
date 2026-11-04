@@ -56,22 +56,14 @@ Sitio publicado: [bernard2806.is-a.dev](https://bernard2806.is-a.dev)
 | Comando | Descripción |
 | --- | --- |
 | `pnpm dev` | Inicia el servidor de desarrollo. |
-| `pnpm start` | Alias para iniciar el servidor de desarrollo. |
-| `pnpm build` | Genera la versión estática de producción en `dist/`. |
+| `pnpm check` | Chequea los tipos de TypeScript con `astro check`. |
+| `pnpm build` | Chequea los tipos y genera la versión estática de producción en `dist/`. |
 | `pnpm preview` | Sirve localmente la compilación de producción. |
 | `pnpm astro` | Ejecuta la CLI de Astro. |
 
 ## Personalización
 
-La información principal del perfil se encuentra en [`src/data/portfolio.json`](src/data/portfolio.json). Allí puedes actualizar:
-
-- Datos personales y enlaces a redes sociales.
-- Descripción, habilidades y tecnologías.
-- Trayectoria y formación mostradas por los componentes.
-- Proyectos, imágenes, tecnologías y enlaces.
-- Productos y emprendimientos.
-
-Las imágenes públicas se encuentran en [`public/images`](public/images). Para agregar variables opcionales de Google Analytics o Google Search Console, copia `.env.template` como `.env` y completa sus valores.
+Para agregar variables opcionales de Google Analytics o Google Search Console, copia `.env.template` como `.env` y completa sus valores.
 
 ## Despliegue
 

@@ -1,0 +1,56 @@
+---
+// Barra inferior del HUD: atajos de teclado y firma.
+import { perfil } from "../data/site";
+
+const anio = new Date().getFullYear();
+---
+
+<footer class="hud-inferior mono">
+  <p class="atajos" aria-hidden="true">
+    <span><kbd>↑</kbd><kbd>↓</kbd> Navegar</span>
+    <span><kbd>Tab</kbd> Leer módulo</span>
+  </p>
+  <p class="firma">© {anio} {perfil.nombreVisible}</p>
+</footer>
+
+<style>
+  .hud-inferior {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    padding-block: 1rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-tenue);
+    border-top: 1px solid var(--c-linea);
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .atajos {
+    display: none;
+    gap: 1.5rem;
+  }
+
+  @media (hover: hover) and (min-width: 56rem) {
+    .atajos {
+      display: flex;
+    }
+  }
+
+  kbd {
+    display: inline-block;
+    min-width: 1.6em;
+    padding: 0.05rem 0.35rem;
+    margin-right: 0.25rem;
+    font: inherit;
+    text-align: center;
+    color: var(--c-fondo);
+    background: var(--c-verde);
+  }
+</style>

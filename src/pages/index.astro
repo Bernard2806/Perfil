@@ -1,484 +1,178 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Hero from "../components/Hero.astro";
-import About from "../components/About.astro";
-import Experience from "../components/Experience.astro";
-import Education from "../components/Education.astro";
-import Socials from "../components/Socials.astro";
-import Ventures from "../components/Ventures.astro";
-import Projects from "../components/Projects.astro";
-import Contact from "../components/Contact.astro";
-import ProjectModals from "../components/ProjectModals.astro";
-import portfolioData from "../data/portfolio.json";
+import GlitchPortrait from "../components/GlitchPortrait.astro";
+import GlitchText from "../components/GlitchText.astro";
+import HudFooter from "../components/HudFooter.astro";
+import HudHeader from "../components/HudHeader.astro";
+import MainMenu from "../components/MainMenu.astro";
+import RolRotativo from "../components/RolRotativo.astro";
+import { perfil } from "../data/site";
 
-const { name, lastName, title } = portfolioData.personalInfo;
-const currentYear = new Date().getFullYear();
 ---
 
-<Layout title={`${name} ${lastName} | ${title}`}>
-  <div class="hub-wrapper">
-    <!-- Main Interactive Card -->
-    <main class="hub-card">
-      <!-- Sidebar: Perfil (portada, avatar e info) -->
-      <aside class="hub-sidebar">
-        <Hero />
-      </aside>
+<Layout title={`${perfil.nombreVisible} · ${perfil.rol}`} description={perfil.descripcion}>
+  <div class="pantalla arranque">
+    <HudHeader />
 
-      <!-- Área principal: secciones en grid -->
-      <div class="hub-main">
-        <!-- Accordion Navigation Stack -->
-      <div class="linktree-menu">
-        <!-- Fila 1 - Pareja 1: Sobre Mí & Experiencia Laboral -->
-        <!-- Item 1: Sobre Mí -->
-        <div class="accordion-item" id="sec-about">
-          <h2 class="accordion-header">
-            <button class="linktree-btn active" data-tab="about">
-              <span class="btn-icon"><i class="fas fa-user-tie"></i></span>
-              <span class="btn-text">Sobre Mí</span>
-              <span class="btn-chevron"><i class="fas fa-chevron-right"></i></span>
-            </button>
-          </h2>
-          <div class="accordion-content active" id="panel-about">
-            <div class="accordion-content-inner">
-              <About />
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 2: Experiencia Laboral -->
-        <div class="accordion-item" id="sec-experience">
-          <h2 class="accordion-header">
-            <button class="linktree-btn" data-tab="experience">
-              <span class="btn-icon"><i class="fas fa-briefcase"></i></span>
-              <span class="btn-text">Experiencia Laboral</span>
-              <span class="btn-chevron"><i class="fas fa-chevron-right"></i></span>
-            </button>
-          </h2>
-          <div class="accordion-content" id="panel-experience">
-            <div class="accordion-content-inner">
-              <Experience />
-            </div>
-          </div>
-        </div>
-
-        <!-- Fila 2 - Pareja 2: Estudios & Redes Sociales -->
-        <!-- Item 3: Estudios -->
-        <div class="accordion-item" id="sec-education">
-          <h2 class="accordion-header">
-            <button class="linktree-btn" data-tab="education">
-              <span class="btn-icon"><i class="fas fa-graduation-cap"></i></span>
-              <span class="btn-text">Estudios</span>
-              <span class="btn-chevron"><i class="fas fa-chevron-right"></i></span>
-            </button>
-          </h2>
-          <div class="accordion-content" id="panel-education">
-            <div class="accordion-content-inner">
-              <Education />
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 4: Redes Sociales -->
-        <div class="accordion-item" id="sec-socials">
-          <h2 class="accordion-header">
-            <button class="linktree-btn" data-tab="socials">
-              <span class="btn-icon"><i class="fas fa-share-nodes"></i></span>
-              <span class="btn-text">Redes Sociales</span>
-              <span class="btn-chevron"><i class="fas fa-chevron-right"></i></span>
-            </button>
-          </h2>
-          <div class="accordion-content" id="panel-socials">
-            <div class="accordion-content-inner">
-              <Socials />
-            </div>
-          </div>
-        </div>
-
-        <!-- Fila 3 - Individual: Emprendimientos (2 columnas internas) -->
-        <div class="accordion-item item-fullwidth" id="sec-ventures">
-          <h2 class="accordion-header">
-            <button class="linktree-btn featured-venture-btn" data-tab="ventures">
-              <span class="btn-icon"><i class="fas fa-rocket"></i></span>
-              <span class="btn-text">Emprendimientos</span>
-              <span class="featured-pill"><i class="fas fa-star"></i> Destacado</span>
-              <span class="btn-chevron"><i class="fas fa-chevron-right"></i></span>
-            </button>
-          </h2>
-          <div class="accordion-content" id="panel-ventures">
-            <div class="accordion-content-inner">
-              <Ventures />
-            </div>
-          </div>
-        </div>
-
-        <!-- Fila 4 - Individual: Proyectos de Desarrollo (2 columnas internas) -->
-        <div class="accordion-item item-fullwidth" id="sec-projects">
-          <h2 class="accordion-header">
-            <button class="linktree-btn" data-tab="projects">
-              <span class="btn-icon"><i class="fas fa-code"></i></span>
-              <span class="btn-text">Proyectos de Desarrollo</span>
-              <span class="btn-chevron"><i class="fas fa-chevron-right"></i></span>
-            </button>
-          </h2>
-          <div class="accordion-content" id="panel-projects">
-            <div class="accordion-content-inner">
-              <Projects />
-            </div>
-          </div>
-        </div>
-
-        <!-- Fila 5 - Individual: Enviar Mensaje (3 columnas internas) -->
-        <div class="accordion-item item-fullwidth" id="sec-contact">
-          <h2 class="accordion-header">
-            <button class="linktree-btn" data-tab="contact">
-              <span class="btn-icon"><i class="fas fa-envelope"></i></span>
-              <span class="btn-text">Enviar Mensaje</span>
-              <span class="btn-chevron"><i class="fas fa-chevron-right"></i></span>
-            </button>
-          </h2>
-          <div class="accordion-content" id="panel-contact">
-            <div class="accordion-content-inner">
-              <Contact />
-            </div>
-          </div>
-        </div>
+    <main class="escena">
+      <div class="identidad">
+        <p class="etiqueta mono">// UBICACIÓN · {perfil.ubicacion}</p>
+        <h1 class="nombre">
+          <GlitchText texto={`${perfil.nombre} ${perfil.inicial}`} pausaMin={3400} pausaMax={7000} />
+          <GlitchText texto={perfil.apellido} />
+        </h1>
+        <p class="rol mono">
+          <span aria-hidden="true">&gt; </span><RolRotativo roles={perfil.roles} /><span class="cursor" aria-hidden="true">_</span>
+        </p>
       </div>
-    </div>
-  </main>
 
-    <!-- Footer centered below the card -->
-    <footer class="hub-footer">
-      <p class="footer-copy">&copy; {currentYear} {name} {lastName}. Todos los derechos reservados.</p>
-    </footer>
-  </div>
-
-  <!-- Floating Share Button (FAB) -->
-  <button id="btn-open-share-modal" class="fab-share" aria-label="Compartir Perfil">
-    <i class="fas fa-share-nodes"></i>
-  </button>
-
-  <!-- Modal: Compartir Perfil -->
-  <div class="modal-overlay" id="modal-share">
-    <div class="modal-share-container">
-      <button class="modal-close-btn share-close-pos" data-close-target="modal-share" aria-label="Cerrar">
-        <i class="fas fa-times"></i>
-      </button>
-      
-      <h2 class="modal-share-title">Compartir Perfil</h2>
-      
-      <div class="qr-container-minimal">
-        <img 
-          src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://bernard2806.is-a.dev" 
-          alt="Código QR del Perfil" 
-          class="qr-image-minimal"
-          loading="lazy"
-        />
+      <div class="visor">
+        <GlitchPortrait alt={`Foto de ${perfil.nombreVisible}`} alias={perfil.alias} />
       </div>
-      
-      <p class="qr-subtitle-minimal">Escaneá para abrir en tu celular</p>
-    </div>
+
+      <div class="navegacion">
+        <MainMenu />
+      </div>
+    </main>
+
+    <HudFooter />
   </div>
-  
-  <ProjectModals />
 </Layout>
 
 <style>
-  /* Featured Venture Linktree Button */
-  :global(.linktree-btn.featured-venture-btn) {
-    background: linear-gradient(135deg, rgba(245, 177, 61, 0.14) 0%, rgba(19, 35, 28, 0.95) 100%) !important;
-    border: 1px solid rgba(245, 177, 61, 0.45) !important;
-    box-shadow: 0 0 16px rgba(245, 177, 61, 0.10);
-    position: relative;
-    overflow: hidden;
+  .pantalla {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100dvh;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
   }
 
-  :global(.linktree-btn.featured-venture-btn::after) {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(245, 177, 61, 0.2), transparent);
-    transform: skewX(-20deg);
-    /* Un par de pasadas al cargar para señalar lo destacado, luego queda quieto */
-    animation: featuredShimmer 4s cubic-bezier(0.4, 0, 0.2, 1) 2;
-    pointer-events: none;
+  .escena {
+    display: grid;
+    grid-template-areas:
+      "identidad"
+      "visor"
+      "navegacion";
+    gap: 2.25rem;
+    align-content: center;
+    padding-block: 2.5rem;
   }
 
-  @keyframes featuredShimmer {
-    0% { left: -100%; }
-    35%, 100% { left: 200%; }
-  }
-
-  :global(.linktree-btn.featured-venture-btn:hover) {
-    border-color: var(--accent-amber) !important;
-    box-shadow: 0 0 20px rgba(245, 177, 61, 0.2);
-  }
-
-  :global(.linktree-btn.featured-venture-btn.active) {
-    background: linear-gradient(135deg, rgba(245, 177, 61, 0.2) 0%, rgba(19, 35, 28, 0.98) 100%) !important;
-    border-color: var(--accent-amber) !important;
-    box-shadow: 0 4px 18px rgba(245, 177, 61, 0.16);
-  }
-
-  :global(.linktree-btn.featured-venture-btn .btn-icon) {
-    color: var(--accent-amber) !important;
-  }
-
-  :global(.featured-pill) {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.02em;
-    padding: 0.22rem 0.6rem;
-    border-radius: 999px;
-    background: var(--accent-amber-soft);
-    color: var(--accent-amber);
-    border: 1px solid rgba(245, 177, 61, 0.4);
-    margin-left: auto;
-    margin-right: 0.5rem;
-  }
-
-  :global(.featured-pill i) {
-    font-size: 0.6rem;
-    color: #facc15;
-  }
-
-  /* Footer styles centered below the card */
-  .hub-footer {
-    margin-top: 2rem;
-    text-align: center;
-    width: 100%;
-  }
-
-  .footer-copy {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-  }
-
-  /* Floating Share Button (FAB) */
-  .fab-share {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background-color: var(--accent-blue);
-    color: #ffffff;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.35rem;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(34, 197, 94, 0.4);
-    z-index: 900;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-
-  .fab-share:hover {
-    transform: scale(1.1) rotate(-8deg);
-    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.6);
-    background-color: var(--accent-teal);
-  }
-
-  .fab-share:active {
-    transform: scale(0.95);
-  }
-
-  /* En escritorio el botón vive en el sidebar; el flotante tapaba las tarjetas */
-  @media (min-width: 992px) {
-    .fab-share {
-      display: none;
+  @media (min-width: 56rem) {
+    .escena {
+      grid-template-columns: 1.25fr 0.85fr;
+      grid-template-areas:
+        "identidad visor"
+        "navegacion visor";
+      column-gap: clamp(2rem, 5vw, 4.5rem);
+      row-gap: 2.5rem;
+      align-items: center;
     }
   }
 
-  @media (max-width: 576px) {
-    .fab-share {
-      bottom: 1.5rem;
-      right: 1.5rem;
-      width: 48px;
-      height: 48px;
-      font-size: 1.15rem;
+  .identidad {
+    grid-area: identidad;
+  }
+
+  .visor {
+    grid-area: visor;
+  }
+
+  .navegacion {
+    grid-area: navegacion;
+  }
+
+  @media (max-width: 55.99rem) {
+    .visor {
+      max-width: 20rem;
+      width: 100%;
+      margin-inline: auto;
     }
   }
 
-  /* Glassmorphism modal specifically for Share */
-  .modal-share-container {
-    background: rgba(18, 27, 22, 0.65); /* Semi-transparent background matching card */
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(34, 197, 94, 0.15); /* Subtle green border */
-    border-radius: 20px;
-    width: 100%;
-    max-width: 280px; /* Compact focused size for the QR card */
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(34, 197, 94, 0.05);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transform: scale(0.9) translateY(15px);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    align-items: center;
-    padding: 1.5rem;
-    position: relative;
+  .etiqueta {
+    margin: 0 0 0.75rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-verde);
   }
 
-  .modal-overlay.open .modal-share-container {
-    transform: scale(1) translateY(0);
-  }
-
-  .share-close-pos {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    color: var(--text-muted);
-  }
-
-  .modal-share-title {
-    font-family: var(--font-heading);
-    font-size: 1.05rem;
+  .nombre {
+    display: grid;
+    margin: 0;
+    font-size: clamp(2rem, 10vw, 6rem);
     font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 1.25rem;
-    text-align: center;
+    line-height: 0.92;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--c-texto);
   }
 
-  .qr-container-minimal {
-    background-color: #ffffff; /* Contrast for scanning */
-    padding: 0.85rem;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    margin-bottom: 1rem;
-    transition: transform 0.3s ease;
+  /* El segundo apellido es lo que más resalta. */
+  .nombre :global(glitch-text:last-child) {
+    color: var(--c-rojo);
+    text-shadow: 0 0 28px rgb(252 1 71 / 0.35);
   }
 
-  .qr-container-minimal:hover {
-    transform: scale(1.03);
+  .rol {
+    margin: 1rem 0 0;
+    font-size: clamp(0.95rem, 2.4vw, 1.1rem);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--c-texto);
   }
 
-  .qr-image-minimal {
-    width: 150px;
-    height: 150px;
-    display: block;
+  .cursor {
+    color: var(--c-verde);
+    animation: parpadeo 1s steps(1) infinite;
   }
 
-  .qr-subtitle-minimal {
-    font-size: 0.78rem;
-    color: var(--text-secondary);
-    text-align: center;
-    line-height: 1.4;
+  @keyframes parpadeo {
+    50% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor {
+      animation: none;
+    }
+  }
+
+  /* Pantallas anchas: nombre y menú a la izquierda, panel al medio y foto a
+     la derecha, como la pantalla de personaje de un juego. */
+  @media (min-width: 80rem) {
+    .escena {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.1fr) minmax(0, 0.75fr);
+      grid-template-areas:
+        "identidad panel visor"
+        "lista panel visor";
+      column-gap: clamp(1.5rem, 3vw, 3rem);
+      row-gap: 2rem;
+    }
+
+    .navegacion {
+      display: contents;
+    }
+
+    .nombre {
+      font-size: clamp(3rem, 4.2vw, 4.75rem);
+    }
+  }
+
+  @media (min-width: 56rem) and (max-width: 79.99rem) {
+    .nombre {
+      font-size: clamp(3rem, 5.5vw, 5rem);
+    }
+  }
+
+  /* "> Analista en ciberseguridad_" tiene que entrar en un renglón. */
+  @media (max-width: 30rem) {
+    .rol {
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+    }
   }
 </style>
-
-<script>
-  const setupTabNavigation = () => {
-    const buttons = document.querySelectorAll('.linktree-btn');
-
-    buttons.forEach(button => {
-      button.addEventListener('click', () => {
-        const targetTab = button.getAttribute('data-tab');
-        const targetPanel = document.getElementById(`panel-${targetTab}`);
-        
-        if (!targetPanel) return;
-
-        const isCurrentlyActive = button.classList.contains('active');
-
-        // Collapse all active panels first
-        buttons.forEach(btn => {
-          if (btn !== button) {
-            btn.classList.remove('active');
-            const pTab = btn.getAttribute('data-tab');
-            const panel = document.getElementById(`panel-${pTab}`);
-            if (panel) {
-              panel.classList.remove('active');
-            }
-          }
-        });
-
-        // Toggle the clicked one
-        if (isCurrentlyActive) {
-          button.classList.remove('active');
-          targetPanel.classList.remove('active');
-        } else {
-          button.classList.add('active');
-          targetPanel.classList.add('active');
-
-          // Smooth scroll to the clicked accordion item to focus attention once the transition finishes
-          // (solo en móvil; en escritorio el contenido ya está visible en el grid)
-          if (window.matchMedia('(max-width: 991px)').matches) {
-            setTimeout(() => {
-              button.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 350);
-          }
-        }
-      });
-    });
-  };
-
-  const setupShareModal = () => {
-    // FAB en móvil + botón del sidebar en escritorio
-    const openBtns = document.querySelectorAll('#btn-open-share-modal, .js-open-share');
-    const modalShare = document.getElementById('modal-share');
-    const closeBtns = document.querySelectorAll('#modal-share .modal-close-btn');
-
-    if (openBtns.length && modalShare) {
-      openBtns.forEach(openBtn => openBtn.addEventListener('click', async () => {
-        // Detect if touch mobile device and Web Share API is available
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
-        if (isMobile && navigator.share) {
-          try {
-            await navigator.share({
-              title: 'Bernardo Andrés González Erramuspe | Desarrollador Web',
-              text: 'Perfil profesional de Bernardo Andrés González Erramuspe - Desarrollador Web.',
-              url: 'https://bernard2806.is-a.dev'
-            });
-          } catch (err) {
-            // Fallback to modal if native share fails but not explicitly cancelled by user
-            if (err.name !== 'AbortError') {
-              modalShare.classList.add('open');
-              document.body.style.overflow = 'hidden';
-            }
-          }
-        } else {
-          modalShare.classList.add('open');
-          document.body.style.overflow = 'hidden';
-        }
-      }));
-
-      const close = () => {
-        modalShare.classList.remove('open');
-        document.body.style.overflow = '';
-      };
-
-      closeBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          close();
-        });
-      });
-
-      modalShare.addEventListener('click', (e) => {
-        if (e.target === modalShare) {
-          close();
-        }
-      });
-    }
-  };
-
-  // Run on initial page load
-  setupTabNavigation();
-  setupShareModal();
-  // Run on Astro page transition swaps
-  document.addEventListener('astro:after-swap', () => {
-    setupTabNavigation();
-    setupShareModal();
-  });
-</script>
