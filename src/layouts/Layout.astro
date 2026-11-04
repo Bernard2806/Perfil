@@ -1,4 +1,5 @@
 ---
+import { Font } from "astro:assets";
 import "../styles/global.css";
 
 interface Props {
@@ -18,10 +19,13 @@ const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07060a" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
     <link rel="icon" href="https://github.com/Bernard2806.png" type="image/png" />
+    <Font cssVariable="--font-display" preload />
+    <Font cssVariable="--font-mono" />
     {googleSiteVerification && <meta name="google-site-verification" content={googleSiteVerification} />}
     {
       googleAnalyticsId && (
@@ -39,5 +43,8 @@ const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
   </head>
   <body>
     <slot />
+    <div class="fx-capa fx-scanlines" aria-hidden="true"></div>
+    <div class="fx-capa fx-ruido" aria-hidden="true"></div>
+    <div class="fx-capa fx-vineta" aria-hidden="true"></div>
   </body>
 </html>
