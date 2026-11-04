@@ -22,7 +22,6 @@ const { id } = Astro.props;
 const datos = [
   { clave: "Edad", valor: `${edad()} años` },
   { clave: "Base", valor: perfil.ubicacion },
-  { clave: "Estado", valor: "Disponible" },
 ];
 
 const grupos: { titulo?: string; registros: readonly Registro[] }[] =
@@ -163,7 +162,7 @@ const grupos: { titulo?: string; registros: readonly Registro[] }[] =
   /* Ficha de datos, como las estadísticas de un personaje. */
   .datos {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1px;
     margin: 0;
     background: var(--c-linea);
