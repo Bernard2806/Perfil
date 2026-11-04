@@ -223,21 +223,28 @@ import { perfil, secciones } from "../data/site";
         });
       });
 
-      this.querySelector('[role="tablist"]')?.addEventListener("keydown", (evento) => {
-        this.teclado(evento as KeyboardEvent);
-      });
+      document.addEventListener("keydown", (evento) => this.teclado(evento));
     }
 
+    /**
+     * Como en el menú de un juego, ↑ y ↓ mueven la selección desde cualquier
+     * parte de la página. ← → Inicio y Fin solo cuando el foco está en el
+     * menú, para no pisar el scroll de la página.
+     */
     private teclado(evento: KeyboardEvent) {
+      if (evento.defaultPrevented || evento.altKey || evento.ctrlKey || evento.metaKey || evento.shiftKey) return;
+
+      const enfocado = document.activeElement;
+      const enLista = enfocado?.closest('[role="tablist"]') !== null && this.contains(enfocado);
+      const libre = !enfocado || enfocado === document.body || this.contains(enfocado);
+      if (!libre) return;
+
       const ultimo = this.opciones.length - 1;
-      const destinos: Record<string, number> = {
-        ArrowDown: this.actual === ultimo ? 0 : this.actual + 1,
-        ArrowRight: this.actual === ultimo ? 0 : this.actual + 1,
-        ArrowUp: this.actual === 0 ? ultimo : this.actual - 1,
-        ArrowLeft: this.actual === 0 ? ultimo : this.actual - 1,
-        Home: 0,
-        End: ultimo,
-      };
+      const siguiente = this.actual === ultimo ? 0 : this.actual + 1;
+      const anterior = this.actual === 0 ? ultimo : this.actual - 1;
+      const destinos: Record<string, number> = { ArrowDown: siguiente, ArrowUp: anterior };
+      if (enLista) Object.assign(destinos, { ArrowRight: siguiente, ArrowLeft: anterior, Home: 0, End: ultimo });
+
       const destino = destinos[evento.key];
       if (destino === undefined) return;
       evento.preventDefault();
