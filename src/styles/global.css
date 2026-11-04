@@ -114,8 +114,11 @@ a {
 
 /* ── Arranque: la pantalla se "rompe" ni bien entrás ────────────────── */
 
+/* `backwards` y no `both`: al terminar no deja la pantalla en su propia capa
+   de apilamiento, así la foto normal del retrato puede subir por encima de
+   las scanlines. */
 .arranque {
-  animation: arranque 0.9s steps(1) both;
+  animation: arranque 0.9s steps(1) backwards;
 }
 
 @keyframes arranque {

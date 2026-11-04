@@ -2,6 +2,8 @@
 // Retrato en duotono rojo que se "bugea" como el video de cyberpunk.net:
 // franjas horizontales desplazadas, macrobloques corridos, chorreado vertical
 // de píxeles y canales separados. Al entrar se arma desde un pixelado grueso.
+// Al pasar el mouse (o con un toque en celular) se rompe y queda la foto
+// normal, nítida y sin efectos, para que sirva como foto de portafolio.
 import { getImage } from "astro:assets";
 import foto from "../assets/bernardo.jpg";
 
@@ -11,26 +13,29 @@ interface Props {
 }
 
 const { alt, alias } = Astro.props;
-const lado = 460;
-const imagen = await getImage({ src: foto, width: lado, height: lado, format: "webp" });
+// El canvas del glitch trabaja a 460 px; la foto normal se sirve más grande
+// para que se vea nítida en pantallas de alta densidad.
+const ladoLienzo = 460;
+const ladoFoto = 840;
+const imagen = await getImage({ src: foto, width: ladoFoto, height: ladoFoto, format: "webp" });
 ---
 
 <glitch-portrait class="retrato">
+  <div class="encuadre">
   <div class="marco corte">
     <div class="pantalla corte">
-      <img src={imagen.src} width={lado} height={lado} alt={alt} decoding="async" />
-      <canvas width={lado} height={lado} aria-hidden="true"></canvas>
-      <div class="mira" aria-hidden="true">
-        <span class="mira-etiqueta mono">ID // {alias.toUpperCase()}</span>
-      </div>
+      <img src={imagen.src} width={ladoFoto} height={ladoFoto} alt={alt} decoding="async" />
+      <canvas width={ladoLienzo} height={ladoLienzo} aria-hidden="true"></canvas>
     </div>
   </div>
 
   <span class="esquina esquina-a" aria-hidden="true"></span>
   <span class="esquina esquina-b" aria-hidden="true"></span>
+  </div>
 
-  <p class="ficha mono" aria-hidden="true">
-    <span class="ficha-ok">● SEÑAL ESTABLE</span>
+  <p class="ficha mono">
+    <span class="ficha-chip">ID</span>
+    <span class="ficha-alias">{alias.toUpperCase()}</span>
   </p>
 </glitch-portrait>
 
@@ -40,6 +45,11 @@ const imagen = await getImage({ src: foto, width: lado, height: lado, format: "w
     display: block;
     width: min(100%, 26rem);
     margin-inline: auto;
+  }
+
+  /* Las esquinas verdes enmarcan solo la foto, no la etiqueta de abajo. */
+  .encuadre {
+    position: relative;
   }
 
   .marco {
@@ -80,37 +90,24 @@ const imagen = await getImage({ src: foto, width: lado, height: lado, format: "w
     visibility: hidden;
   }
 
-  /* Recuadro verde sobre los ojos, como el de Capri. Los porcentajes son
-     relativos a la foto: los ojos van del 33% al 61% del ancho y su centro
-     está cerca del 40% del alto. */
-  .mira {
-    position: absolute;
-    left: 30.5%;
-    top: 35.5%;
-    width: 33%;
-    height: 9%;
-    border: 1px solid var(--c-verde);
-    box-shadow: 0 0 12px rgb(2 249 105 / 0.35), inset 0 0 12px rgb(2 249 105 / 0.2);
-    animation: rastreo 4.5s steps(1) infinite;
+  /* Foto normal: se ve la imagen original, por encima de las scanlines,
+     el ruido y la viñeta de la pantalla. */
+  .retrato.revelado {
+    z-index: 60;
   }
 
-  .mira-etiqueta {
-    position: absolute;
-    left: -1px;
-    bottom: 100%;
-    padding: 0.1rem 0.4rem;
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
-    white-space: nowrap;
-    color: var(--c-fondo);
-    background: var(--c-verde);
+  .retrato.listo.revelado img {
+    visibility: visible;
+    filter: none;
   }
 
-  @keyframes rastreo {
-    0%, 70% { transform: none; }
-    72% { transform: translate(-6px, 2px); }
-    74% { transform: translate(4px, -1px); }
-    76%, 100% { transform: none; }
+  .retrato.listo.revelado canvas {
+    opacity: 0;
+  }
+
+  /* Sin JavaScript, la foto normal aparece al pasar el mouse. */
+  .retrato:not(.listo):hover img {
+    filter: none;
   }
 
   .esquina {
@@ -134,23 +131,27 @@ const imagen = await getImage({ src: foto, width: lado, height: lado, format: "w
     border-top: 0;
   }
 
+  /* Etiqueta de identificación debajo de la foto. */
   .ficha {
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
+    gap: 0.6rem;
     margin: 0.9rem 0 0;
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    color: var(--c-tenue);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
   }
 
-  .ficha-ok {
-    color: var(--c-verde);
+  .ficha-chip {
+    padding: 0.15rem 0.7rem 0.15rem 0.45rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--c-fondo);
+    background: var(--c-verde);
+    clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .mira {
-      animation: none;
-    }
+  .ficha-alias {
+    color: var(--c-texto);
   }
 </style>
 
@@ -187,12 +188,16 @@ const imagen = await getImage({ src: foto, width: lado, height: lado, format: "w
 
   class GlitchPortrait extends HTMLElement {
     private ctx!: CanvasRenderingContext2D;
+    /** Imagen que se muestra ahora: el duotono o la original. */
     private base!: ImageData;
+    private duotono!: ImageData;
+    private original!: ImageData;
     private trabajo!: ImageData;
     private fuente!: HTMLCanvasElement;
     private chico!: HTMLCanvasElement;
     private fila = new Uint8ClampedArray(0);
     private animando = false;
+    private revelado = false;
 
     async connectedCallback() {
       const lienzo = this.querySelector("canvas");
@@ -209,7 +214,9 @@ const imagen = await getImage({ src: foto, width: lado, height: lado, format: "w
       const { width: ancho, height: alto } = lienzo;
       this.ctx = ctx;
       ctx.drawImage(img, 0, 0, ancho, alto);
-      this.base = this.aplicarDuotono(ctx.getImageData(0, 0, ancho, alto));
+      this.original = ctx.getImageData(0, 0, ancho, alto);
+      this.duotono = this.aplicarDuotono(ctx.getImageData(0, 0, ancho, alto));
+      this.base = this.duotono;
       this.trabajo = new ImageData(ancho, alto);
       this.fila = new Uint8ClampedArray(ancho * 4);
 
@@ -219,22 +226,78 @@ const imagen = await getImage({ src: foto, width: lado, height: lado, format: "w
       this.fuente.getContext("2d")?.putImageData(this.base, 0, 0);
       this.chico = document.createElement("canvas");
 
+      this.escucharRevelado();
+
       if (movimientoReducido()) {
         ctx.putImageData(this.base, 0, 0);
         this.classList.add("listo");
+        this.revisarPuntero();
         return;
       }
 
       this.pixelar(46);
       this.classList.add("listo");
+      this.revisarPuntero();
       await this.entrada();
 
-      programarRafagas(() => void this.rafaga(azar(260, 640)), {
-        pausaMin: 2200,
-        pausaMax: 5200,
-        elemento: this,
+      programarRafagas(
+        () => {
+          if (!this.revelado) void this.rafaga(azar(260, 640));
+        },
+        { pausaMin: 2200, pausaMax: 5200, elemento: this },
+      );
+    }
+
+    /**
+     * Con mouse o lápiz, la foto normal aparece al pasar por encima y se va
+     * al salir. En pantallas táctiles no hay "pasar por encima", así que un
+     * toque alterna entre las dos.
+     */
+    private escucharRevelado() {
+      let tipoPuntero = "mouse";
+      this.addEventListener("pointerdown", (evento) => {
+        tipoPuntero = evento.pointerType;
       });
-      this.addEventListener("pointerenter", () => void this.rafaga(380));
+      this.addEventListener("pointerenter", (evento) => {
+        if (evento.pointerType !== "touch") void this.alternar(true);
+      });
+      // Respaldo por si el mouse ya estaba encima antes de que cargara.
+      this.addEventListener("pointermove", (evento) => {
+        if (evento.pointerType !== "touch" && !this.revelado) void this.alternar(true);
+      });
+      this.addEventListener("pointerleave", (evento) => {
+        if (evento.pointerType !== "touch") void this.alternar(false);
+      });
+      this.addEventListener("click", () => {
+        if (tipoPuntero === "touch") void this.alternar(!this.revelado);
+      });
+    }
+
+    /** Si el mouse ya estaba encima mientras cargaba, muestra la foto normal. */
+    private revisarPuntero() {
+      if (window.matchMedia("(hover: hover)").matches && this.matches(":hover")) {
+        void this.alternar(true);
+      }
+    }
+
+    private async alternar(mostrar: boolean) {
+      if (mostrar === this.revelado) return;
+      this.revelado = mostrar;
+      const desde = this.base;
+      this.base = mostrar ? this.original : this.duotono;
+      this.fuente.getContext("2d")?.putImageData(this.base, 0, 0);
+
+      // Al volver al duotono, el canvas aparece enseguida para romperse.
+      if (!mostrar) this.classList.remove("revelado");
+
+      if (movimientoReducido()) {
+        this.ctx.putImageData(this.base, 0, 0);
+      } else {
+        await this.rafaga(340, 0.9, desde);
+      }
+
+      // Si mientras tanto el mouse ya salió, no queda la foto normal.
+      if (mostrar && this.revelado) this.classList.add("revelado");
     }
 
     private aplicarDuotono(imagen: ImageData): ImageData {
@@ -251,6 +314,7 @@ const imagen = await getImage({ src: foto, width: lado, height: lado, format: "w
 
     /** Se arma desde bloques grandes hasta la imagen nítida, con cortes de glitch. */
     private async entrada() {
+      this.animando = true;
       for (const bloque of [46, 30, 20, 14, 9, 6, 4, 2]) {
         this.pixelar(bloque);
         await esperar(70);
@@ -259,6 +323,7 @@ const imagen = await getImage({ src: foto, width: lado, height: lado, format: "w
           await esperar(45);
         }
       }
+      this.animando = false;
       await this.rafaga(600, 1);
     }
 
@@ -276,22 +341,30 @@ const imagen = await getImage({ src: foto, width: lado, height: lado, format: "w
       this.ctx.drawImage(this.chico, 0, 0, w, h, 0, 0, ancho, alto);
     }
 
-    private async rafaga(duracion: number, intensidad = azar(0.35, 1)) {
+    /**
+     * Glitch durante `duracion` ms. Si se pasa `desde`, es una transición:
+     * los cuadros alternan entre esa imagen y la actual, y la actual gana
+     * cada vez más hasta quedar sola.
+     */
+    private async rafaga(duracion: number, intensidad = azar(0.35, 1), desde?: ImageData) {
       if (this.animando) return;
       this.animando = true;
-      const fin = performance.now() + duracion;
+      const inicio = performance.now();
+      const fin = inicio + duracion;
       while (performance.now() < fin) {
-        if (Math.random() < 0.15) this.pixelar(azarEntero(6, 14));
-        else this.cuadroGlitch(intensidad);
+        const progreso = (performance.now() - inicio) / duracion;
+        const origen = desde && Math.random() > progreso ? desde : this.base;
+        if (Math.random() < 0.15 && origen === this.base) this.pixelar(azarEntero(6, 14));
+        else this.cuadroGlitch(intensidad, origen);
         await esperar(azar(40, 95));
       }
       this.ctx.putImageData(this.base, 0, 0);
       this.animando = false;
     }
 
-    private cuadroGlitch(intensidad: number) {
-      const { width: w, height: h } = this.base;
-      const src = this.base.data;
+    private cuadroGlitch(intensidad: number, origen: ImageData = this.base) {
+      const { width: w, height: h } = origen;
+      const src = origen.data;
       const out = this.trabajo.data;
 
       // 1. Canales separados: el rojo y el verde se corren para lados opuestos.
