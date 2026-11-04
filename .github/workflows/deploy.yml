@@ -2,7 +2,14 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main]
+    # Cambios que solo tocan documentación no cambian el sitio.
+    paths-ignore:
+      - "README.md"
+      - "LICENSE"
+      - "AGENTS.md"
+      - "CLAUDE.md"
+      - "docs/**"
   workflow_dispatch:
 
 permissions:
@@ -21,12 +28,12 @@ jobs:
       - name: Checkout your repository using git
         uses: actions/checkout@v7
 
+      # Detecta pnpm por el lockfile y toma la versión de `packageManager`
+      # en package.json, así el build usa la misma versión que en local.
       - name: Install, build, and upload your site
         uses: withastro/action@v6
         with:
-          path: .
-          node-version: '24'
-          package-manager: pnpm
+          node-version: 24
         env:
           PUBLIC_GA_ID: ${{ vars.PUBLIC_GA_ID }}
           PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.PUBLIC_GOOGLE_SITE_VERIFICATION }}
