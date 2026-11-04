@@ -1,0 +1,392 @@
+---
+// Contenido de cada módulo del menú principal.
+import {
+  certificaciones,
+  contacto,
+  edad,
+  experiencia,
+  formacion,
+  perfil,
+  proyectos,
+  sobreMi,
+  type Registro,
+  type Seccion,
+} from "../data/site";
+
+interface Props {
+  id: Seccion["id"];
+}
+
+const { id } = Astro.props;
+
+const datos = [
+  { clave: "Edad", valor: `${edad()} años` },
+  { clave: "Base", valor: perfil.ubicacion },
+  { clave: "Estado", valor: "Disponible" },
+];
+
+const grupos: { titulo?: string; registros: readonly Registro[] }[] =
+  id === "experiencia"
+    ? [{ registros: experiencia }]
+    : id === "formacion"
+      ? [{ registros: formacion }, { titulo: "Certificaciones", registros: certificaciones }]
+      : [];
+---
+
+{
+  id === "sobre-mi" && (
+    <div class="contenido">
+      <dl class="datos">
+        {datos.map((dato) => (
+          <div>
+            <dt class="mono">{dato.clave}</dt>
+            <dd>{dato.valor}</dd>
+          </div>
+        ))}
+      </dl>
+      {sobreMi.parrafos.map((parrafo) => <p class="parrafo">{parrafo}</p>)}
+      <h3 class="subtitulo mono">Stack</h3>
+      <ul class="chips" role="list">
+        {sobreMi.stack.map((tecnologia) => <li>{tecnologia}</li>)}
+      </ul>
+      <p class="disponible mono">
+        <span class="punto" aria-hidden="true" />
+        {sobreMi.disponibilidad}
+      </p>
+    </div>
+  )
+}
+
+{
+  grupos.length > 0 && (
+    <div class="contenido">
+      {grupos.map((grupo) => (
+        <>
+          {grupo.titulo && <h3 class="subtitulo mono">{grupo.titulo}</h3>}
+          <ol class="registros" role="list">
+            {grupo.registros.map((registro) => (
+              <li class="registro">
+                <p class="registro-periodo mono">{registro.periodo}</p>
+                <h3 class="registro-titulo">{registro.titulo}</h3>
+                <p class="registro-lugar">{registro.lugar}</p>
+                {registro.texto && <p class="registro-texto">{registro.texto}</p>}
+                {registro.tecnologias && (
+                  <ul class="chips chips-chicos" role="list">
+                    {registro.tecnologias.map((tecnologia) => (
+                      <li>{tecnologia}</li>
+                    ))}
+                  </ul>
+                )}
+                {registro.enlace && (
+                  <a class="enlace mono" href={registro.enlace.url}>
+                    {registro.enlace.texto} ↗
+                  </a>
+                )}
+              </li>
+            ))}
+          </ol>
+        </>
+      ))}
+    </div>
+  )
+}
+
+{
+  id === "proyectos" && (
+    <ul class="contenido proyectos" role="list">
+      {proyectos.map((proyecto) => (
+        <li class="proyecto">
+          <h3 class="proyecto-nombre">{proyecto.nombre}</h3>
+          <p class="proyecto-texto">{proyecto.texto}</p>
+          <p class="proyecto-pie">
+            <span class="proyecto-tecnologias mono">{proyecto.tecnologias.join(" · ")}</span>
+            <span class="proyecto-enlaces">
+              {proyecto.sitio && (
+                <a class="enlace mono" href={proyecto.sitio}>
+                  Ver ↗<span class="sr-only"> {proyecto.nombre}</span>
+                </a>
+              )}
+              {proyecto.codigo && (
+                <a class="enlace mono" href={proyecto.codigo}>
+                  Código ↗<span class="sr-only"> de {proyecto.nombre}</span>
+                </a>
+              )}
+            </span>
+          </p>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+{
+  id === "contacto" && (
+    <div class="contenido">
+      <p class="parrafo">{sobreMi.disponibilidad}. Escribime por cualquiera de estos canales:</p>
+      <ul class="canales" role="list">
+        {contacto.map((canal) => (
+          <li>
+            <a class="canal" href={canal.url} rel={canal.etiqueta === "Email" ? undefined : "me"}>
+              <span class="canal-etiqueta mono">{canal.etiqueta}</span>
+              <span class="canal-texto">{canal.texto}</span>
+              <span class="canal-flecha" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+<style>
+  .contenido {
+    display: grid;
+    gap: 0.9rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .parrafo {
+    margin: 0;
+    color: var(--c-tenue);
+  }
+
+  .subtitulo {
+    margin: 0.4rem 0 0;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-verde);
+  }
+
+  /* Ficha de datos, como las estadísticas de un personaje. */
+  .datos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0;
+    background: var(--c-linea);
+    border: 1px solid var(--c-linea);
+  }
+
+  .datos div {
+    padding: 0.45rem 0.7rem;
+    background: var(--c-superficie);
+  }
+
+  .datos dt {
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-rojo);
+  }
+
+  .datos dd {
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .chips li {
+    padding: 0.15rem 0.55rem;
+    font: 500 0.78rem / 1.4 var(--font-mono);
+    color: var(--c-texto);
+    border: 1px solid var(--c-linea);
+    background: rgb(252 1 71 / 0.08);
+  }
+
+  .chips-chicos li {
+    font-size: 0.7rem;
+    color: var(--c-tenue);
+  }
+
+  .disponible {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.2rem 0 0;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--c-verde);
+  }
+
+  .punto {
+    width: 0.45rem;
+    height: 0.45rem;
+    background: var(--c-verde);
+    box-shadow: 0 0 8px var(--c-verde);
+  }
+
+  /* Línea de tiempo de experiencia y formación. */
+  .registros {
+    display: grid;
+    gap: 1.1rem;
+    margin: 0;
+    padding: 0 0 0 1.1rem;
+    list-style: none;
+    border-left: 1px solid var(--c-linea);
+  }
+
+  .registro {
+    position: relative;
+  }
+
+  .registro::before {
+    content: "";
+    position: absolute;
+    left: calc(-1.1rem - 4px);
+    top: 0.35rem;
+    width: 7px;
+    height: 7px;
+    background: var(--c-rojo);
+  }
+
+  .registro:first-child::before {
+    background: var(--c-verde);
+    box-shadow: 0 0 8px var(--c-verde);
+  }
+
+  .registro-periodo {
+    margin: 0;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-verde);
+  }
+
+  .registro-titulo {
+    margin: 0.15rem 0 0;
+    font-size: 1.05rem;
+    line-height: 1.25;
+  }
+
+  .registro-lugar {
+    margin: 0.1rem 0 0;
+    font-size: 0.9rem;
+    color: var(--c-rojo);
+  }
+
+  .registro-texto {
+    margin: 0.4rem 0 0;
+    font-size: 0.92rem;
+    color: var(--c-tenue);
+  }
+
+  .registro .chips {
+    margin-top: 0.5rem;
+  }
+
+  .enlace {
+    justify-self: start;
+    display: inline-block;
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--c-verde);
+    text-underline-offset: 3px;
+  }
+
+  /* Tarjetas de proyectos con esquina cortada. */
+  .proyectos {
+    list-style: none;
+  }
+
+  .proyecto {
+    --corte: 10px;
+    padding: 0.8rem 0.95rem;
+    background: rgb(252 1 71 / 0.06);
+    border-left: 2px solid var(--c-rojo);
+    clip-path: polygon(0 0, calc(100% - var(--corte)) 0, 100% var(--corte), 100% 100%, 0 100%);
+  }
+
+  .proyecto:hover {
+    background: rgb(252 1 71 / 0.12);
+  }
+
+  .proyecto-nombre {
+    margin: 0;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+  }
+
+  .proyecto-texto {
+    margin: 0.3rem 0 0;
+    font-size: 0.9rem;
+    color: var(--c-tenue);
+  }
+
+  .proyecto-pie {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.4rem 1rem;
+    margin: 0.5rem 0 0;
+  }
+
+  .proyecto-tecnologias {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--c-rojo);
+  }
+
+  .proyecto-enlaces {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .proyecto-enlaces .enlace {
+    margin-top: 0;
+  }
+
+  /* Canales de contacto. */
+  .canales {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .canal {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.8rem;
+    color: var(--c-texto);
+    text-decoration: none;
+    border: 1px solid var(--c-linea);
+    background: rgb(252 1 71 / 0.05);
+  }
+
+  .canal:hover {
+    border-color: var(--c-verde);
+    background: rgb(2 249 105 / 0.08);
+  }
+
+  .canal-etiqueta {
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-verde);
+  }
+
+  .canal-texto {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: 0.92rem;
+  }
+
+  .canal-flecha {
+    color: var(--c-rojo);
+  }
+</style>

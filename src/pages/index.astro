@@ -7,10 +7,9 @@ import HudHeader from "../components/HudHeader.astro";
 import MainMenu from "../components/MainMenu.astro";
 import { perfil } from "../data/site";
 
-const nombreCompleto = `${perfil.nombre} ${perfil.apellido}`;
 ---
 
-<Layout title={nombreCompleto}>
+<Layout title={`${perfil.nombreVisible} · ${perfil.rol}`} description={perfil.descripcion}>
   <div class="pantalla arranque">
     <HudHeader />
 
@@ -18,14 +17,14 @@ const nombreCompleto = `${perfil.nombre} ${perfil.apellido}`;
       <div class="identidad">
         <p class="etiqueta mono">// UBICACIÓN · {perfil.ubicacion}</p>
         <h1 class="nombre">
-          <GlitchText texto={perfil.nombre} />
-          <GlitchText texto={perfil.apellido} pausaMin={3400} pausaMax={7000} />
+          <GlitchText texto={`${perfil.nombre} ${perfil.inicial}`} pausaMin={3400} pausaMax={7000} />
+          <GlitchText texto={perfil.apellido} />
         </h1>
         <p class="rol mono">&gt; {perfil.rol}<span class="cursor" aria-hidden="true">_</span></p>
       </div>
 
       <div class="visor">
-        <GlitchPortrait alt={`Foto de ${nombreCompleto}`} alias={perfil.alias} />
+        <GlitchPortrait alt={`Foto de ${perfil.nombreVisible}`} alias={perfil.alias} />
       </div>
 
       <div class="navegacion">
@@ -106,13 +105,13 @@ const nombreCompleto = `${perfil.nombre} ${perfil.apellido}`;
     line-height: 0.92;
     letter-spacing: 0.01em;
     text-transform: uppercase;
-    color: var(--c-rojo);
-    text-shadow: 0 0 28px rgb(252 1 71 / 0.35);
+    color: var(--c-texto);
   }
 
+  /* El segundo apellido es lo que más resalta. */
   .nombre :global(glitch-text:last-child) {
-    color: var(--c-texto);
-    text-shadow: none;
+    color: var(--c-rojo);
+    text-shadow: 0 0 28px rgb(252 1 71 / 0.35);
   }
 
   .rol {
@@ -135,6 +134,33 @@ const nombreCompleto = `${perfil.nombre} ${perfil.apellido}`;
   @media (prefers-reduced-motion: reduce) {
     .cursor {
       animation: none;
+    }
+  }
+
+  /* Pantallas anchas: nombre y menú a la izquierda, panel al medio y foto a
+     la derecha, como la pantalla de personaje de un juego. */
+  @media (min-width: 80rem) {
+    .escena {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.1fr) minmax(0, 0.75fr);
+      grid-template-areas:
+        "identidad panel visor"
+        "lista panel visor";
+      column-gap: clamp(1.5rem, 3vw, 3rem);
+      row-gap: 2rem;
+    }
+
+    .navegacion {
+      display: contents;
+    }
+
+    .nombre {
+      font-size: clamp(3rem, 4.2vw, 4.75rem);
+    }
+  }
+
+  @media (min-width: 56rem) and (max-width: 79.99rem) {
+    .nombre {
+      font-size: clamp(3rem, 5.5vw, 5rem);
     }
   }
 </style>

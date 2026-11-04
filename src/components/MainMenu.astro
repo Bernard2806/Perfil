@@ -2,7 +2,8 @@
 // Menú principal estilo videojuego. Funciona como pestañas accesibles: con
 // las flechas se recorre, y al cambiar de opción el panel se disuelve en
 // bloques de píxeles y el título se "descifra".
-import { perfil, secciones } from "../data/site";
+import PanelContenido from "./PanelContenido.astro";
+import { secciones } from "../data/site";
 ---
 
 <main-menu class="menu">
@@ -36,14 +37,8 @@ import { perfil, secciones } from "../data/site";
           tabindex="0"
           hidden={i !== 0}
         >
-          <p class="panel-ruta mono">// MÓDULO_{seccion.codigo}</p>
           <h2 class="panel-titulo">{seccion.titulo}</h2>
-          <p class="panel-texto">{seccion.texto}</p>
-          {seccion.id === "contacto" && (
-            <a class="enlace mono" href={perfil.github} rel="me">
-              github.com/{perfil.alias} ↗
-            </a>
-          )}
+          <PanelContenido id={seccion.id} />
         </section>
       ))
     }
@@ -57,10 +52,23 @@ import { perfil, secciones } from "../data/site";
     gap: 1.25rem;
   }
 
-  @media (min-width: 56rem) {
+  /* En pantallas anchas el menú se reparte en la grilla de la página: la
+     lista queda bajo el nombre y el panel ocupa la columna del medio. */
+  @media (min-width: 80rem) {
     .menu {
-      grid-template-columns: minmax(13rem, 15rem) 1fr;
-      align-items: start;
+      display: contents;
+    }
+
+    .lista {
+      grid-area: lista;
+      align-content: start;
+    }
+
+    /* El panel no empuja el alto de las filas: toma el de la columna y el
+       contenido scrollea adentro. */
+    .paneles {
+      grid-area: panel;
+      align-self: stretch;
     }
   }
 
@@ -154,15 +162,8 @@ import { perfil, secciones } from "../data/site";
     outline-offset: -4px;
   }
 
-  .panel-ruta {
-    margin: 0;
-    font-size: 0.7rem;
-    letter-spacing: 0.14em;
-    color: var(--c-verde);
-  }
-
   .panel-titulo {
-    margin: 0.35rem 0 0.75rem;
+    margin: 0 0 0.75rem;
     font-size: clamp(1.5rem, 4vw, 2rem);
     line-height: 1.1;
     letter-spacing: 0.04em;
@@ -170,16 +171,19 @@ import { perfil, secciones } from "../data/site";
     color: var(--c-rojo);
   }
 
-  .panel-texto {
-    margin: 0;
-    max-width: 46ch;
-    color: var(--c-tenue);
-  }
-
-  .enlace {
-    display: inline-block;
-    margin-top: 1rem;
-    font-size: 0.9rem;
+  /* En pantallas anchas el panel tiene scroll propio, como la caja de
+     texto de un juego, para que todo entre en la pantalla. */
+  @media (min-width: 80rem) {
+    .panel {
+      position: absolute;
+      inset: 1px;
+      min-height: 0;
+      height: auto;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: var(--c-rojo) transparent;
+    }
   }
 
   .transicion {
@@ -234,9 +238,10 @@ import { perfil, secciones } from "../data/site";
     private teclado(evento: KeyboardEvent) {
       if (evento.defaultPrevented || evento.altKey || evento.ctrlKey || evento.metaKey || evento.shiftKey) return;
 
+      // Con el foco dentro de un panel, las flechas hacen scroll del panel.
       const enfocado = document.activeElement;
-      const enLista = enfocado?.closest('[role="tablist"]') !== null && this.contains(enfocado);
-      const libre = !enfocado || enfocado === document.body || this.contains(enfocado);
+      const enLista = !!enfocado && this.contains(enfocado) && enfocado.closest('[role="tablist"]') !== null;
+      const libre = !enfocado || enfocado === document.body || enLista;
       if (!libre) return;
 
       const ultimo = this.opciones.length - 1;
