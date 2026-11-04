@@ -1,14 +1,19 @@
 ---
 // Barra superior del HUD: identificador del sistema, estado y reloj.
+// El estado sale del horario semanal (src/data/horario.ts) en hora de
+// Argentina: "En línea", "Ocupado · hasta 21:00" o, de noche, "Fuera de línea".
 ---
 
 <header class="hud-superior mono">
   <span class="sistema">
     <img class="logo" src="/favicon.svg" width="30" height="30" alt="BG" />
-    <span>//PERFIL</span>
+    <span class="sistema-nombre">//PERFIL</span>
   </span>
-  <span class="estado"><span class="punto" aria-hidden="true"></span>EN LÍNEA</span>
-  <time class="reloj" aria-hidden="true">--:--:--</time>
+  <span class="estado" data-estado="libre">
+    <span class="punto" aria-hidden="true"></span>
+    <span class="estado-texto">EN LÍNEA</span>
+  </span>
+  <time class="reloj" title="Hora en Chivilcoy">--:--:--</time>
 </header>
 
 <style>
@@ -37,18 +42,33 @@
   }
 
   .estado {
+    --c-estado: var(--c-verde);
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
     margin-left: auto;
-    color: var(--c-verde);
+    text-transform: uppercase;
+    color: var(--c-estado);
+  }
+
+  .estado[data-estado="ocupado"] {
+    --c-estado: var(--c-rojo);
+  }
+
+  .estado[data-estado="fuera"] {
+    --c-estado: var(--c-tenue);
+  }
+
+  .estado[data-estado="fuera"] .punto {
+    box-shadow: none;
+    animation: none;
   }
 
   .punto {
     width: 0.45rem;
     height: 0.45rem;
-    background: var(--c-verde);
-    box-shadow: 0 0 8px var(--c-verde);
+    background: var(--c-estado);
+    box-shadow: 0 0 8px var(--c-estado);
     animation: latido 2.4s steps(1) infinite;
   }
 
@@ -60,6 +80,19 @@
 
   @media (max-width: 30rem) {
     .reloj {
+      display: none;
+    }
+
+    /* "Ocupado · hasta 21:00" tiene que entrar en un renglón. */
+    .estado {
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+    }
+  }
+
+  /* En pantallas muy angostas queda solo el logo, para que entre el estado. */
+  @media (max-width: 22.4rem) {
+    .sistema-nombre {
       display: none;
     }
   }
@@ -78,18 +111,31 @@
 </style>
 
 <script>
+  import { estadoActual, etiquetas, zonaHoraria } from "../data/horario";
+
   const reloj = document.querySelector<HTMLTimeElement>(".reloj");
-  if (reloj) {
-    const formato = new Intl.DateTimeFormat("es-AR", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    });
-    const actualizar = () => {
-      reloj.textContent = formato.format(new Date());
-    };
-    actualizar();
-    setInterval(actualizar, 1000);
-  }
+  const estado = document.querySelector<HTMLElement>(".estado");
+  const estadoTexto = document.querySelector<HTMLElement>(".estado-texto");
+
+  const formato = new Intl.DateTimeFormat("es-AR", {
+    timeZone: zonaHoraria,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  });
+
+  const actualizar = () => {
+    const ahora = new Date();
+    if (reloj) reloj.textContent = formato.format(ahora);
+
+    const { estado: actual, hasta } = estadoActual(ahora);
+    const texto = hasta ? `${etiquetas[actual]} · hasta ${hasta}` : etiquetas[actual];
+    if (!estado || !estadoTexto || estadoTexto.textContent === texto) return;
+    estado.dataset.estado = actual;
+    estadoTexto.textContent = texto;
+  };
+
+  actualizar();
+  setInterval(actualizar, 1000);
 </script>
