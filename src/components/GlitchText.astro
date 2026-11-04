@@ -1,0 +1,109 @@
+---
+// Texto que cada tanto se "bugea": franjas desplazadas y los canales rojo y
+// verde separados. Pasa en ráfagas cortas y al pasar el mouse.
+interface Props {
+  texto: string;
+  /** Pausa mínima entre ráfagas, en milisegundos. */
+  pausaMin?: number;
+  /** Pausa máxima entre ráfagas, en milisegundos. */
+  pausaMax?: number;
+}
+
+const { texto, pausaMin = 2600, pausaMax = 6000 } = Astro.props;
+---
+
+<glitch-text data-text={texto} data-pausa-min={pausaMin} data-pausa-max={pausaMax}>{texto}</glitch-text>
+
+<style>
+  glitch-text {
+    position: relative;
+    display: inline-block;
+  }
+
+  glitch-text::before,
+  glitch-text::after {
+    content: attr(data-text) / "";
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  glitch-text.rompiendo {
+    animation: temblor 0.32s steps(1) infinite;
+  }
+
+  glitch-text.rompiendo::before {
+    opacity: 1;
+    color: var(--c-verde);
+    animation: franjas-a 0.32s steps(1) infinite;
+  }
+
+  glitch-text.rompiendo::after {
+    opacity: 1;
+    color: var(--c-rojo);
+    animation: franjas-b 0.32s steps(1) infinite;
+  }
+
+  @keyframes temblor {
+    0% { transform: none; }
+    25% { transform: translateX(-2px) skewX(-4deg); }
+    50% { transform: translateX(3px); }
+    75% { transform: translate(-1px, 1px); }
+  }
+
+  @keyframes franjas-a {
+    0% { clip-path: inset(8% 0 72% 0); transform: translateX(-7px); }
+    20% { clip-path: inset(62% 0 18% 0); transform: translateX(5px); }
+    40% { clip-path: inset(30% 0 52% 0); transform: translateX(-12px); }
+    60% { clip-path: inset(84% 0 4% 0); transform: translateX(8px); }
+    80% { clip-path: inset(45% 0 40% 0); transform: translateX(-4px); }
+  }
+
+  @keyframes franjas-b {
+    0% { clip-path: inset(70% 0 12% 0); transform: translateX(6px); }
+    20% { clip-path: inset(15% 0 66% 0); transform: translateX(-9px); }
+    40% { clip-path: inset(50% 0 34% 0); transform: translateX(11px); }
+    60% { clip-path: inset(2% 0 88% 0); transform: translateX(-5px); }
+    80% { clip-path: inset(36% 0 50% 0); transform: translateX(7px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    glitch-text.rompiendo {
+      animation: none;
+    }
+    glitch-text.rompiendo::before,
+    glitch-text.rompiendo::after {
+      animation: none;
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  import { azar, movimientoReducido, programarRafagas } from "../lib/fx";
+
+  class GlitchText extends HTMLElement {
+    private fin: ReturnType<typeof setTimeout> | undefined;
+
+    connectedCallback() {
+      if (movimientoReducido()) return;
+
+      const pausaMin = Number(this.dataset.pausaMin);
+      const pausaMax = Number(this.dataset.pausaMax);
+
+      // Ráfaga fuerte al entrar a la página.
+      this.romper(700);
+      programarRafagas(() => this.romper(azar(220, 520)), { pausaMin, pausaMax, elemento: this });
+      this.addEventListener("pointerenter", () => this.romper(300));
+    }
+
+    romper(duracion: number) {
+      clearTimeout(this.fin);
+      this.classList.add("rompiendo");
+      this.fin = setTimeout(() => this.classList.remove("rompiendo"), duracion);
+    }
+  }
+
+  customElements.define("glitch-text", GlitchText);
+</script>

@@ -1,0 +1,397 @@
+---
+// Retrato en duotono rojo que se "bugea" como el video de cyberpunk.net:
+// franjas horizontales desplazadas, macrobloques corridos, chorreado vertical
+// de píxeles y canales separados. Al entrar se arma desde un pixelado grueso.
+import { getImage } from "astro:assets";
+import avatar from "../assets/avatar.jpg";
+
+interface Props {
+  alt: string;
+  alias: string;
+}
+
+const { alt, alias } = Astro.props;
+const lado = 460;
+const imagen = await getImage({ src: avatar, width: lado, height: lado, format: "webp" });
+---
+
+<glitch-portrait class="retrato">
+  <div class="marco corte">
+    <div class="pantalla corte">
+      <img src={imagen.src} width={lado} height={lado} alt={alt} decoding="async" />
+      <canvas width={lado} height={lado} aria-hidden="true"></canvas>
+    </div>
+  </div>
+
+  <div class="mira" aria-hidden="true">
+    <span class="mira-etiqueta mono">ID // {alias.toUpperCase()}</span>
+  </div>
+
+  <span class="esquina esquina-a" aria-hidden="true"></span>
+  <span class="esquina esquina-b" aria-hidden="true"></span>
+
+  <p class="ficha mono" aria-hidden="true">
+    <span>SUJETO_VERIFICADO</span>
+    <span class="ficha-ok">● SEÑAL ESTABLE</span>
+  </p>
+</glitch-portrait>
+
+<style>
+  .retrato {
+    position: relative;
+    display: block;
+    width: min(100%, 26rem);
+    margin-inline: auto;
+  }
+
+  .marco {
+    padding: 1px;
+    background: linear-gradient(160deg, var(--c-rojo), var(--c-linea) 40%, var(--c-linea-verde));
+  }
+
+  .pantalla {
+    position: relative;
+    background: var(--c-fondo);
+  }
+
+  img,
+  canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  /* Sin JavaScript se ve la foto con un tinte rojo aproximado. */
+  img {
+    filter: grayscale(1) sepia(1) hue-rotate(-50deg) saturate(5) contrast(1.1);
+  }
+
+  canvas {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    image-rendering: pixelated;
+  }
+
+  .retrato.listo canvas {
+    opacity: 1;
+  }
+
+  .retrato.listo img {
+    visibility: hidden;
+  }
+
+  /* Recuadro verde sobre los ojos, como el de Capri. */
+  .mira {
+    position: absolute;
+    left: 29%;
+    top: 46%;
+    width: 42%;
+    height: 11%;
+    border: 1px solid var(--c-verde);
+    box-shadow: 0 0 12px rgb(2 249 105 / 0.35), inset 0 0 12px rgb(2 249 105 / 0.2);
+    animation: rastreo 4.5s steps(1) infinite;
+  }
+
+  .mira-etiqueta {
+    position: absolute;
+    left: -1px;
+    bottom: 100%;
+    padding: 0.1rem 0.4rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    color: var(--c-fondo);
+    background: var(--c-verde);
+  }
+
+  @keyframes rastreo {
+    0%, 70% { transform: none; }
+    72% { transform: translate(-6px, 2px); }
+    74% { transform: translate(4px, -1px); }
+    76%, 100% { transform: none; }
+  }
+
+  .esquina {
+    position: absolute;
+    width: 1.4rem;
+    height: 1.4rem;
+    border: 2px solid var(--c-verde);
+  }
+
+  .esquina-a {
+    top: -0.6rem;
+    left: -0.6rem;
+    border-right: 0;
+    border-bottom: 0;
+  }
+
+  .esquina-b {
+    right: -0.6rem;
+    bottom: -0.6rem;
+    border-left: 0;
+    border-top: 0;
+  }
+
+  .ficha {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0.9rem 0 0;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: var(--c-tenue);
+  }
+
+  .ficha-ok {
+    color: var(--c-verde);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mira {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import { azar, azarEntero, esperar, movimientoReducido, programarRafagas } from "../lib/fx";
+
+  type Rgb = readonly [number, number, number];
+
+  const rojo: Rgb = [252, 1, 71];
+  const verde: Rgb = [2, 249, 105];
+
+  // De la sombra a la luz: negro → rojo profundo → rojo neón → rosa.
+  const paradas: readonly (readonly [number, Rgb])[] = [
+    [0, [7, 6, 10]],
+    [0.3, [58, 0, 22]],
+    [0.55, [176, 1, 58]],
+    [0.78, [252, 1, 71]],
+    [1, [255, 143, 180]],
+  ];
+
+  function crearTablaDuotono(): Uint8ClampedArray {
+    const tabla = new Uint8ClampedArray(256 * 3);
+    for (let v = 0; v < 256; v++) {
+      const l = v / 255;
+      let i = 0;
+      while (i < paradas.length - 2 && l > paradas[i + 1]![0]) i++;
+      const [l0, c0] = paradas[i]!;
+      const [l1, c1] = paradas[i + 1]!;
+      const t = Math.min(Math.max((l - l0) / (l1 - l0), 0), 1);
+      for (let k = 0; k < 3; k++) tabla[v * 3 + k] = c0[k]! + (c1[k]! - c0[k]!) * t;
+    }
+    return tabla;
+  }
+
+  class GlitchPortrait extends HTMLElement {
+    private ctx!: CanvasRenderingContext2D;
+    private base!: ImageData;
+    private trabajo!: ImageData;
+    private fuente!: HTMLCanvasElement;
+    private chico!: HTMLCanvasElement;
+    private fila = new Uint8ClampedArray(0);
+    private animando = false;
+
+    async connectedCallback() {
+      const lienzo = this.querySelector("canvas");
+      const img = this.querySelector("img");
+      const ctx = lienzo?.getContext("2d", { willReadFrequently: true });
+      if (!lienzo || !img || !ctx) return;
+
+      try {
+        await img.decode();
+      } catch {
+        return;
+      }
+
+      const { width: ancho, height: alto } = lienzo;
+      this.ctx = ctx;
+      ctx.drawImage(img, 0, 0, ancho, alto);
+      this.base = this.aplicarDuotono(ctx.getImageData(0, 0, ancho, alto));
+      this.trabajo = new ImageData(ancho, alto);
+      this.fila = new Uint8ClampedArray(ancho * 4);
+
+      this.fuente = document.createElement("canvas");
+      this.fuente.width = ancho;
+      this.fuente.height = alto;
+      this.fuente.getContext("2d")?.putImageData(this.base, 0, 0);
+      this.chico = document.createElement("canvas");
+
+      if (movimientoReducido()) {
+        ctx.putImageData(this.base, 0, 0);
+        this.classList.add("listo");
+        return;
+      }
+
+      this.pixelar(46);
+      this.classList.add("listo");
+      await this.entrada();
+
+      programarRafagas(() => void this.rafaga(azar(260, 640)), {
+        pausaMin: 2200,
+        pausaMax: 5200,
+        elemento: this,
+      });
+      this.addEventListener("pointerenter", () => void this.rafaga(380));
+    }
+
+    private aplicarDuotono(imagen: ImageData): ImageData {
+      const tabla = crearTablaDuotono();
+      const d = imagen.data;
+      for (let i = 0; i < d.length; i += 4) {
+        const luz = Math.round(0.2126 * d[i]! + 0.7152 * d[i + 1]! + 0.0722 * d[i + 2]!);
+        d[i] = tabla[luz * 3]!;
+        d[i + 1] = tabla[luz * 3 + 1]!;
+        d[i + 2] = tabla[luz * 3 + 2]!;
+      }
+      return imagen;
+    }
+
+    /** Se arma desde bloques grandes hasta la imagen nítida, con cortes de glitch. */
+    private async entrada() {
+      for (const bloque of [46, 30, 20, 14, 9, 6, 4, 2]) {
+        this.pixelar(bloque);
+        await esperar(70);
+        if (Math.random() < 0.45) {
+          this.cuadroGlitch(0.8);
+          await esperar(45);
+        }
+      }
+      await this.rafaga(600, 1);
+    }
+
+    private pixelar(bloque: number) {
+      const { width: ancho, height: alto } = this.base;
+      const w = Math.ceil(ancho / bloque);
+      const h = Math.ceil(alto / bloque);
+      this.chico.width = w;
+      this.chico.height = h;
+      const chico = this.chico.getContext("2d");
+      if (!chico) return;
+      chico.imageSmoothingEnabled = true;
+      chico.drawImage(this.fuente, 0, 0, w, h);
+      this.ctx.imageSmoothingEnabled = false;
+      this.ctx.drawImage(this.chico, 0, 0, w, h, 0, 0, ancho, alto);
+    }
+
+    private async rafaga(duracion: number, intensidad = azar(0.35, 1)) {
+      if (this.animando) return;
+      this.animando = true;
+      const fin = performance.now() + duracion;
+      while (performance.now() < fin) {
+        if (Math.random() < 0.15) this.pixelar(azarEntero(6, 14));
+        else this.cuadroGlitch(intensidad);
+        await esperar(azar(40, 95));
+      }
+      this.ctx.putImageData(this.base, 0, 0);
+      this.animando = false;
+    }
+
+    private cuadroGlitch(intensidad: number) {
+      const { width: w, height: h } = this.base;
+      const src = this.base.data;
+      const out = this.trabajo.data;
+
+      // 1. Canales separados: el rojo y el verde se corren para lados opuestos.
+      const corrimiento = azarEntero(2, 4 + Math.round(8 * intensidad));
+      for (let y = 0; y < h; y++) {
+        const filaY = y * w;
+        for (let x = 0; x < w; x++) {
+          const i = (filaY + x) * 4;
+          const xr = Math.min(w - 1, x + corrimiento);
+          const xg = Math.max(0, x - corrimiento);
+          out[i] = src[(filaY + xr) * 4]!;
+          out[i + 1] = src[(filaY + xg) * 4 + 1]!;
+          out[i + 2] = src[i + 2]!;
+          out[i + 3] = 255;
+        }
+      }
+
+      // 2. Franjas horizontales finas desplazadas de costado (tearing).
+      const franjas = azarEntero(2, 4 + Math.round(10 * intensidad));
+      for (let f = 0; f < franjas; f++) {
+        const y0 = azarEntero(0, h - 1);
+        const alto = azarEntero(2, 6 + Math.round(26 * intensidad));
+        const desplazo = Math.round(azar(-60, 60) * intensidad);
+        for (let y = y0; y < Math.min(h, y0 + alto); y++) this.desplazarFila(out, y, w, desplazo);
+      }
+
+      // 3. Macrobloques corridos de lugar, como un video que se corrompe.
+      const bloques = azarEntero(0, 2 + Math.round(6 * intensidad));
+      for (let b = 0; b < bloques; b++) {
+        const bw = azarEntero(16, 72);
+        const bh = azarEntero(8, 40);
+        const sx = azarEntero(0, w - bw);
+        const sy = azarEntero(0, h - bh);
+        const dx = Math.min(w - bw, Math.max(0, sx + azarEntero(-40, 40)));
+        const dy = Math.min(h - bh, Math.max(0, sy + azarEntero(-12, 12)));
+        for (let y = 0; y < bh; y++) {
+          const desde = ((sy + y) * w + sx) * 4;
+          out.set(src.subarray(desde, desde + bw * 4), ((dy + y) * w + dx) * 4);
+        }
+      }
+
+      // 4. Chorreado vertical de píxeles teñido de rojo o verde.
+      if (Math.random() < 0.4 + 0.5 * intensidad) {
+        const ancho = azarEntero(20, 40 + Math.round(120 * intensidad));
+        const x0 = azarEntero(0, w - ancho);
+        const tinte = Math.random() < 0.3 ? verde : rojo;
+        for (let x = x0; x < x0 + ancho; x++) {
+          if (Math.random() > 0.55) continue;
+          const y0 = azarEntero(0, h - 1);
+          const largo = azarEntero(20, 60 + Math.round(200 * intensidad));
+          const origen = (y0 * w + x) * 4;
+          const r = (src[origen]! + tinte[0]) / 2;
+          const g = (src[origen + 1]! + tinte[1]) / 2;
+          const bl = (src[origen + 2]! + tinte[2]) / 2;
+          for (let y = y0; y < Math.min(h, y0 + largo); y++) {
+            const a = 1 - ((y - y0) / largo) * 0.7;
+            const i = (y * w + x) * 4;
+            out[i] = out[i]! + (r - out[i]!) * a;
+            out[i + 1] = out[i + 1]! + (g - out[i + 1]!) * a;
+            out[i + 2] = out[i + 2]! + (bl - out[i + 2]!) * a;
+          }
+        }
+      }
+
+      // 5. A veces una banda se pixela.
+      if (Math.random() < 0.35) {
+        const bloque = azarEntero(6, 14);
+        const y0 = azarEntero(0, h - 20);
+        const y1 = Math.min(h, y0 + azarEntero(20, 80));
+        for (let by = y0; by < y1; by += bloque) {
+          for (let bx = 0; bx < w; bx += bloque) {
+            const i0 = (by * w + bx) * 4;
+            const r = out[i0]!;
+            const g = out[i0 + 1]!;
+            const b = out[i0 + 2]!;
+            for (let y = by; y < Math.min(y1, by + bloque); y++) {
+              for (let x = bx; x < Math.min(w, bx + bloque); x++) {
+                const i = (y * w + x) * 4;
+                out[i] = r;
+                out[i + 1] = g;
+                out[i + 2] = b;
+              }
+            }
+          }
+        }
+      }
+
+      this.ctx.putImageData(this.trabajo, 0, 0);
+    }
+
+    private desplazarFila(datos: Uint8ClampedArray, y: number, w: number, desplazo: number) {
+      const inicio = y * w * 4;
+      this.fila.set(datos.subarray(inicio, inicio + w * 4));
+      for (let x = 0; x < w; x++) {
+        const xs = (((x - desplazo) % w) + w) % w;
+        datos.set(this.fila.subarray(xs * 4, xs * 4 + 4), inicio + x * 4);
+      }
+    }
+  }
+
+  customElements.define("glitch-portrait", GlitchPortrait);
+</script>
