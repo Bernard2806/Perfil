@@ -1,10 +1,140 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import GlitchPortrait from "../components/GlitchPortrait.astro";
+import GlitchText from "../components/GlitchText.astro";
+import HudFooter from "../components/HudFooter.astro";
+import HudHeader from "../components/HudHeader.astro";
+import MainMenu from "../components/MainMenu.astro";
+import { perfil } from "../data/site";
+
+const nombreCompleto = `${perfil.nombre} ${perfil.apellido}`;
 ---
 
-<Layout title="Bernardo González">
-  <main>
-    <h1>Bernardo González</h1>
-    <p>En construcción.</p>
-  </main>
+<Layout title={nombreCompleto}>
+  <div class="pantalla arranque">
+    <HudHeader />
+
+    <main class="escena">
+      <div class="identidad">
+        <p class="etiqueta mono">// PERFIL_PERSONAL · {perfil.ubicacion}</p>
+        <h1 class="nombre">
+          <GlitchText texto={perfil.nombre} />
+          <GlitchText texto={perfil.apellido} pausaMin={3400} pausaMax={7000} />
+        </h1>
+        <p class="rol mono">&gt; {perfil.rol}<span class="cursor" aria-hidden="true">_</span></p>
+      </div>
+
+      <div class="visor">
+        <GlitchPortrait alt={`Foto de ${nombreCompleto}`} alias={perfil.alias} />
+      </div>
+
+      <div class="navegacion">
+        <MainMenu />
+      </div>
+    </main>
+
+    <HudFooter />
+  </div>
 </Layout>
+
+<style>
+  .pantalla {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100dvh;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .escena {
+    display: grid;
+    grid-template-areas:
+      "identidad"
+      "visor"
+      "navegacion";
+    gap: 2.25rem;
+    align-content: center;
+    padding-block: 2.5rem;
+  }
+
+  @media (min-width: 56rem) {
+    .escena {
+      grid-template-columns: 1.25fr 0.85fr;
+      grid-template-areas:
+        "identidad visor"
+        "navegacion visor";
+      column-gap: clamp(2rem, 5vw, 4.5rem);
+      row-gap: 2.5rem;
+      align-items: center;
+    }
+  }
+
+  .identidad {
+    grid-area: identidad;
+  }
+
+  .visor {
+    grid-area: visor;
+  }
+
+  .navegacion {
+    grid-area: navegacion;
+  }
+
+  @media (max-width: 55.99rem) {
+    .visor {
+      max-width: 20rem;
+      width: 100%;
+      margin-inline: auto;
+    }
+  }
+
+  .etiqueta {
+    margin: 0 0 0.75rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-verde);
+  }
+
+  .nombre {
+    display: grid;
+    margin: 0;
+    font-size: clamp(2.75rem, 10vw, 6rem);
+    font-weight: 700;
+    line-height: 0.92;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--c-rojo);
+    text-shadow: 0 0 28px rgb(252 1 71 / 0.35);
+  }
+
+  .nombre :global(glitch-text:last-child) {
+    color: var(--c-texto);
+    text-shadow: none;
+  }
+
+  .rol {
+    margin: 1rem 0 0;
+    font-size: clamp(0.95rem, 2.4vw, 1.1rem);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-texto);
+  }
+
+  .cursor {
+    color: var(--c-verde);
+    animation: parpadeo 1s steps(1) infinite;
+  }
+
+  @keyframes parpadeo {
+    50% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor {
+      animation: none;
+    }
+  }
+</style>

@@ -1,0 +1,333 @@
+---
+// Menú principal estilo videojuego. Funciona como pestañas accesibles: con
+// las flechas se recorre, y al cambiar de opción el panel se disuelve en
+// bloques de píxeles y el título se "descifra".
+import { perfil, secciones } from "../data/site";
+---
+
+<main-menu class="menu">
+  <div class="lista" role="tablist" aria-orientation="vertical" aria-label="Menú principal">
+    {
+      secciones.map((seccion, i) => (
+        <button
+          type="button"
+          role="tab"
+          class="opcion"
+          id={`opcion-${seccion.id}`}
+          aria-controls={`panel-${seccion.id}`}
+          aria-selected={i === 0 ? "true" : "false"}
+          tabindex={i === 0 ? 0 : -1}
+        >
+          <span class="opcion-codigo mono">{seccion.codigo}</span>
+          <span class="opcion-texto">{seccion.etiqueta}</span>
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="paneles corte">
+    {
+      secciones.map((seccion, i) => (
+        <section
+          role="tabpanel"
+          class="panel"
+          id={`panel-${seccion.id}`}
+          aria-labelledby={`opcion-${seccion.id}`}
+          tabindex="0"
+          hidden={i !== 0}
+        >
+          <p class="panel-ruta mono">// MÓDULO_{seccion.codigo}</p>
+          <h2 class="panel-titulo">{seccion.titulo}</h2>
+          <p class="panel-texto">{seccion.texto}</p>
+          {seccion.id === "contacto" && (
+            <a class="enlace mono" href={perfil.github} rel="me">
+              github.com/{perfil.alias} ↗
+            </a>
+          )}
+        </section>
+      ))
+    }
+    <canvas class="transicion" aria-hidden="true"></canvas>
+  </div>
+</main-menu>
+
+<style>
+  .menu {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 56rem) {
+    .menu {
+      grid-template-columns: minmax(13rem, 15rem) 1fr;
+      align-items: start;
+    }
+  }
+
+  .lista {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .opcion {
+    --corte: 10px;
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    width: 100%;
+    padding: 0.6rem 1rem 0.6rem 1.6rem;
+    font: 700 clamp(1.05rem, 2.6vw, 1.3rem) / 1.2 var(--font-display);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: start;
+    color: var(--c-texto);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    clip-path: polygon(0 0, calc(100% - var(--corte)) 0, 100% var(--corte), 100% 100%, 0 100%);
+  }
+
+  .opcion::before {
+    content: "▸" / "";
+    position: absolute;
+    left: 0.5rem;
+    color: var(--c-verde);
+    opacity: 0;
+  }
+
+  .opcion-codigo {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--c-rojo);
+  }
+
+  .opcion:hover {
+    background: rgb(252 1 71 / 0.12);
+  }
+
+  .opcion:hover .opcion-texto {
+    animation: separar 0.3s steps(1) 2;
+  }
+
+  .opcion[aria-selected="true"] {
+    color: var(--c-fondo);
+    background: var(--c-rojo);
+  }
+
+  .opcion[aria-selected="true"]::before {
+    opacity: 1;
+    color: var(--c-fondo);
+  }
+
+  .opcion[aria-selected="true"] .opcion-codigo {
+    color: var(--c-fondo);
+  }
+
+  .opcion:focus-visible {
+    outline-offset: -2px;
+  }
+
+  @keyframes separar {
+    0% { text-shadow: -2px 0 var(--c-verde), 2px 0 var(--c-rojo); transform: translateX(1px); }
+    33% { text-shadow: 3px 0 var(--c-verde), -3px 0 var(--c-rojo); transform: translateX(-2px); }
+    66% { text-shadow: -1px 0 var(--c-verde), 1px 0 var(--c-rojo); transform: none; }
+    100% { text-shadow: none; }
+  }
+
+  .paneles {
+    position: relative;
+    min-height: 13rem;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--c-linea), transparent 60%, var(--c-linea-verde));
+  }
+
+  .panel {
+    height: 100%;
+    min-height: calc(13rem - 2px);
+    padding: 1.25rem 1.4rem 1.5rem;
+    background: linear-gradient(180deg, rgb(17 12 18 / 0.96), rgb(7 6 10 / 0.96));
+    clip-path: inherit;
+  }
+
+  .panel:focus-visible {
+    outline-offset: -4px;
+  }
+
+  .panel-ruta {
+    margin: 0;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    color: var(--c-verde);
+  }
+
+  .panel-titulo {
+    margin: 0.35rem 0 0.75rem;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    line-height: 1.1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--c-rojo);
+  }
+
+  .panel-texto {
+    margin: 0;
+    max-width: 46ch;
+    color: var(--c-tenue);
+  }
+
+  .enlace {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .transicion {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    image-rendering: pixelated;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .opcion:hover .opcion-texto {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import { descifrar, mezclar, movimientoReducido } from "../lib/fx";
+
+  const tamCelda = 12;
+
+  class MainMenu extends HTMLElement {
+    private opciones: HTMLButtonElement[] = [];
+    private paneles: HTMLElement[] = [];
+    private lienzo: HTMLCanvasElement | null = null;
+    private actual = 0;
+    private ocupado = false;
+
+    connectedCallback() {
+      this.opciones = [...this.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+      this.paneles = [...this.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
+      this.lienzo = this.querySelector("canvas");
+
+      this.opciones.forEach((opcion, i) => {
+        opcion.addEventListener("click", () => this.elegir(i));
+        opcion.addEventListener("pointerenter", () => {
+          const texto = opcion.querySelector<HTMLElement>(".opcion-texto");
+          if (texto) descifrar(texto, 260);
+        });
+      });
+
+      this.querySelector('[role="tablist"]')?.addEventListener("keydown", (evento) => {
+        this.teclado(evento as KeyboardEvent);
+      });
+    }
+
+    private teclado(evento: KeyboardEvent) {
+      const ultimo = this.opciones.length - 1;
+      const destinos: Record<string, number> = {
+        ArrowDown: this.actual === ultimo ? 0 : this.actual + 1,
+        ArrowRight: this.actual === ultimo ? 0 : this.actual + 1,
+        ArrowUp: this.actual === 0 ? ultimo : this.actual - 1,
+        ArrowLeft: this.actual === 0 ? ultimo : this.actual - 1,
+        Home: 0,
+        End: ultimo,
+      };
+      const destino = destinos[evento.key];
+      if (destino === undefined) return;
+      evento.preventDefault();
+      this.opciones[destino]?.focus();
+      this.elegir(destino);
+    }
+
+    private async elegir(indice: number) {
+      if (indice === this.actual) return;
+      this.actual = indice;
+      this.opciones.forEach((opcion, i) => {
+        opcion.setAttribute("aria-selected", String(i === indice));
+        opcion.tabIndex = i === indice ? 0 : -1;
+      });
+
+      if (movimientoReducido() || !this.lienzo) {
+        this.mostrar(indice);
+        return;
+      }
+
+      // Si ya hay una transición en curso, al terminar muestra la última elegida.
+      if (this.ocupado) return;
+      this.ocupado = true;
+      await this.cubrir(this.lienzo, 180);
+      this.mostrar(this.actual);
+      await this.descubrir(this.lienzo, 260);
+      this.ocupado = false;
+    }
+
+    private mostrar(indice: number) {
+      this.paneles.forEach((panel, i) => {
+        panel.hidden = i !== indice;
+      });
+      const titulo = this.paneles[indice]?.querySelector<HTMLElement>(".panel-titulo");
+      if (titulo) descifrar(titulo, 480);
+    }
+
+    private prepararLienzo(lienzo: HTMLCanvasElement) {
+      lienzo.width = Math.ceil(lienzo.clientWidth / tamCelda);
+      lienzo.height = Math.ceil(lienzo.clientHeight / tamCelda);
+      const celdas = mezclar([...Array(lienzo.width * lienzo.height).keys()]);
+      return { ctx: lienzo.getContext("2d"), celdas, columnas: lienzo.width };
+    }
+
+    /** Tapa el panel con bloques de píxeles que aparecen al azar. */
+    private cubrir(lienzo: HTMLCanvasElement, duracion: number): Promise<void> {
+      const { ctx, celdas, columnas } = this.prepararLienzo(lienzo);
+      if (!ctx) return Promise.resolve();
+      const colores = ["#fc0147", "#e80645", "#fc0147", "#07060a", "#07060a", "#02f969"];
+      let dibujadas = 0;
+      return this.animar(duracion, (progreso) => {
+        const hasta = Math.floor(progreso * celdas.length);
+        for (; dibujadas < hasta; dibujadas++) {
+          const celda = celdas[dibujadas]!;
+          const verde = Math.random() < 0.06;
+          ctx.fillStyle = verde ? "#02f969" : colores[celda % (colores.length - 1)]!;
+          ctx.fillRect(celda % columnas, Math.floor(celda / columnas), 1, 1);
+        }
+      });
+    }
+
+    /** Destapa el panel nuevo borrando los bloques en otro orden al azar. */
+    private descubrir(lienzo: HTMLCanvasElement, duracion: number): Promise<void> {
+      const ctx = lienzo.getContext("2d");
+      if (!ctx) return Promise.resolve();
+      const columnas = lienzo.width;
+      const celdas = mezclar([...Array(lienzo.width * lienzo.height).keys()]);
+      let borradas = 0;
+      return this.animar(duracion, (progreso) => {
+        const hasta = Math.floor(progreso * celdas.length);
+        for (; borradas < hasta; borradas++) {
+          const celda = celdas[borradas]!;
+          ctx.clearRect(celda % columnas, Math.floor(celda / columnas), 1, 1);
+        }
+      });
+    }
+
+    private animar(duracion: number, cuadro: (progreso: number) => void): Promise<void> {
+      return new Promise((resolver) => {
+        const inicio = performance.now();
+        const paso = (ahora: number) => {
+          const progreso = Math.min((ahora - inicio) / duracion, 1);
+          cuadro(progreso);
+          if (progreso < 1) requestAnimationFrame(paso);
+          else resolver();
+        };
+        requestAnimationFrame(paso);
+      });
+    }
+  }
+
+  customElements.define("main-menu", MainMenu);
+</script>

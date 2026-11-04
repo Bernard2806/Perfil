@@ -1,0 +1,91 @@
+---
+// Barra superior del HUD: identificador del sistema, estado y reloj.
+---
+
+<header class="hud-superior mono">
+  <span class="sistema"><span class="marca">BG</span>//PERFIL <span class="version">v2.0.26</span></span>
+  <span class="estado"><span class="punto" aria-hidden="true"></span>EN LÍNEA</span>
+  <time class="reloj" aria-hidden="true">--:--:--</time>
+</header>
+
+<style>
+  .hud-superior {
+    display: flex;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    padding-block: 1rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: var(--c-tenue);
+    border-bottom: 1px solid var(--c-linea);
+  }
+
+  .marca {
+    padding: 0.1rem 0.35rem;
+    margin-right: 0.15rem;
+    font-weight: 500;
+    color: var(--c-fondo);
+    background: var(--c-rojo);
+  }
+
+  .version {
+    color: var(--c-rojo);
+  }
+
+  .estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-left: auto;
+    color: var(--c-verde);
+  }
+
+  .punto {
+    width: 0.45rem;
+    height: 0.45rem;
+    background: var(--c-verde);
+    box-shadow: 0 0 8px var(--c-verde);
+    animation: latido 2.4s steps(1) infinite;
+  }
+
+  .reloj {
+    min-width: 8ch;
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 30rem) {
+    .reloj {
+      display: none;
+    }
+  }
+
+  @keyframes latido {
+    0%, 85% { opacity: 1; }
+    90% { opacity: 0.2; }
+    95% { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .punto {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const reloj = document.querySelector<HTMLTimeElement>(".reloj");
+  if (reloj) {
+    const formato = new Intl.DateTimeFormat("es-AR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+    const actualizar = () => {
+      reloj.textContent = formato.format(new Date());
+    };
+    actualizar();
+    setInterval(actualizar, 1000);
+  }
+</script>
