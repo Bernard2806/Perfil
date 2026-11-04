@@ -3,10 +3,8 @@
 import {
   certificaciones,
   contacto,
-  edad,
   experiencia,
   formacion,
-  perfil,
   proyectos,
   sobreMi,
   type Registro,
@@ -19,11 +17,6 @@ interface Props {
 
 const { id } = Astro.props;
 
-const datos = [
-  { clave: "Edad", valor: `${edad()} años` },
-  { clave: "Base", valor: perfil.ubicacion },
-];
-
 const grupos: { titulo?: string; registros: readonly Registro[] }[] =
   id === "experiencia"
     ? [{ registros: experiencia }]
@@ -35,17 +28,8 @@ const grupos: { titulo?: string; registros: readonly Registro[] }[] =
 {
   id === "sobre-mi" && (
     <div class="contenido">
-      <dl class="datos">
-        {datos.map((dato) => (
-          <div>
-            <dt class="mono">{dato.clave}</dt>
-            <dd>{dato.valor}</dd>
-          </div>
-        ))}
-      </dl>
       {sobreMi.parrafos.map((parrafo) => <p class="parrafo">{parrafo}</p>)}
-      <h3 class="subtitulo mono">Stack</h3>
-      <ul class="chips" role="list">
+      <ul class="chips chips-chicos" role="list" aria-label="Stack">
         {sobreMi.stack.map((tecnologia) => <li>{tecnologia}</li>)}
       </ul>
       <p class="disponible mono">
@@ -157,33 +141,6 @@ const grupos: { titulo?: string; registros: readonly Registro[] }[] =
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--c-verde);
-  }
-
-  /* Ficha de datos, como las estadísticas de un personaje. */
-  .datos {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1px;
-    margin: 0;
-    background: var(--c-linea);
-    border: 1px solid var(--c-linea);
-  }
-
-  .datos div {
-    padding: 0.45rem 0.7rem;
-    background: var(--c-superficie);
-  }
-
-  .datos dt {
-    font-size: 0.65rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--c-rojo);
-  }
-
-  .datos dd {
-    margin: 0;
-    font-weight: 500;
   }
 
   .chips {

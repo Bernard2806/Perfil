@@ -47,12 +47,12 @@ export const secciones: readonly Seccion[] = [
 
 export const sobreMi = {
   parrafos: [
-    "Soy Bernardo, desarrollador full stack de Chivilcoy. Me gusta entender cómo funcionan las cosas y después mejorarlas o construir mi propia versión. Trabajo sobre todo con .NET (C#), Blazor, PHP, Java y Astro, y paso mucho tiempo en Linux e infraestructura.",
-    "Estudio la Licenciatura en Sistemas de Información en la UNLu y la Diplomatura en Ciberseguridad en la UNTREF. Soy vicepresidente de CODES, el centro de estudiantes de Sistemas de la UNLu, y fundé MateLogic, un estudio de software a medida.",
+    `Tengo ${edad()} años, soy de Chivilcoy y hago desarrollo full stack, sobre todo con .NET (C#), Blazor, PHP, Java y Astro. Me gusta entender cómo funcionan las cosas y después mejorarlas o construir mi propia versión.`,
+    "Estudio Sistemas en la UNLu y Ciberseguridad en la UNTREF, soy vicepresidente de CODES y fundé MateLogic.",
   ],
   stack: [
-    "C#", ".NET", "Blazor", "PHP", "Java", "Astro", "TypeScript", "JavaScript",
-    "Python", "C", "MySQL", "SQL Server", "Azure", "Linux", "Bash", "Git",
+    "C#", ".NET", "Blazor", "PHP", "Java", "Astro",
+    "TypeScript", "Python", "SQL Server", "MySQL", "Azure", "Linux",
   ],
   disponibilidad: "Abierto a oportunidades remotas o híbridas",
 } as const;
