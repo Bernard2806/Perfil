@@ -1,185 +1,43 @@
 ---
 import "../styles/global.css";
-import portfolioData from "../data/portfolio.json";
-import BackgroundAnimation from "../components/BackgroundAnimation.astro";
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { 
-  title, 
-  description = "Perfil profesional de Bernardo González - Desarrollador Web especializado en .NET, PHP, C# y bases de datos SQL." 
-} = Astro.props;
+const { title, description = "Bernardo González — Desarrollador" } = Astro.props;
 
-// Dynamic Canonical URL
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://bernard2806.is-a.dev/");
-
-// Environment Variables
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const googleAnalyticsId = import.meta.env.PUBLIC_GA_ID;
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
-
-// JSON-LD Structured Data
-const { name, lastName, title: jobTitle, github, linkedin, instagram, facebook } = portfolioData.personalInfo;
-const fullName = `${name} ${lastName}`;
-const siteName = "Bernardo González";
-const siteUrl = Astro.site ? Astro.site.toString() : "https://bernard2806.is-a.dev/";
-
-const personSchema = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": fullName,
-  "jobTitle": jobTitle,
-  "url": siteUrl,
-  "sameAs": [
-    github,
-    linkedin,
-    instagram,
-    facebook
-  ].filter(Boolean),
-  "knowsAbout": [
-    "Desarrollo Web",
-    "C#",
-    ".NET",
-    "PHP",
-    "SQL",
-    "Bases de Datos",
-    "Linux",
-    "Blazor"
-  ],
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Chivilcoy",
-    "addressRegion": "Buenos Aires",
-    "addressCountry": "AR"
-  }
-};
-
-const websiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": siteName,
-  "alternateName": [
-    fullName,
-    "Bernardo González Erramuspe",
-    "Bernard2806"
-  ],
-  "url": siteUrl
-};
-
-const jsonLd = [personSchema, websiteSchema];
 ---
 
-<!DOCTYPE html>
-<html lang="es" data-theme="dark">
+<!doctype html>
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0a0f0c" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
-    
-    <!-- SEO Meta Tags -->
     <meta name="description" content={description} />
-    <meta name="author" content="Bernardo González" />
-    <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonicalURL} />
-    {googleSiteVerification && <meta name="google-site-verification" content={googleSiteVerification} />}
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content="https://github.com/Bernard2806.png" />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:site_name" content={siteName} />
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content="https://github.com/Bernard2806.png" />
-
-    <!-- Icon -->
     <link rel="icon" href="https://github.com/Bernard2806.png" type="image/png" />
-    
-    <!-- Preconnect & DNS-prefetch for external resources -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
-
-    <!-- Preload critical fonts to prevent layout shift and network chains -->
-    <link
-      rel="preload"
-      href="https://fonts.gstatic.com/s/vt323/v18/pxiKyp0ihIEF2hsY.ttf"
-      as="font"
-      type="font/ttf"
-      crossorigin
-    />
-
-    <!-- Google Fonts — async load to avoid render-blocking -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Pixelify+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Pixelify+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
-      rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Pixelify+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
-        rel="stylesheet"
-      />
-    </noscript>
-
-    <!-- FontAwesome Icons -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      crossorigin="anonymous"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
-      crossorigin="anonymous"
-    />
-    <noscript>
-      <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        rel="stylesheet"
-        crossorigin="anonymous"
-      />
-    </noscript>
-
-    <!-- Google Analytics (GTags) -->
-    {googleAnalyticsId && (
-      <>
-        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}></script>
-        <script is:inline set:html={`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){window.dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${googleAnalyticsId}');
-        `} />
-      </>
-    )}
-
-    <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+    {googleSiteVerification && <meta name="google-site-verification" content={googleSiteVerification} />}
+    {
+      googleAnalyticsId && (
+        <>
+          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`} />
+          <script is:inline define:vars={{ googleAnalyticsId }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { window.dataLayer.push(arguments); }
+            gtag("js", new Date());
+            gtag("config", googleAnalyticsId);
+          </script>
+        </>
+      )
+    }
   </head>
   <body>
-    <!-- Code-generated background (replaces ~9.4MB of video/gif assets) -->
-    <BackgroundAnimation />
-
     <slot />
   </body>
 </html>
