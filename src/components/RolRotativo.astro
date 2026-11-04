@@ -1,0 +1,71 @@
+---
+// Rol que se va reescribiendo como en una terminal: se borra letra por letra
+// y escribe el siguiente. Los lectores de pantalla leen todos los roles juntos.
+interface Props {
+  roles: readonly string[];
+}
+
+const { roles } = Astro.props;
+// "Desarrollador full stack y analista en ciberseguridad".
+const leido = roles.map((rol, i) => (i === 0 ? rol : rol.charAt(0).toLowerCase() + rol.slice(1))).join(" y ");
+---
+
+<span class="sr-only">{leido}</span>
+<rol-rotativo aria-hidden="true" data-roles={JSON.stringify(roles)}>{roles[0]}</rol-rotativo>
+
+<style>
+  rol-rotativo {
+    white-space: nowrap;
+  }
+
+  rol-rotativo.escribiendo {
+    text-shadow: -1px 0 var(--c-verde), 1px 0 var(--c-rojo);
+  }
+</style>
+
+<script>
+  import { esperar, movimientoReducido } from "../lib/fx";
+
+  const pausa = 3600;
+  const borrarLetra = 28;
+  const escribirLetra = 55;
+
+  class RolRotativo extends HTMLElement {
+    connectedCallback() {
+      const roles = JSON.parse(this.dataset.roles ?? "[]") as string[];
+      if (roles.length < 2) return;
+
+      if (movimientoReducido()) {
+        this.textContent = roles.join(" · ");
+        return;
+      }
+
+      void this.ciclo(roles);
+    }
+
+    private async ciclo(roles: string[]) {
+      let indice = 0;
+      while (this.isConnected) {
+        await esperar(pausa);
+        const actual = roles[indice]!;
+        indice = (indice + 1) % roles.length;
+        const siguiente = roles[indice]!;
+
+        for (let n = actual.length; n >= 0; n--) {
+          this.textContent = actual.slice(0, n);
+          await esperar(borrarLetra);
+        }
+
+        await esperar(220);
+        this.classList.add("escribiendo");
+        for (let n = 1; n <= siguiente.length; n++) {
+          this.textContent = siguiente.slice(0, n);
+          await esperar(escribirLetra);
+        }
+        this.classList.remove("escribiendo");
+      }
+    }
+  }
+
+  customElements.define("rol-rotativo", RolRotativo);
+</script>

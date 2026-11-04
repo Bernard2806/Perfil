@@ -9,6 +9,8 @@ export const perfil = {
   nombreCompleto: "Bernardo Andrés González Erramuspe",
   alias: "Bernard2806",
   rol: "Desarrollador full stack",
+  /** Roles que se alternan en el encabezado. */
+  roles: ["Desarrollador full stack", "Analista en ciberseguridad"],
   ubicacion: "Chivilcoy, AR",
   nacimiento: "2006-06-28",
   email: "bgonzalezerramuspe2006@hotmail.com",
@@ -48,7 +50,7 @@ export const secciones: readonly Seccion[] = [
 export const sobreMi = {
   parrafos: [
     `Tengo ${edad()} años, soy de Chivilcoy y hago desarrollo full stack, sobre todo con .NET (C#), Blazor, PHP, Java y Astro. Me gusta entender cómo funcionan las cosas y después mejorarlas o construir mi propia versión.`,
-    "Estudio Sistemas en la UNLu y Ciberseguridad en la UNTREF, soy vicepresidente de CODES y fundé MateLogic.",
+    "Estudio Sistemas en la UNLu y la Diplomatura Analista en Ciberseguridad en la UNTREF, soy vicepresidente de CODES y fundé MateLogic.",
   ],
   stack: [
     "C#", ".NET", "Blazor", "PHP", "Java", "Astro",
@@ -200,7 +202,7 @@ export const formacion: readonly Registro[] = [
   },
   {
     periodo: "2026 · En curso",
-    titulo: "Diplomatura en Ciberseguridad",
+    titulo: "Diplomatura Analista en Ciberseguridad",
     lugar: "Universidad Nacional de Tres de Febrero (UNTREF)",
   },
   {
