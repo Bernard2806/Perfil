@@ -3,7 +3,7 @@
 // franjas horizontales desplazadas, macrobloques corridos, chorreado vertical
 // de píxeles y canales separados. Al entrar se arma desde un pixelado grueso.
 import { getImage } from "astro:assets";
-import avatar from "../assets/avatar.jpg";
+import foto from "../assets/bernardo.jpg";
 
 interface Props {
   alt: string;
@@ -12,7 +12,7 @@ interface Props {
 
 const { alt, alias } = Astro.props;
 const lado = 460;
-const imagen = await getImage({ src: avatar, width: lado, height: lado, format: "webp" });
+const imagen = await getImage({ src: foto, width: lado, height: lado, format: "webp" });
 ---
 
 <glitch-portrait class="retrato">
@@ -85,10 +85,10 @@ const imagen = await getImage({ src: avatar, width: lado, height: lado, format: 
   /* Recuadro verde sobre los ojos, como el de Capri. */
   .mira {
     position: absolute;
-    left: 29%;
-    top: 46%;
-    width: 42%;
-    height: 11%;
+    left: 30%;
+    top: 37%;
+    width: 34%;
+    height: 10%;
     border: 1px solid var(--c-verde);
     box-shadow: 0 0 12px rgb(2 249 105 / 0.35), inset 0 0 12px rgb(2 249 105 / 0.2);
     animation: rastreo 4.5s steps(1) infinite;
