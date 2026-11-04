@@ -20,18 +20,16 @@ const imagen = await getImage({ src: foto, width: lado, height: lado, format: "w
     <div class="pantalla corte">
       <img src={imagen.src} width={lado} height={lado} alt={alt} decoding="async" />
       <canvas width={lado} height={lado} aria-hidden="true"></canvas>
+      <div class="mira" aria-hidden="true">
+        <span class="mira-etiqueta mono">ID // {alias.toUpperCase()}</span>
+      </div>
     </div>
-  </div>
-
-  <div class="mira" aria-hidden="true">
-    <span class="mira-etiqueta mono">ID // {alias.toUpperCase()}</span>
   </div>
 
   <span class="esquina esquina-a" aria-hidden="true"></span>
   <span class="esquina esquina-b" aria-hidden="true"></span>
 
   <p class="ficha mono" aria-hidden="true">
-    <span>SUJETO_VERIFICADO</span>
     <span class="ficha-ok">● SEÑAL ESTABLE</span>
   </p>
 </glitch-portrait>
@@ -82,13 +80,15 @@ const imagen = await getImage({ src: foto, width: lado, height: lado, format: "w
     visibility: hidden;
   }
 
-  /* Recuadro verde sobre los ojos, como el de Capri. */
+  /* Recuadro verde sobre los ojos, como el de Capri. Los porcentajes son
+     relativos a la foto: los ojos van del 33% al 61% del ancho y su centro
+     está cerca del 40% del alto. */
   .mira {
     position: absolute;
-    left: 30%;
-    top: 37%;
-    width: 34%;
-    height: 10%;
+    left: 30.5%;
+    top: 35.5%;
+    width: 33%;
+    height: 9%;
     border: 1px solid var(--c-verde);
     box-shadow: 0 0 12px rgb(2 249 105 / 0.35), inset 0 0 12px rgb(2 249 105 / 0.2);
     animation: rastreo 4.5s steps(1) infinite;
@@ -136,8 +136,7 @@ const imagen = await getImage({ src: foto, width: lado, height: lado, format: "w
 
   .ficha {
     display: flex;
-    justify-content: space-between;
-    gap: 1rem;
+    justify-content: flex-end;
     margin: 0.9rem 0 0;
     font-size: 0.7rem;
     letter-spacing: 0.12em;
