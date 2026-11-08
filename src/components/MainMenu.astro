@@ -204,6 +204,7 @@ import { secciones } from "../data/site";
 
 <script>
   import { descifrar, mezclar, movimientoReducido } from "../lib/fx";
+  import { sonar } from "../lib/sonido";
 
   const tamCelda = 12;
 
@@ -221,7 +222,8 @@ import { secciones } from "../data/site";
 
       this.opciones.forEach((opcion, i) => {
         opcion.addEventListener("click", () => this.elegir(i));
-        opcion.addEventListener("pointerenter", () => {
+        opcion.addEventListener("pointerenter", (evento) => {
+          if (evento.pointerType !== "touch") sonar("hover");
           const texto = opcion.querySelector<HTMLElement>(".opcion-texto");
           if (texto) descifrar(texto, 260);
         });
@@ -259,6 +261,7 @@ import { secciones } from "../data/site";
 
     private async elegir(indice: number) {
       if (indice === this.actual) return;
+      sonar("seleccion");
       this.actual = indice;
       this.opciones.forEach((opcion, i) => {
         opcion.setAttribute("aria-selected", String(i === indice));

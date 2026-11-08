@@ -157,6 +157,7 @@ const imagen = await getImage({ src: foto, width: ladoFoto, height: ladoFoto, fo
 
 <script>
   import { azar, azarEntero, esperar, movimientoReducido, programarRafagas } from "../lib/fx";
+  import { sonar } from "../lib/sonido";
 
   type Rgb = readonly [number, number, number];
 
@@ -282,6 +283,7 @@ const imagen = await getImage({ src: foto, width: ladoFoto, height: ladoFoto, fo
 
     private async alternar(mostrar: boolean) {
       if (mostrar === this.revelado) return;
+      sonar(mostrar ? "glitch" : "glitchCorto");
       this.revelado = mostrar;
       const desde = this.base;
       this.base = mostrar ? this.original : this.duotono;

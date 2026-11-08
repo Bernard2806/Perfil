@@ -82,6 +82,7 @@ const { texto, pausaMin = 2600, pausaMax = 6000 } = Astro.props;
 
 <script>
   import { azar, movimientoReducido, programarRafagas } from "../lib/fx";
+  import { sonar } from "../lib/sonido";
 
   class GlitchText extends HTMLElement {
     private fin: ReturnType<typeof setTimeout> | undefined;
@@ -95,7 +96,10 @@ const { texto, pausaMin = 2600, pausaMax = 6000 } = Astro.props;
       // Ráfaga fuerte al entrar a la página.
       this.romper(700);
       programarRafagas(() => this.romper(azar(220, 520)), { pausaMin, pausaMax, elemento: this });
-      this.addEventListener("pointerenter", () => this.romper(300));
+      this.addEventListener("pointerenter", (evento) => {
+        if (evento.pointerType !== "touch") sonar("glitchCorto");
+        this.romper(300);
+      });
     }
 
     romper(duracion: number) {

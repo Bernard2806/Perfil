@@ -14,6 +14,10 @@
     <span class="estado-texto">EN LÍNEA</span>
   </span>
   <time class="reloj" title="Hora en Chivilcoy">--:--:--</time>
+  <button class="sfx" type="button" aria-pressed="true" aria-label="Efectos de sonido" title="Efectos de sonido" hidden>
+    <span class="barras" aria-hidden="true"><span></span><span></span><span></span></span>
+    <span class="sfx-texto" aria-hidden="true">SFX <span class="sfx-estado">ON</span></span>
+  </button>
 </header>
 
 <style>
@@ -78,7 +82,85 @@
     font-variant-numeric: tabular-nums;
   }
 
-  @media (max-width: 30rem) {
+  .sfx {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-width: 2rem;
+    min-height: 2rem;
+    padding: 0.25rem 0.5rem;
+    font: inherit;
+    letter-spacing: inherit;
+    white-space: nowrap;
+    color: var(--c-verde);
+    background: transparent;
+    border: 1px solid var(--c-linea-verde);
+    cursor: pointer;
+  }
+
+  .sfx[hidden] {
+    display: none;
+  }
+
+  .sfx:hover {
+    color: var(--c-fondo);
+    background: var(--c-verde);
+  }
+
+  .sfx[aria-pressed="false"] {
+    color: var(--c-tenue);
+    border-color: var(--c-linea);
+  }
+
+  .sfx[aria-pressed="false"]:hover {
+    color: var(--c-fondo);
+    background: var(--c-tenue);
+  }
+
+  .barras {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 0.75rem;
+  }
+
+  .barras span {
+    width: 3px;
+    height: 45%;
+    background: currentColor;
+  }
+
+  .barras span:nth-child(2) {
+    height: 100%;
+  }
+
+  .barras span:nth-child(3) {
+    height: 70%;
+  }
+
+  .sfx[aria-pressed="false"] .barras span {
+    height: 2px;
+  }
+
+  .sfx-estado {
+    display: inline-block;
+    min-width: 3ch;
+    text-align: start;
+  }
+
+  /* Con el texto del estado más largo, "SFX ON" deja de entrar antes que el reloj. */
+  @media (max-width: 40rem) {
+    .sfx-texto {
+      display: none;
+    }
+  }
+
+  @media (max-width: 34rem) {
+    .hud-superior {
+      column-gap: 0.75rem;
+    }
+
     .reloj {
       display: none;
     }
@@ -91,7 +173,7 @@
   }
 
   /* En pantallas muy angostas queda solo el logo, para que entre el estado. */
-  @media (max-width: 22.4rem) {
+  @media (max-width: 23.5rem) {
     .sistema-nombre {
       display: none;
     }
@@ -112,6 +194,7 @@
 
 <script>
   import { estadoActual, etiquetas, zonaHoraria } from "../data/horario";
+  import { alternarSonido, escucharEnlaces, sonidoActivo } from "../lib/sonido";
 
   const reloj = document.querySelector<HTMLTimeElement>(".reloj");
   const estado = document.querySelector<HTMLElement>(".estado");
@@ -138,4 +221,17 @@
 
   actualizar();
   setInterval(actualizar, 1000);
+
+  const sfx = document.querySelector<HTMLButtonElement>(".sfx");
+  const sfxEstado = document.querySelector<HTMLElement>(".sfx-estado");
+
+  const pintarSonido = (activo: boolean) => {
+    sfx?.setAttribute("aria-pressed", String(activo));
+    if (sfxEstado) sfxEstado.textContent = activo ? "ON" : "OFF";
+  };
+
+  pintarSonido(sonidoActivo());
+  sfx?.addEventListener("click", () => pintarSonido(alternarSonido()));
+  if (sfx) sfx.hidden = false;
+  escucharEnlaces();
 </script>
