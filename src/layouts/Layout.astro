@@ -24,6 +24,9 @@ const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="text/markdown" href="/index.md" title="Perfil en Markdown" />
+    <link rel="describedby" type="text/plain" href="/llms.txt" />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
     <Font cssVariable="--font-display" preload />
     <Font cssVariable="--font-mono" />
     {googleSiteVerification && <meta name="google-site-verification" content={googleSiteVerification} />}
