@@ -21,6 +21,13 @@ const leido = roles.map((rol, i) => (i === 0 ? rol : rol.charAt(0).toLowerCase()
   rol-rotativo.escribiendo {
     text-shadow: -1px 0 var(--c-verde), 1px 0 var(--c-rojo);
   }
+
+  /* Sin rotación se ven todos los roles juntos, y en un renglón no entran. */
+  @media (prefers-reduced-motion: reduce) {
+    rol-rotativo {
+      white-space: normal;
+    }
+  }
 </style>
 
 <script>
