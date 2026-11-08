@@ -1,6 +1,15 @@
 # https://www.robotstxt.org/robotstxt.html
+
+# Content Signals (https://contentsignals.org/): qué uso se permite del contenido.
+#   search=yes   indexarlo y mostrarlo en resultados de búsqueda
+#   ai-input=yes usarlo para responder en tiempo real (RAG, agentes, resúmenes)
+#   ai-train=no  no usarlo para entrenar o ajustar modelos
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 # Sitemap
 Sitemap: https://bernard2806.is-a.dev/sitemap-index.xml
+
+# Perfil para LLMs
+# https://bernard2806.is-a.dev/llms.txt
