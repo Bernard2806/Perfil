@@ -7,11 +7,18 @@ import HudHeader from "../components/HudHeader.astro";
 import MainMenu from "../components/MainMenu.astro";
 import RolRotativo from "../components/RolRotativo.astro";
 import WebMcp from "../components/WebMcp.astro";
+import { getImage } from "astro:assets";
+import foto from "../assets/bernardo.jpg";
 import { perfil } from "../data/site";
+import { datosEstructurados } from "../lib/jsonld";
 
+const sitio = new URL("/", Astro.site);
+const imagen = await getImage({ src: foto, width: 840, height: 840, format: "webp" });
+const jsonLd = datosEstructurados(sitio, new URL(imagen.src, sitio));
 ---
 
 <Layout title={`${perfil.nombreVisible} · ${perfil.rol}`} description={perfil.descripcion}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <div class="pantalla arranque">
     <HudHeader />
 

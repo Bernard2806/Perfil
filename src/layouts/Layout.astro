@@ -42,6 +42,7 @@ const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
     <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
     <Font cssVariable="--font-display" preload={[{ weight: 700, subset: "latin" }]} />
     <Font cssVariable="--font-mono" />
+    <slot name="head" />
     {googleSiteVerification && <meta name="google-site-verification" content={googleSiteVerification} />}
     {
       googleAnalyticsId && (
