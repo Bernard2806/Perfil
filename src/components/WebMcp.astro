@@ -1,0 +1,105 @@
+---
+// Expone el perfil a agentes de IA que corren en el navegador mediante WebMCP
+// (https://webmachinelearning.github.io/webmcp/). Si el navegador no tiene la
+// API, no hace nada.
+---
+
+<script>
+  import { secciones, type Seccion } from "../data/site";
+  import {
+    perfilMarkdown,
+    seccionContacto,
+    seccionExperiencia,
+    seccionFormacion,
+    seccionProyectos,
+    seccionSobreMi,
+  } from "../lib/markdown";
+
+  interface Herramienta {
+    name: string;
+    description: string;
+    inputSchema: object;
+    annotations?: { readOnlyHint?: boolean };
+    execute: (entrada: Record<string, unknown>) => Promise<unknown>;
+  }
+
+  interface ModelContext {
+    registerTool: (herramienta: Herramienta, opciones?: { signal?: AbortSignal }) => unknown;
+  }
+
+  type ConModelContext = { modelContext?: ModelContext };
+
+  const contexto =
+    (document as unknown as ConModelContext).modelContext ??
+    (navigator as unknown as ConModelContext).modelContext;
+
+  const markdownPorSeccion: Record<Seccion["id"], () => string> = {
+    "sobre-mi": seccionSobreMi,
+    experiencia: seccionExperiencia,
+    proyectos: seccionProyectos,
+    formacion: seccionFormacion,
+    contacto: seccionContacto,
+  };
+
+  const ids = secciones.map((s) => s.id);
+  const esquemaSeccion = {
+    type: "object",
+    properties: {
+      seccion: {
+        type: "string",
+        enum: ids,
+        description: `Sección del perfil: ${secciones.map((s) => `${s.id} (${s.etiqueta})`).join(", ")}.`,
+      },
+    },
+    required: ["seccion"],
+  };
+
+  const texto = (contenido: string) => ({ content: [{ type: "text", text: contenido }] });
+
+  function leerSeccion(entrada: Record<string, unknown>): Seccion["id"] {
+    const seccion = entrada.seccion;
+    if (typeof seccion !== "string" || !ids.includes(seccion as Seccion["id"])) {
+      throw new Error(`Sección desconocida. Opciones: ${ids.join(", ")}.`);
+    }
+    return seccion as Seccion["id"];
+  }
+
+  const herramientas: Herramienta[] = [
+    {
+      name: "obtener_perfil",
+      description:
+        "Devuelve en Markdown el perfil completo de Bernardo G. Erramuspe: sobre mí, experiencia, proyectos, formación y contacto.",
+      inputSchema: { type: "object", properties: {} },
+      annotations: { readOnlyHint: true },
+      execute: async () => texto(perfilMarkdown()),
+    },
+    {
+      name: "obtener_seccion",
+      description: "Devuelve en Markdown una sola sección del perfil.",
+      inputSchema: esquemaSeccion,
+      annotations: { readOnlyHint: true },
+      execute: async (entrada) => texto(markdownPorSeccion[leerSeccion(entrada)]()),
+    },
+    {
+      name: "mostrar_seccion",
+      description: "Abre una sección del menú del sitio para que la persona la vea en pantalla.",
+      inputSchema: esquemaSeccion,
+      execute: async (entrada) => {
+        const seccion = leerSeccion(entrada);
+        const opcion = document.getElementById(`opcion-${seccion}`);
+        if (!opcion) throw new Error("No se encontró el menú en la página.");
+        opcion.click();
+        opcion.focus();
+        return texto(`Sección "${seccion}" abierta en pantalla.`);
+      },
+    },
+  ];
+
+  if (contexto && typeof contexto.registerTool === "function") {
+    for (const herramienta of herramientas) {
+      Promise.resolve()
+        .then(() => contexto.registerTool(herramienta))
+        .catch((error: unknown) => console.warn(`[WebMCP] no se pudo registrar ${herramienta.name}`, error));
+    }
+  }
+</script>
