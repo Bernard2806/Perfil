@@ -1,39 +1,29 @@
-// Efectos de sonido de la interfaz, sintetizados con Web Audio: no hay archivos
-// que descargar. Solo suenan como respuesta a algo que hizo el visitante; las
-// ráfagas automáticas de glitch quedan mudas para no cansar.
+// Efectos de sonido de la interfaz: teclas mecánicas al pasar el mouse y al
+// cambiar de sección. Muestras del pack "UI Audio" de Kenney (kenney.nl), CC0.
 
 import { azar } from "./fx";
 
 interface Motor {
   ctx: AudioContext;
   salida: GainNode;
-  ruidoBlanco: AudioBuffer;
 }
 
-interface OpcionesTono {
-  forma?: OscillatorType;
-  desde: number;
-  hasta?: number;
+interface OpcionesGolpe {
   inicio?: number;
-  duracion: number;
   volumen: number;
+  tono?: number;
+  pan?: number;
 }
 
-interface OpcionesRuido {
-  filtro: BiquadFilterType;
-  desde: number;
-  hasta?: number;
-  inicio?: number;
-  duracion: number;
-  volumen: number;
-}
+const rutas = { a: "/sfx/tecla-a.wav", b: "/sfx/tecla-b.wav", c: "/sfx/tecla-c.wav" } as const;
+type Tecla = keyof typeof rutas;
+const teclas = Object.keys(rutas) as Tecla[];
 
 const claveSilencio = "sfx-silenciado";
-const volumenGeneral = 0.35;
-/** Evita que pasar el mouse rápido por el menú suene como una ametralladora. */
-const separacionMinimaMs = 45;
+const volumenGeneral = 0.55;
 
 let motor: Motor | null = null;
+let muestras: Record<Tecla, AudioBuffer> | null = null;
 let silenciado = leerSilencio();
 
 function leerSilencio(): boolean {
@@ -52,17 +42,25 @@ function guardarSilencio() {
   }
 }
 
+/** Se decodifican antes del primer gesto para que el primer sonido no se pierda. */
+async function cargarMuestras() {
+  const decodificador = new OfflineAudioContext(1, 1, 44100);
+  const cargar = async (tecla: Tecla) => {
+    const respuesta = await fetch(rutas[tecla]);
+    return [tecla, await decodificador.decodeAudioData(await respuesta.arrayBuffer())] as const;
+  };
+  muestras = Object.fromEntries(await Promise.all(teclas.map(cargar))) as Record<Tecla, AudioBuffer>;
+}
+
+// Si no cargan, el sitio funciona igual, sin sonido.
+cargarMuestras().catch(() => {});
+
 function crearMotor(): Motor {
   const ctx = new AudioContext();
   const salida = ctx.createGain();
   salida.gain.value = volumenGeneral;
   salida.connect(ctx.destination);
-
-  const ruidoBlanco = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
-  const muestras = ruidoBlanco.getChannelData(0);
-  for (let i = 0; i < muestras.length; i++) muestras[i] = azar(-1, 1);
-
-  return { ctx, salida, ruidoBlanco };
+  return { ctx, salida };
 }
 
 /** Los navegadores solo dejan iniciar el audio durante un gesto del visitante. */
@@ -81,99 +79,55 @@ for (const gesto of ["mousedown", "touchend", "keydown"]) {
   document.addEventListener(gesto, alGesto, { capture: true, passive: true });
 }
 
-function tono({ ctx, salida }: Motor, opciones: OpcionesTono) {
-  const { forma = "square", desde, hasta, inicio = 0, duracion, volumen } = opciones;
-  const t = ctx.currentTime + inicio;
-  const oscilador = ctx.createOscillator();
-  const envolvente = ctx.createGain();
-
-  oscilador.type = forma;
-  oscilador.frequency.setValueAtTime(desde, t);
-  if (hasta) oscilador.frequency.exponentialRampToValueAtTime(hasta, t + duracion);
-  envolvente.gain.setValueAtTime(volumen, t);
-  envolvente.gain.exponentialRampToValueAtTime(0.0001, t + duracion);
-
-  oscilador.connect(envolvente).connect(salida);
-  oscilador.start(t);
-  oscilador.stop(t + duracion);
-}
-
-function ruido({ ctx, salida, ruidoBlanco }: Motor, opciones: OpcionesRuido) {
-  const { filtro, desde, hasta, inicio = 0, duracion, volumen } = opciones;
-  const t = ctx.currentTime + inicio;
+function golpe({ ctx, salida }: Motor, buffer: AudioBuffer, opciones: OpcionesGolpe) {
+  const { inicio = 0, volumen, tono = 1, pan = 0 } = opciones;
   const fuente = ctx.createBufferSource();
-  const filtrado = ctx.createBiquadFilter();
-  const envolvente = ctx.createGain();
+  const nivel = ctx.createGain();
+  const paneo = ctx.createStereoPanner();
 
-  fuente.buffer = ruidoBlanco;
-  fuente.loop = true;
-  filtrado.type = filtro;
-  filtrado.frequency.setValueAtTime(desde, t);
-  if (hasta) filtrado.frequency.exponentialRampToValueAtTime(hasta, t + duracion);
-  envolvente.gain.setValueAtTime(volumen, t);
-  envolvente.gain.exponentialRampToValueAtTime(0.0001, t + duracion);
+  fuente.buffer = buffer;
+  fuente.playbackRate.value = tono;
+  nivel.gain.value = volumen;
+  paneo.pan.value = pan;
 
-  fuente.connect(filtrado).connect(envolvente).connect(salida);
-  fuente.start(t, azar(0, 0.9));
-  fuente.stop(t + duracion);
+  fuente.connect(nivel).connect(paneo).connect(salida);
+  fuente.start(ctx.currentTime + inicio);
 }
 
-/** Notas cortas al azar, como una señal digital que se corta. */
-function tartamudeo(m: Motor, notas: number, ventana: number, volumen: number) {
-  for (let i = 0; i < notas; i++) {
-    tono(m, {
-      desde: azar(140, 3200),
-      inicio: (i / notas) * ventana + azar(0, 0.01),
-      duracion: azar(0.015, 0.04),
-      volumen: azar(0.4, 1) * volumen,
-    });
-  }
-}
+const pulsaciones = 7;
+const lapsoTecleo = 0.32;
 
 const catalogo = {
-  hover: (m: Motor) => tono(m, { desde: 1900, hasta: 1450, duracion: 0.03, volumen: 0.1 }),
+  hover: (m: Motor, audio: Record<Tecla, AudioBuffer>) => golpe(m, audio.b, { volumen: 0.7 }),
 
-  // El barrido de ruido acompaña la disolución del panel: 180 ms tapa y 260 ms destapa.
-  seleccion: (m: Motor) => {
-    tono(m, { desde: 520, hasta: 780, duracion: 0.05, volumen: 0.2 });
-    tono(m, { desde: 1040, inicio: 0.055, duracion: 0.07, volumen: 0.16 });
-    ruido(m, { filtro: "bandpass", desde: 900, hasta: 5200, duracion: 0.18, volumen: 0.22 });
-    ruido(m, { filtro: "bandpass", desde: 5200, hasta: 1200, inicio: 0.18, duracion: 0.26, volumen: 0.12 });
-  },
-
-  confirmar: (m: Motor) => {
-    tono(m, { desde: 880, hasta: 1320, duracion: 0.07, volumen: 0.16 });
-    tono(m, { desde: 1760, inicio: 0.05, duracion: 0.06, volumen: 0.1 });
-  },
-
-  glitch: (m: Motor) => {
-    tartamudeo(m, 9, 0.3, 0.16);
-    ruido(m, { filtro: "highpass", desde: 2600, duracion: 0.34, volumen: 0.12 });
-  },
-
-  glitchCorto: (m: Motor) => tartamudeo(m, 4, 0.1, 0.1),
-
-  encender: (m: Motor) => {
-    tono(m, { desde: 330, duracion: 0.06, volumen: 0.16 });
-    tono(m, { desde: 660, inicio: 0.06, duracion: 0.06, volumen: 0.16 });
-    tono(m, { desde: 990, inicio: 0.12, duracion: 0.1, volumen: 0.16 });
+  tecleo: (m: Motor, audio: Record<Tecla, AudioBuffer>) => {
+    for (let i = 0; i < pulsaciones; i++) {
+      golpe(m, audio[teclas[Math.floor(Math.random() * teclas.length)]!], {
+        inicio: (i / pulsaciones) * lapsoTecleo + azar(0, 0.022),
+        volumen: 0.75 * azar(0.65, 1),
+        tono: azar(0.92, 1.1),
+        pan: azar(-0.15, 0.15),
+      });
+    }
   },
 };
 
 export type Sonido = keyof typeof catalogo;
 
+/** Evita que el mouse rápido o una flecha mantenida apilen sonidos. */
+const separacionMinimaMs: Record<Sonido, number> = { hover: 45, tecleo: 140 };
 const ultimaVez = new Map<Sonido, number>();
 
 /** Antes del primer gesto del visitante no hay audio, así que no suena nada. */
 export function sonar(sonido: Sonido): void {
-  if (silenciado || !motor) return;
+  if (silenciado || !motor || !muestras) return;
   if (motor.ctx.state !== "running") void motor.ctx.resume();
 
   const ahora = performance.now();
-  if (ahora - (ultimaVez.get(sonido) ?? -Infinity) < separacionMinimaMs) return;
+  if (ahora - (ultimaVez.get(sonido) ?? -Infinity) < separacionMinimaMs[sonido]) return;
   ultimaVez.set(sonido, ahora);
 
-  catalogo[sonido](motor);
+  catalogo[sonido](motor, muestras);
 }
 
 export function sonidoActivo(): boolean {
@@ -185,7 +139,7 @@ export function alternarSonido(): boolean {
   silenciado = !silenciado;
   guardarSilencio();
   activar();
-  sonar("encender");
+  sonar("hover");
   return !silenciado;
 }
 
@@ -198,9 +152,5 @@ export function escucharEnlaces(): void {
     const destino = evento.target.closest(interactivos);
     const previo = evento.relatedTarget instanceof Element ? evento.relatedTarget.closest(interactivos) : null;
     if (destino && destino !== previo) sonar("hover");
-  });
-
-  document.addEventListener("click", (evento) => {
-    if (evento.target instanceof Element && evento.target.closest("a")) sonar("confirmar");
   });
 }

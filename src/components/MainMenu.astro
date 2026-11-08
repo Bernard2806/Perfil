@@ -261,7 +261,7 @@ import { secciones } from "../data/site";
 
     private async elegir(indice: number) {
       if (indice === this.actual) return;
-      sonar("seleccion");
+      sonar("tecleo");
       this.actual = indice;
       this.opciones.forEach((opcion, i) => {
         opcion.setAttribute("aria-selected", String(i === indice));
