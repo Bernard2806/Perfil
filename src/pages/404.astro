@@ -1,0 +1,90 @@
+---
+import Layout from "../layouts/Layout.astro";
+import GlitchText from "../components/GlitchText.astro";
+import HudHeader from "../components/HudHeader.astro";
+import { perfil } from "../data/site";
+---
+
+<Layout title={`Señal perdida · ${perfil.nombreVisible}`} description="Esta ruta no existe en el perfil de Bernardo G. Erramuspe.">
+  <div class="pantalla arranque">
+    <HudHeader />
+
+    <main class="escena">
+      <p class="etiqueta mono">// ERROR · RUTA NO ENCONTRADA</p>
+      <h1 class="codigo"><GlitchText texto="404" pausaMin={1800} pausaMax={4200} /></h1>
+      <p class="mensaje">Señal perdida. La página que buscás no existe o se movió.</p>
+      <a class="volver mono" href="/"><span aria-hidden="true">&gt; </span>Volver al perfil<span class="cursor" aria-hidden="true">_</span></a>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .pantalla {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 100dvh;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .escena {
+    display: grid;
+    justify-items: start;
+    align-content: center;
+    padding-block: 2.5rem;
+  }
+
+  .etiqueta {
+    margin: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-verde);
+  }
+
+  .codigo {
+    margin: 0.5rem 0 0;
+    font-size: clamp(7rem, 30vw, 16rem);
+    font-weight: 700;
+    line-height: 0.95;
+    color: var(--c-rojo);
+    text-shadow: 0 0 40px rgb(252 1 71 / 0.35);
+  }
+
+  .mensaje {
+    margin: 1rem 0 2rem;
+    font-size: clamp(1.05rem, 2.6vw, 1.3rem);
+    color: var(--c-texto);
+  }
+
+  .volver {
+    padding: 0.8rem 1.25rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--c-verde);
+    border: 1px solid var(--c-verde);
+    transition: color 0.12s, background-color 0.12s;
+  }
+
+  .volver:hover {
+    color: var(--c-fondo);
+    background: var(--c-verde);
+  }
+
+  .cursor {
+    animation: parpadeo 1s steps(1) infinite;
+  }
+
+  @keyframes parpadeo {
+    50% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor {
+      animation: none;
+    }
+  }
+</style>
